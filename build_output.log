@@ -1,0 +1,31 @@
+
+> milenium-client@0.0.1 build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding ssr environment for production...[36m[39m
+transforming...
+1:29:15 a. m. [vite-plugin-svelte] src/routes/v1/usuarios/+page.svelte:230:7 A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control
+228:           {#if searchTerm || selectedRol || selectedEstado}
+229:             <div class="max-w-xs flex-1">
+230:               <label class="mb-1 block text-sm font-medium text-transparent">Acciones</label>
+                                                                                                  ^
+231:               <button
+232:                 on:click={clearFilters}
+[32m✓[39m 37 modules transformed.
+✗ Build failed in 865ms
+error during build:
+[vite]: Rollup failed to resolve import "chart.js" from "D:/PROYECTO-MILENIUM/milenium-frontend/src/routes/v1/inicio/+page.svelte".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+    at viteLog (file:///D:/PROYECTO-MILENIUM/milenium-frontend/node_modules/.pnpm/vite@7.3.1_@types+node@22.1_82581991ab72c384e11f9fa57f08f721/node_modules/vite/dist/node/chunks/config.js:33635:57)
+    at file:///D:/PROYECTO-MILENIUM/milenium-frontend/node_modules/.pnpm/vite@7.3.1_@types+node@22.1_82581991ab72c384e11f9fa57f08f721/node_modules/vite/dist/node/chunks/config.js:33669:73
+    at onwarn (file:///D:/PROYECTO-MILENIUM/milenium-frontend/node_modules/.pnpm/@sveltejs+kit@2.49.5_@svelt_f01e53850a326399d52de95df860543e/node_modules/@sveltejs/kit/src/exports/vite/index.js:927:9)
+    at file:///D:/PROYECTO-MILENIUM/milenium-frontend/node_modules/.pnpm/vite@7.3.1_@types+node@22.1_82581991ab72c384e11f9fa57f08f721/node_modules/vite/dist/node/chunks/config.js:33669:28
+    at onRollupLog (file:///D:/PROYECTO-MILENIUM/milenium-frontend/node_modules/.pnpm/vite@7.3.1_@types+node@22.1_82581991ab72c384e11f9fa57f08f721/node_modules/vite/dist/node/chunks/config.js:33664:63)
+    at onLog (file:///D:/PROYECTO-MILENIUM/milenium-frontend/node_modules/.pnpm/vite@7.3.1_@types+node@22.1_82581991ab72c384e11f9fa57f08f721/node_modules/vite/dist/node/chunks/config.js:33467:4)
+    at file:///D:/PROYECTO-MILENIUM/milenium-frontend/node_modules/.pnpm/rollup@4.55.1/node_modules/rollup/dist/es/shared/node-entry.js:21081:32
+    at Object.logger [as onLog] (file:///D:/PROYECTO-MILENIUM/milenium-frontend/node_modules/.pnpm/rollup@4.55.1/node_modules/rollup/dist/es/shared/node-entry.js:22968:9)
+    at ModuleLoader.handleInvalidResolvedId (file:///D:/PROYECTO-MILENIUM/milenium-frontend/node_modules/.pnpm/rollup@4.55.1/node_modules/rollup/dist/es/shared/node-entry.js:21712:26)
+    at file:///D:/PROYECTO-MILENIUM/milenium-frontend/node_modules/.pnpm/rollup@4.55.1/node_modules/rollup/dist/es/shared/node-entry.js:21670:26

@@ -1,0 +1,9 @@
+ArrowLeftIcon ArrowUptIcon BrandLineIcon CheckIcon ChevronLeftIcon CircleCheckIcon ClipboardIcon
+CodeIcon DotsVerticalIcon DownloadIcon EyeIcon EyeOffIcon FacebookIcon FiltersIcon
+HorizontalLinesIcon InstagramIcon ListIcon MailIcon MapPinIcon PencilIcon PhotoIcon PlusIcon
+RefreshIcon ShoppingCartIcon TagIcon TikTokIcon TrashIcon UsersIcon WhatsappIcon XIcon ZoomIcon
+BuildindStoreIcon SparklesIcon CoffeeIcon ToolsKitchen3Icon HammerIcon MusicIcon ScissorsIcon
+DeviceLaptopIcon WreckingBallIcon PlaneIcon LeafIcon Gamepad2Icon StopwatchIcon FlowerIcon BrushIcon
+BrainIcon AlertTriangleIcon BoltIcon CardsIcon ExclamationCircleIcon LayoutGridIcon LockIcon
+StatsIcon ShirtIcon BookIcon CameraIcon CarIcon HeartIcon HomeIcon UmbrellaIcon PaletteIcon
+StethoscopeIcon CampFireIcon PizzaIcon BriefcaseIcon GiftIcon HeadphonesIcon CalendarIcon TruckIcon

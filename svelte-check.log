@@ -1,0 +1,433 @@
+
+> milenium-client@0.0.1 check D:\PROYECTO-MILENIUM\milenium-frontend
+> svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+
+Loading svelte-check in workspace: d:\PROYECTO-MILENIUM\milenium-frontend
+Getting Svelte diagnostics...
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\utils\redirect.ts[39m:4:15
+[31mError[39m: Argument of type '[string]' is not assignable to parameter of type '[route: "/"] | [route: "/auth"] | [route: "/auth/resset-password"] | [route: "/auth/sign-in"] | [route: "/auth/sign-up"] | [route: "/v1"] | [route: "/v1/administracion"] | [route: "/v1/administracion/reporte-gastos"] | [route: "/v1/administracion/reportes"] | ... 59 more ... | [route: ...]'.
+  Type '[string]' is not assignable to type '[route: "/v1/zonas/"]'.
+    Type 'string' is not assignable to type '"/v1/zonas/"'. 
+[36mexport const redirect = (url: string, replaceState: boolean = false): void => {
+	goto(resolve([35murl[36m), { replaceState });
+};[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\features\empleado\empleadoFormModal.svelte[39m:355:7
+[33mWarn[39m: Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label (svelte)
+[36m						</div>
+						[35m<button
+							type="button"
+							onclick={toggleCrearUsuario}
+							class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none {crearUsuario
+								? 'bg-blue-600'
+								: 'bg-gray-200'}"
+							role="switch"
+							aria-checked={crearUsuario}
+						>
+							<span
+								class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {crearUsuario
+									? 'translate-x-5'
+									: 'translate-x-0'}"
+							></span>
+						</button>[36m
+					</div>[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\features\empleado\empleadoFormModal.svelte[39m:383:22
+[31mError[39m: 'formData.usuario' is possibly 'undefined'. (ts)
+[36m									label="Nombre de Usuario"
+									bind:value={[35mformData.usuario[36m.name_user}
+									placeholder="Ej: pedro.aguirre"[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\features\empleado\empleadoFormModal.svelte[39m:396:22
+[31mError[39m: 'formData.usuario' is possibly 'undefined'. (ts)
+[36m									label="Email"
+									bind:value={[35mformData.usuario[36m.email}
+									placeholder="ejemplo@correo.com"[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\features\empleado\empleadoFormModal.svelte[39m:409:21
+[31mError[39m: 'formData.usuario' is possibly 'undefined'. (ts)
+[36m								label="Rol"
+								bind:value={[35mformData.usuario[36m.rol_id}
+								required[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\features\empleado\empleadoFormModal.svelte[39m:430:23
+[31mError[39m: 'formData.usuario' is possibly 'undefined'. (ts)
+[36m										id="password"
+										bind:value={[35mformData.usuario[36m.password}
+										class="w-full rounded-lg border border-light-four bg-light-one px-4 py-2 pr-12 text-light-black focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 {validationErrors[[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\features\roles\crearRolModal.svelte[39m:69:4
+[33mWarn[39m: Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label (svelte)
+[36m			<h2 class="text-2xl font-bold text-gray-900">Crear Nuevo Rol</h2>
+			[35m<button
+				on:click={handleClose}
+				class="text-gray-400 transition-colors hover:text-gray-600"
+				disabled={loading}
+			>
+				<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/>
+				</svg>
+			</button>[36m
+		</div>[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\features\roles\crearRolModal.svelte[39m:141:6
+[33mWarn[39m: Self-closing HTML tags for non-void elements are ambiguous — use `<textarea ...></textarea>` rather than `<textarea ... />`
+https://svelte.dev/e/element_invalid_self_closing_tag (svelte)
+[36m					</label>
+					[35m<textarea
+						id="descripcion"
+						bind:value={formData.descripcion}
+						rows="4"
+						class="w-full resize-none rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.descripcion
+							? 'border-red-500'
+							: ''}"
+						placeholder="Describe las responsabilidades y alcance del rol..."
+						disabled={loading}
+					/>[36m
+					{#if errors.descripcion}[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\features\usuario\crearUsuarioModal.svelte[39m:96:4
+[33mWarn[39m: Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label (svelte)
+[36m			<h2 class="text-2xl font-bold text-gray-900">Crear Nuevo Usuario</h2>
+			[35m<button
+				on:click={handleClose}
+				class="text-gray-400 transition-colors hover:text-gray-600"
+				disabled={loading}
+			>
+				<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/>
+				</svg>
+			</button>[36m
+		</div>[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\features\zona\zonaCard.svelte[39m:56:29
+[31mError[39m: Type 'string' is not assignable to type 'number'. (ts)
+[36m			</button>
+			<DropdownMenu {options} {[35mwidth[36m} isOpen={isDropdownOpen} class="absolute top-full right-0" />
+		</div>[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\features\zona\zonaFormModal.svelte[39m:5:50
+[31mError[39m: Cannot find module '../ui' or its corresponding type declarations. (ts)
+[36m	import { fade, scale } from 'svelte/transition';
+	import { Button, Input, Select, TextArea } from [35m'../ui'[36m;
+	import { zonaRegisterSchema } from '$lib/zod';[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloCard.svelte[39m:3:16
+[31mError[39m: Module '"$lib/interfaces"' has no exported member 'VentaPollo'. (ts)
+[36m	import { DotsVerticalIcon } from '$lib/icons/outline';
+	import type { [35mVentaPollo[36m, DropdownOption } from '$lib/interfaces';
+	import { formatDate } from '$lib/utils';[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloCard.svelte[39m:73:29
+[31mError[39m: Type 'string' is not assignable to type 'number'. (ts)
+[36m			</button>
+			<DropdownMenu {options} {[35mwidth[36m} isOpen={isDropdownOpen} class="absolute top-full right-0" />
+		</div>[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:267:7
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m					<div>
+						[35m<label class="mb-1 block text-xs font-medium text-gray-200">SKU DESPACHO</label>[36m
+						<select[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:280:7
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m					<div class="w-full">
+						[35m<label class="mb-1 block text-xs font-medium text-light-one">CLIENTE</label>[36m
+						<select bind:value={clienteSeleccionado} class="rounded bg-light-five py-2 text-gray-700 focus:outline-none">[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:310:8
+[33mWarn[39m: Visible, non-interactive elements with a click event must be accompanied by a keyboard event handler. Consider whether an interactive element such as `<button type="button">` or `<a>` might be more appropriate
+https://svelte.dev/e/a11y_click_events_have_key_events (svelte)
+[36m							
+							[35m<div 
+                                class="relative rounded-lg p-3 transition-all" 
+                                class:cursor-pointer={!isFullyAllocated}
+                                class:hover:bg-light-three={!isFullyAllocated}
+                                class:bg-light-four={!isFullyAllocated}
+                                class:bg-light-three={itemSeleccionado === item && !isFullyAllocated}
+                                class:opacity-50={isFullyAllocated}
+                                class:cursor-not-allowed={isFullyAllocated}
+                                class:bg-gray-600={isFullyAllocated}
+                                onclick={() => !isFullyAllocated && selectItem(item)}
+                            >
+								{#if itemSeleccionado === item && !isFullyAllocated}
+									<div class="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-sm bg-emerald-500">
+										<svg class="h-3 w-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+										</svg>
+									</div>
+								{/if}
+								{#if isFullyAllocated}
+									<div class="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-sm bg-red-500">
+										<svg class="h-3 w-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
+										</svg>
+									</div>
+								{/if}
+								<h3 class="text-sm font-medium text-white">{item.producto_nombre}</h3>
+								<div class="flex items-center justify-between">
+								<p class="text-xs text-gray-200">{item.metodo_cobro === 'POR_PESO' ? 'Por Peso' : 'Por Unidad'}</p>
+								<p class="mt-1 text-xs font-medium" class:text-white={!isFullyAllocated} class:text-gray-400={isFullyAllocated}>
+                                    Disp: {remainingStock} {item.metodo_cobro === 'POR_PESO' ? 'Kg' : 'Uni'}
+                                    {#if isFullyAllocated}
+                                        <span class="text-red-400 ml-1">(Agotado)</span>
+                                    {/if}
+                                </p>
+																</div>
+							</div>[36m
+                        {:else}[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:310:8
+[33mWarn[39m: `<div>` with a click handler must have an ARIA role
+https://svelte.dev/e/a11y_no_static_element_interactions (svelte)
+[36m							
+							[35m<div 
+                                class="relative rounded-lg p-3 transition-all" 
+                                class:cursor-pointer={!isFullyAllocated}
+                                class:hover:bg-light-three={!isFullyAllocated}
+                                class:bg-light-four={!isFullyAllocated}
+                                class:bg-light-three={itemSeleccionado === item && !isFullyAllocated}
+                                class:opacity-50={isFullyAllocated}
+                                class:cursor-not-allowed={isFullyAllocated}
+                                class:bg-gray-600={isFullyAllocated}
+                                onclick={() => !isFullyAllocated && selectItem(item)}
+                            >
+								{#if itemSeleccionado === item && !isFullyAllocated}
+									<div class="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-sm bg-emerald-500">
+										<svg class="h-3 w-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+										</svg>
+									</div>
+								{/if}
+								{#if isFullyAllocated}
+									<div class="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-sm bg-red-500">
+										<svg class="h-3 w-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
+										</svg>
+									</div>
+								{/if}
+								<h3 class="text-sm font-medium text-white">{item.producto_nombre}</h3>
+								<div class="flex items-center justify-between">
+								<p class="text-xs text-gray-200">{item.metodo_cobro === 'POR_PESO' ? 'Por Peso' : 'Por Unidad'}</p>
+								<p class="mt-1 text-xs font-medium" class:text-white={!isFullyAllocated} class:text-gray-400={isFullyAllocated}>
+                                    Disp: {remainingStock} {item.metodo_cobro === 'POR_PESO' ? 'Kg' : 'Uni'}
+                                    {#if isFullyAllocated}
+                                        <span class="text-red-400 ml-1">(Agotado)</span>
+                                    {/if}
+                                </p>
+																</div>
+							</div>[36m
+                        {:else}[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:361:33
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m                            <div class="w-full">
+                                [35m<label class="mb-2 block text-sm font-medium text-white">Lote (Caja)</label>[36m
+                                <select bind:value={loteSeleccionadoId} onchange={handleLoteChange} class="w-full rounded bg-light-five py-2 text-gray-700 focus:outline-none">[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:376:9
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m							<div class="flex-1">
+								[35m<label class="mb-2 block text-sm font-medium text-white">
+									{itemSeleccionado?.metodo_cobro === 'POR_PESO' ? 'Peso (Kg)' : 'Cantidad'}
+								</label>[36m
+								<input[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:389:9
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m							<div class="flex-1">
+								[35m<label class="mb-2 block text-sm font-medium text-white">Precio</label>[36m
+								<input type="number" step="0.01" bind:value={precio} class="w-full rounded bg-light-five px-4 py-2 text-gray-700 focus:outline-none" />[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:426:45
+[33mWarn[39m: Buttons and links should either contain text or have an `aria-label`, `aria-labelledby` or `title` attribute
+https://svelte.dev/e/a11y_consider_explicit_label (svelte)
+[36m                                        <td class="py-2 text-right">
+                                            [35m<button class="text-red-400 hover:text-red-300" onclick={() => removeProducto(index)}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>[36m
+                                        </td>[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:473:9
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m
+								[35m<label class="text-sm font-medium text-light-one">A Cuenta (Cobrado)</label>[36m
+								<input type="number" bind:value={montoPagado} class="w-32 rounded bg-transparent px-3 py-2 text-right text-light-one focus:outline-none mt-2" />[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:7:38
+[31mError[39m: Cannot find module '$lib/services/ventaPollos.service' or its corresponding type declarations. (ts)
+[36m	import { clientesService } from '$lib/services/cliente.service';
+	import { ventasPollosService } from [35m'$lib/services/ventaPollos.service'[36m;
+	import { despachosService } from '$lib/services/despacho.service';[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:8:35
+[31mError[39m: Cannot find module '$lib/services/despacho.service' or its corresponding type declarations. (ts)
+[36m	import { ventasPollosService } from '$lib/services/ventaPollos.service';
+	import { despachosService } from [35m'$lib/services/despacho.service'[36m;
+	import type {[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:11:3
+[31mError[39m: Module '"$lib/interfaces"' has no exported member 'InventarioItem'. (ts)
+[36m		Cliente, 
+		[35mInventarioItem[36m, 
+		LoteDisponible,[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:12:3
+[31mError[39m: Module '"$lib/interfaces"' has no exported member 'LoteDisponible'. (ts)
+[36m		InventarioItem, 
+		[35mLoteDisponible[36m,
+		DespachoExtraData[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:13:3
+[31mError[39m: Module '"$lib/interfaces"' has no exported member 'DespachoExtraData'. (ts)
+[36m		LoteDisponible,
+		[35mDespachoExtraData[36m 
+	} from '$lib/interfaces';[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:51:57
+[31mError[39m: Parameter 'l' implicitly has an 'any' type. (ts)
+[36m	function getRemainingStock(loteId: string, metodoCobro: string): number {
+		const lote = itemSeleccionado?.lotes_disponibles.find([35ml[36m => l.id === loteId);
+		if (!lote) return 0;[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:140:56
+[31mError[39m: Parameter 'l' implicitly has an 'any' type. (ts)
+[36m
+		const lote = itemSeleccionado.lotes_disponibles.find([35ml[36m => l.id === loteSeleccionadoId);
+		if (!lote) {[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ventaPollo\ventaPolloRegistroForm.svelte[39m:159:56
+[31mError[39m: Parameter 'l' implicitly has an 'any' type. (ts)
+[36m
+		const lote = itemSeleccionado.lotes_disponibles.find([35ml[36m => l.id === loteSeleccionadoId);
+		if (!lote) return;[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ui\card.svelte[39m:72:3
+[33mWarn[39m: This reference only captures the initial value of `interactive`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+[36m	const interactiveClasses =
+		[35minteractive[36m && !disabled
+			? 'hover:shadow-md hover:scale-[1.02] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900'[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ui\card.svelte[39m:72:19
+[33mWarn[39m: This reference only captures the initial value of `disabled`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+[36m	const interactiveClasses =
+		interactive && ![35mdisabled[36m
+			? 'hover:shadow-md hover:scale-[1.02] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900'[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ui\card.svelte[39m:77:26
+[33mWarn[39m: This reference only captures the initial value of `disabled`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+[36m	// Estado deshabilitado
+	const disabledClasses = [35mdisabled[36m ? 'opacity-60 cursor-not-allowed pointer-events-none' : '';[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ui\card.svelte[39m:82:18
+[33mWarn[39m: This reference only captures the initial value of `variant`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+[36m		baseClasses,
+		variantClasses[[35mvariant[36m],
+		sizeClasses[size],[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ui\card.svelte[39m:83:15
+[33mWarn[39m: This reference only captures the initial value of `size`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+[36m		variantClasses[variant],
+		sizeClasses[[35msize[36m],
+		paddingClasses[padding],[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ui\card.svelte[39m:84:18
+[33mWarn[39m: This reference only captures the initial value of `padding`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+[36m		sizeClasses[size],
+		paddingClasses[[35mpadding[36m],
+		interactiveClasses,[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ui\card.svelte[39m:87:3
+[33mWarn[39m: This reference only captures the initial value of `additionalClass`. Did you mean to reference it inside a closure instead?
+https://svelte.dev/e/state_referenced_locally (svelte)
+[36m		disabledClasses,
+		[35madditionalClass[36m
+	][39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ui\card.svelte[39m:99:1
+[33mWarn[39m: noninteractive element cannot have nonnegative tabIndex value
+https://svelte.dev/e/a11y_no_noninteractive_tabindex (svelte)
+[36m
+[35m<div
+	class={cardClasses}
+	role={interactive ? 'button' : undefined}
+	tabindex={interactive && !disabled ? 0 : undefined}
+	onclick={handleClick}
+	onkeydown={(e) => {
+		if (interactive && !disabled && (e.key === 'Enter' || e.key === ' ')) {
+			e.preventDefault();
+			handleClick(e as any);
+		}
+	}}
+	{...restProps}
+>
+	<!-- Header Section -->
+	{#if header}
+		<div class="card-header mb-4 border-b border-gray-200 pb-4 dark:border-gray-700">
+			{@render header()}
+		</div>
+	{/if}
+
+	<!-- Main Content -->
+	<div class="card-content">
+		{@render children()}
+	</div>
+
+	<!-- Footer Section -->
+	{#if footer}
+		<div class="card-footer mt-4 border-t border-gray-200 pt-4 dark:border-gray-700">
+			{@render footer()}
+		</div>
+	{/if}
+</div>[36m[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\lib\components\ui\card.svelte[39m:95:13
+[31mError[39m: Argument of type 'MouseEvent' is not assignable to parameter of type 'MouseEvent & { currentTarget: EventTarget & HTMLDivElement; }'.
+  Type 'MouseEvent' is not assignable to type '{ currentTarget: EventTarget & HTMLDivElement; }'.
+    Types of property 'currentTarget' are incompatible.
+      Type 'EventTarget | null' is not assignable to type 'EventTarget & HTMLDivElement'.
+        Type 'null' is not assignable to type 'EventTarget & HTMLDivElement'.
+          Type 'null' is not assignable to type 'EventTarget'. (ts)
+[36m		if (disabled) return;
+		onclick?.([35mevent[36m);
+	};[39m
+
+d:\PROYECTO-MILENIUM\milenium-frontend\[32msrc\routes\v1\usuarios\+page.svelte[39m:230:8
+[33mWarn[39m: A form label must be associated with a control
+https://svelte.dev/e/a11y_label_has_associated_control (svelte)
+[36m						<div class="max-w-xs flex-1">
+							[35m<label class="mb-1 block text-sm font-medium text-transparent">Acciones</label>[36m
+							<button[39m
+
+====================================
+[31msvelte-check found 18 errors and 22 warnings in 10 files
+[39m ELIFECYCLE  Command failed with exit code 1.

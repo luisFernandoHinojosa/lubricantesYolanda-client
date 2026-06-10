@@ -1,0 +1,15 @@
+export { default as ClienteTableSkeleton } from './clienteTableSkeleton.svelte';
+// export { default as ZonaTableSkeleton } from './zonaTableSkeleton.svelte';
+export { default as EmpleadoTableSkeleton } from './empleadoTableSkeleton.svelte';
+export { default as CompraPolloTableSkeleton } from './compraPolloTableSkeleton.svelte';
+export { default as ProveedorTableSkeleton } from './proveedorTableSkeleton.svelte';
+export { default as VentaPolloTableSkeleton } from './ventaPolloTableSkeleton.svelte';
+export { default as DespachoTableSkeleton } from './despachoTableSkeleton.svelte';
+export { default as MarcaTableSkeleton } from './marcaTableSkeleton.svelte';
+export { default as MovimientoTableSkeleton } from './movimientoTableSkeleton.svelte';
+export { default as UnidadMedidaTableSkeleton } from './unidadMedidaTableSkeleton.svelte';
+export { default as CategoriaMovimientoTableSkeleton } from './categoriaMovimientoTableSkeleton.svelte';
+export { default as MovimientoStatsSkeleton } from './movimientoStatsSkeleton.svelte';
+export { default as HistorialMovimientoTableSkeleton } from './historialMovimientoTableSkeleton.svelte';
+export { default as CompraFormSkeleton } from './compraFormSkeleton.svelte';
+export { default as ProductoFormSkeleton } from './productoFormSkeleton.svelte';
