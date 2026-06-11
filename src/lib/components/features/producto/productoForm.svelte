@@ -220,21 +220,57 @@
 
 	let fileInput: HTMLInputElement;
 	let photoPreview = $state<string | null>(null);
+	let isDragging = $state(false);
 
 	function handlePhotoClick() {
 		fileInput.click();
 	}
 
-	function handleFileChange(e: Event) {
-		const target = e.target as HTMLInputElement;
-		if (target.files && target.files.length > 0) {
-			const file = target.files[0];
+	function processFile(file: File) {
+		if (file.type.startsWith('image/')) {
 			formData.foto = file;
 			const reader = new FileReader();
 			reader.onload = (event) => {
 				photoPreview = event.target?.result as string;
 			};
 			reader.readAsDataURL(file);
+		} else {
+			alert('Por favor selecciona una imagen válida (JPG, PNG, WEBP, etc.)');
+		}
+	}
+
+	function handleFileChange(e: Event) {
+		const target = e.target as HTMLInputElement;
+		if (target.files && target.files.length > 0) {
+			processFile(target.files[0]);
+		}
+	}
+
+	function handleDragEnter(e: DragEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+		isDragging = true;
+	}
+
+	function handleDragLeave(e: DragEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+		isDragging = false;
+	}
+
+	function handleDragOver(e: DragEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+		isDragging = true;
+	}
+
+	function handleDrop(e: DragEvent) {
+		e.preventDefault();
+		e.stopPropagation();
+		isDragging = false;
+		
+		if (e.dataTransfer?.files && e.dataTransfer.files.length > 0) {
+			processFile(e.dataTransfer.files[0]);
 		}
 	}
 
@@ -379,10 +415,15 @@
 								bind:this={fileInput}
 								onchange={handleFileChange}
 							/>
-							<button
-								type="button"
+							<!-- svelte-ignore a11y_no_static_element_interactions -->
+							<div
 								onclick={handlePhotoClick}
-								class="group relative flex aspect-square w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 text-gray-400 transition-all hover:border-blue-400 hover:bg-blue-50/30 hover:text-blue-500"
+								onkeydown={(e) => e.key === 'Enter' && handlePhotoClick()}
+								ondragenter={handleDragEnter}
+								ondragleave={handleDragLeave}
+								ondragover={handleDragOver}
+								ondrop={handleDrop}
+								class="group relative flex aspect-square w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border-2 border-dashed transition-all {isDragging ? 'border-blue-500 bg-blue-50 text-blue-500' : 'border-gray-300 bg-gray-50 text-gray-400 hover:border-blue-400 hover:bg-blue-50/30 hover:text-blue-500'}"
 							>
 								{#if photoPreview}
 									<img
@@ -391,15 +432,22 @@
 										class="absolute inset-0 h-full w-full object-cover"
 									/>
 									<div
-										class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100"
+										class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100"
 									>
 										<PhotoIcon class="h-8 w-8 text-white" />
+										<span class="mt-2 text-[10px] font-bold tracking-widest text-white uppercase">Cambiar Foto</span>
 									</div>
 								{:else}
-									<PhotoIcon class="h-10 w-10 transition-transform group-hover:scale-110" />
-									<span class="text-[10px] font-bold tracking-widest uppercase">Subir Foto</span>
+									<PhotoIcon class="h-10 w-10 transition-transform {isDragging ? 'scale-110' : 'group-hover:scale-110'}" />
+									<span class="text-center text-[10px] font-bold tracking-widest uppercase leading-snug">
+										{#if isDragging}
+											Suelta la <br/> imagen aquí
+										{:else}
+											Haz clic o arrastra <br/> una foto aquí
+										{/if}
+									</span>
 								{/if}
-							</button>
+							</div>
 						</div>
 
 						<div class="space-y-4 md:col-span-3">
