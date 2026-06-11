@@ -59,6 +59,7 @@
 	// Edit form state (only updatable fields)
 	let form = $state({
 		nombre_comercial: '',
+		descripcion: '',
 		codigo_barras: '',
 		id_categoria: '',
 		id_marca: '',
@@ -259,6 +260,7 @@
 		if (!producto) return;
 		form = {
 			nombre_comercial: producto.nombre_comercial,
+			descripcion: producto.descripcion ?? '',
 			codigo_barras: producto.codigo_barras ?? '',
 			id_categoria: producto.id_categoria,
 			id_marca: producto.id_marca,
@@ -288,6 +290,7 @@
 		try {
 			const dto: Record<string, unknown> = {
 				nombre_comercial: form.nombre_comercial,
+				descripcion: form.descripcion,
 				id_categoria: form.id_categoria,
 				id_marca: form.id_marca,
 				id_unidad_medida: form.id_unidad_medida,
@@ -568,6 +571,22 @@
 									/>
 								</div>
 
+								<!-- Descripción -->
+								<div class="col-span-full flex flex-col gap-1.5">
+									<label
+										class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+										for="descripcion">Descripción</label
+									>
+									<textarea
+										id="descripcion"
+										class="w-full rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] px-3 py-2 text-[0.85rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+										bind:value={form.descripcion}
+										placeholder="Breve descripción del producto (opcional)"
+										rows="2"
+										maxlength="1000"
+									></textarea>
+								</div>
+
 								<!-- Código de Barras -->
 								<div class="col-span-full flex flex-col gap-1.5">
 									<label
@@ -736,6 +755,21 @@
 										>
 									</div>
 								</div>
+
+								<!-- Descripción -->
+								{#if producto.descripcion}
+								<div class="col-span-full flex flex-col gap-1.5">
+									<span
+										class="text-[0.6rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+										>Descripción</span
+									>
+									<div class="rounded-lg border border-[#e8e0d8] bg-[#f8f5f0] px-3 py-2">
+										<Text variant="body-sm" color="primary">
+											{producto.descripcion}
+										</Text>
+									</div>
+								</div>
+								{/if}
 
 								<!-- Código de Barras -->
 								<div class="flex flex-col gap-1.5">

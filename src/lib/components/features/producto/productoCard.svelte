@@ -137,6 +137,9 @@
 				<h3 class="line-clamp-2 leading-tight font-bold text-light-black">
 					{producto.nombre_comercial}
 				</h3>
+				{#if producto.descripcion}
+					<p class="mt-1 line-clamp-2 text-xs text-light-two">{producto.descripcion}</p>
+				{/if}
 				<p class="mt-1 font-mono text-xs text-light-two">{producto.codigo_barras || '—'}</p>
 			</div>
 			<div class="text-right">

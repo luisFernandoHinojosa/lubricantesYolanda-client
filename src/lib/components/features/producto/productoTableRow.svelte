@@ -93,6 +93,11 @@
 		<div class="line-clamp-2">
 			{producto.nombre_comercial}
 		</div>
+		{#if producto.descripcion}
+			<div class="mt-1 line-clamp-2 text-xs text-light-two">
+				{producto.descripcion}
+			</div>
+		{/if}
 	</td>
 	<td class="max-w-[200px] px-4 py-5 font-bold text-light-black">
 		<span class="font-semibold text-light-black"

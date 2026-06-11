@@ -6,6 +6,7 @@ export interface Producto {
 	id: string;
 	codigo_barras: string;
 	nombre_comercial: string;
+	descripcion?: string | null;
 	id_categoria: string;
 	id_marca: string;
 	id_unidad_medida: string;
@@ -157,6 +158,7 @@ export interface UpdateLoteDto extends Partial<CreateLoteDto> {}
 export interface CreateProductoDto {
 	codigo_barras: string;
 	nombre_comercial: string;
+	descripcion?: string;
 	id_categoria: string;
 	id_marca: string;
 	id_unidad_medida: string;

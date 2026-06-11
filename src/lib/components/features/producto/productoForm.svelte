@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Input, Select } from '$lib/components/ui';
+	import { Input, Select, TextArea } from '$lib/components/ui';
 	import {
 		PhotoIcon,
 		PlusIcon,
@@ -96,6 +96,7 @@
 	let formData = $state<CreateProductoDto>({
 		codigo_barras: '',
 		nombre_comercial: '',
+		descripcion: '',
 		id_categoria: '',
 		id_marca: '',
 		id_unidad_medida: '',
@@ -407,6 +408,13 @@
 								placeholder="Ej: Silicona Roja Alta Temp"
 								bind:value={formData.nombre_comercial}
 								required
+							/>
+							<TextArea
+								label="DESCRIPCIÓN"
+								placeholder="Breve descripción del producto (opcional)"
+								bind:value={formData.descripcion}
+								rows={2}
+								maxlength={1000}
 							/>
 							<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 								<Select label="MARCA/FABRICANTE" bind:value={formData.id_marca} required>
