@@ -89,6 +89,47 @@ class AuthService {
 
   async getMe(): Promise<CurrentUser> {
     try {
+      const mockData: CurrentUser = {
+        id: "bc693671-f1a3-43bb-8aa1-f77a17c68463",
+        rol_id: "45a466b5-11d6-4984-9d86-3523f5111276",
+        id_sucursal: "1",
+        name_user: "yolanda123",
+        email: "sadm@lubricantesYolanda.com",
+        esta_activo: true,
+        createdAt: "2026-06-19T19:06:15.558Z",
+        updatedAt: "2026-06-19T19:06:15.558Z",
+        Empleado: {
+          id: "823a55f2-a762-4d87-9bc0-c445a58a8386",
+          usuario_id: "bc693671-f1a3-43bb-8aa1-f77a17c68463",
+          ci: "12345678",
+          fecha_despido: null,
+          nombre: "Yolanda",
+          apellido_paterno: "Lubricantes",
+          apellido_materno: "Lubri",
+          cargo: null,
+          fecha_nacimiento: "2026-06-19T19:06:15.558Z",
+          fecha_contratacion: "2026-06-19T19:06:15.558Z",
+          salario_base: null,
+          telefono: null,
+          direccion: null,
+          esta_activo: true,
+          createdAt: "2026-06-19T19:06:15.558Z",
+          updatedAt: "2026-06-19T19:06:15.558Z"
+        },
+        Role: {
+          id: "45a466b5-11d6-4984-9d86-3523f5111276",
+          code_rol: "SADM",
+          nombre_rol: "Super_Admin",
+          descripcion: "Administrador del sistema",
+          createdAt: "2026-06-19T19:06:14.113Z",
+          updatedAt: "2026-06-19T19:06:14.113Z"
+        }
+      };
+
+      this.setCurrentUser(mockData);
+      return mockData;
+
+      /*
       const response = await apiMilenium.get<CurrentUserResponse>('/auth/me');
       console.log(response);
       if (response.status === 'success') {
@@ -96,6 +137,7 @@ class AuthService {
         return response.data;
       }
       throw new Error('Failed to fetch user data');
+      */
     } catch (error) {
       console.error('Error fetching current user:', error);
       throw error;
