@@ -19,6 +19,7 @@ export const authStore = {
 		isLoading.set(true);
 		try {
 			const loginResponse = await authService.login(credentials);
+			console.log('🚀 ~ login ~ loginResponse:', loginResponse);
 			// login() internally calls getMe() which saves to localStorage
 			// Now sync the store with what was saved
 			const userData = authService.getCurrentUser();

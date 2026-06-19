@@ -25,7 +25,15 @@
 		isFetching?: boolean;
 	}
 
-	let { producto, onView, onEdit, onDelete, onTraslado, onManagePresentaciones, isFetching }: Props = $props();
+	let {
+		producto,
+		onView,
+		onEdit,
+		onDelete,
+		onTraslado,
+		onManagePresentaciones,
+		isFetching
+	}: Props = $props();
 
 	let showPresentaciones = $state(false);
 	let popoverTop = $state(0);
@@ -79,12 +87,12 @@
 <div
 	class="group relative overflow-hidden rounded-xl border border-light-four bg-light-one transition-all hover:shadow-lg"
 >
-	<div class="relative aspect-video w-full overflow-hidden bg-gray-100">
+	<div class="relative aspect-square w-full overflow-hidden">
 		{#if producto.imagen_url}
 			<img
 				src={producto.imagen_url}
 				alt={producto.nombre_comercial}
-				class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+				class="h-full w-full rounded-lg object-contain object-center"
 			/>
 		{:else}
 			<div class="flex h-full w-full items-center justify-center text-gray-300">
@@ -143,7 +151,7 @@
 				<p class="mt-1 font-mono text-xs text-light-two">{producto.codigo_barras || '—'}</p>
 			</div>
 			<div class="text-right">
-				<span class="block text-[0.6rem] font-black text-light-three uppercase tracking-wider"
+				<span class="block text-[0.6rem] font-black tracking-wider text-light-three uppercase"
 					>Precio</span
 				>
 				<span class="text-lg font-black text-emerald-600">

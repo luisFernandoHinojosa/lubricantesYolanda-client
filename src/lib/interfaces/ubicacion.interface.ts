@@ -39,7 +39,7 @@ export interface CreateUbicacionDto {
 	id_sucursal: string;
 	nombre: string;
 	descripcion?: string;
-	tipo_area?: 'Venta' | 'Deposito' | 'Merma';
+	tipo_area?: 'VENTA' | 'DEPOSITO' | 'MERMA';
 }
 
 export interface UpdateUbicacionDto extends Partial<CreateUbicacionDto> {
@@ -86,4 +86,4 @@ export interface CreateUbicacionFisicaDto {
 
 export interface UpdateUbicacionFisicaDto extends Partial<CreateUbicacionFisicaDto> {
 	esta_activo?: boolean;
-}
+}

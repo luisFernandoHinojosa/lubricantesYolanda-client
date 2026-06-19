@@ -39,7 +39,7 @@
 		id_sucursal: '',
 		nombre: '',
 		descripcion: '',
-		tipo_area: 'Venta'
+		tipo_area: 'VENTA'
 	});
 
 	// Create Ubicacion Fisica form
@@ -117,7 +117,7 @@
 				id_sucursal: newMacro.id_sucursal,
 				nombre: '',
 				descripcion: '',
-				tipo_area: 'Venta'
+				tipo_area: 'VENTA'
 			};
 			showCreateMacro = false;
 			await loadData();
@@ -244,9 +244,9 @@
 						required
 					/>
 					<Select label="TIPO DE ÁREA" bind:value={newMacro.tipo_area} required>
-						<option value="Venta">Venta (Tienda)</option>
-						<option value="Deposito">Depósito (Almacén)</option>
-						<option value="Merma">Merma (Pérdidas)</option>
+						<option value="VENTA">Venta (Tienda)</option>
+						<option value="DEPOSITO">Depósito (Almacén)</option>
+						<option value="MERMA">Merma (Pérdidas)</option>
 					</Select>
 					<Select label="SUCURSAL" bind:value={newMacro.id_sucursal} required>
 						<option value="" disabled>-- SELECCIONAR --</option>
