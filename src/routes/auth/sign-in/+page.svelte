@@ -47,7 +47,7 @@
 
 		try {
 			await authStore.login(credentials);
-			redirect('v1/inicio');
+			//	redirect('v1/inicio');
 			const user = $currentUserStore;
 			console.log(' currentUserStore', $currentUserStore);
 			if (user) {
