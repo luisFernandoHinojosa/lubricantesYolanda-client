@@ -268,7 +268,7 @@
 		e.preventDefault();
 		e.stopPropagation();
 		isDragging = false;
-		
+
 		if (e.dataTransfer?.files && e.dataTransfer.files.length > 0) {
 			processFile(e.dataTransfer.files[0]);
 		}
@@ -423,7 +423,9 @@
 								ondragleave={handleDragLeave}
 								ondragover={handleDragOver}
 								ondrop={handleDrop}
-								class="group relative flex aspect-square w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border-2 border-dashed transition-all {isDragging ? 'border-blue-500 bg-blue-50 text-blue-500' : 'border-gray-300 bg-gray-50 text-gray-400 hover:border-blue-400 hover:bg-blue-50/30 hover:text-blue-500'}"
+								class="group relative flex aspect-square w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border-2 border-dashed transition-all {isDragging
+									? 'border-blue-500 bg-blue-50 text-blue-500'
+									: 'border-gray-300 bg-gray-50 text-gray-400 hover:border-blue-400 hover:bg-blue-50/30 hover:text-blue-500'}"
 							>
 								{#if photoPreview}
 									<img
@@ -435,15 +437,23 @@
 										class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100"
 									>
 										<PhotoIcon class="h-8 w-8 text-white" />
-										<span class="mt-2 text-[10px] font-bold tracking-widest text-white uppercase">Cambiar Foto</span>
+										<span class="mt-2 text-[10px] font-bold tracking-widest text-white uppercase"
+											>Cambiar Foto</span
+										>
 									</div>
 								{:else}
-									<PhotoIcon class="h-10 w-10 transition-transform {isDragging ? 'scale-110' : 'group-hover:scale-110'}" />
-									<span class="text-center text-[10px] font-bold tracking-widest uppercase leading-snug">
+									<PhotoIcon
+										class="h-10 w-10 transition-transform {isDragging
+											? 'scale-110'
+											: 'group-hover:scale-110'}"
+									/>
+									<span
+										class="text-center text-[10px] leading-snug font-bold tracking-widest uppercase"
+									>
 										{#if isDragging}
-											Suelta la <br/> imagen aquí
+											Suelta la <br /> imagen aquí
 										{:else}
-											Haz clic o arrastra <br/> una foto aquí
+											Haz clic o arrastra <br /> una foto aquí
 										{/if}
 									</span>
 								{/if}
@@ -944,7 +954,7 @@
 
 		<!-- ── Columna derecha: Info + Acciones ──────────────────────────── -->
 		<div class="flex flex-col gap-6 lg:col-span-1">
-			<section
+			<!-- <section
 				class="flex-1 overflow-hidden rounded-xl border border-blue-100 bg-blue-50 shadow-sm"
 			>
 				<div class="flex items-center gap-3 border-b border-blue-100 p-4">
@@ -980,7 +990,7 @@
 						</p>
 					</div>
 				</div>
-			</section>
+			</section> -->
 
 			<div class="grid grid-cols-1 gap-4">
 				<button

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import './layout.css';
-	import favicon from '$lib/assets/images/logofake.png';
+	import favicon from '$lib/assets/images/logo1.webp';
 
 	let { children } = $props();
 </script>

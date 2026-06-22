@@ -211,7 +211,7 @@
 				>
 					<div class="flex items-center p-1">
 						<div class="my-auto flex items-center justify-center rounded">
-							<img src="/images/logofake.png" class="h-20 w-60" alt="Lubricantes Yolanda" />
+							<img src="/images/logo2.webp" class="h-20 w-60" alt="Lubricantes Yolanda" />
 						</div>
 					</div>
 				</div>

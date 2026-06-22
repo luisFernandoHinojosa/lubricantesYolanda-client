@@ -41,7 +41,7 @@
 
 	<div class="absolute top-6 left-6 z-20">
 		<div class="flex h-24 w-64 items-center justify-center rounded bg-light-one/60 p-2">
-			<Image objectFit="contain" src="/images/logofake.png" alt="" />
+			<Image objectFit="contain" src="/images/logo1.webp.png" alt="" />
 		</div>
 	</div>
 

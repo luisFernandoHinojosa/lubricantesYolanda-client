@@ -35,7 +35,7 @@
 			logoBase64 = '';
 		};
 		// Agrega ?v=1 para evitar caché que bloquee el crossOrigin
-		img.src = '/images/logofake.png?v=1';
+		img.src = '/images/logo1.webp?v=1';
 	});
 </script>
 
@@ -180,11 +180,11 @@
 	transition:fade
 >
 	<div
-		class="w-full max-w-sm overflow-hidden rounded-3xl bg-light-one shadow-2xl"
+		class="flex max-h-[95vh] w-full max-w-sm flex-col overflow-hidden rounded-3xl bg-light-one shadow-2xl"
 		transition:scale={{ duration: 200 }}
 	>
 		<div
-			class="flex items-center justify-between border-b border-light-four bg-light-one_d px-6 py-4"
+			class="flex shrink-0 items-center justify-between border-b border-light-four bg-light-one_d px-6 py-4"
 		>
 			<div class="flex items-center gap-2.5">
 				<div class="flex h-8 w-8 items-center justify-center rounded-full">
@@ -194,7 +194,7 @@
 			</div>
 		</div>
 
-		<div class="p-6 font-mono">
+		<div class="overflow-y-auto p-6 font-mono">
 			{@render contenidoTicket()}
 
 			<div class="mt-6 flex gap-3">
@@ -242,7 +242,7 @@
 			right: 0 !important;
 			width: 100% !important;
 			margin: 0 !important;
-			padding: 2mm 2mm !important;
+			padding: 6mm 8mm !important;
 			box-sizing: border-box !important;
 			font-size: 10px !important;
 			background-color: white !important;

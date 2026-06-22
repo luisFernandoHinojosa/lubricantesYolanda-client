@@ -69,7 +69,7 @@
 		class="fixed top-0 right-0 left-0 z-50 flex items-center justify-between border-b border-light-four bg-light-one_d px-8 py-4 backdrop-blur-md"
 	>
 		<div class="flex items-center">
-			<img src="/images/logofake.png" alt="" class="h-10 w-52" />
+			<img src="/images/logo2.webp" alt="" class="h-16 w-52" />
 		</div>
 		<div class="hidden items-center gap-8 text-sm text-light-black md:flex">
 			<a href="#features" class="transition-colors hover:text-light-black/30">Características</a>
@@ -208,7 +208,7 @@
 	<footer class="border-t border-light-three px-6 py-8">
 		<div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
 			<div class="flex items-center">
-				<img src="/images/logofake.png" alt="" class="h-10 w-52" />
+				<img src="/images/logo1.webp" alt="" class="h-10 w-52" />
 			</div>
 
 			<p class="text-xs text-light-two">© {new Date().getFullYear()} Lubricantes Yolanda</p>
