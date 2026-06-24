@@ -22,7 +22,15 @@
 		isFetching?: boolean;
 	}
 
-	let { producto, onView, onEdit, onDelete, onTraslado, onManagePresentaciones, isFetching }: Props = $props();
+	let {
+		producto,
+		onView,
+		onEdit,
+		onDelete,
+		onTraslado,
+		onManagePresentaciones,
+		isFetching
+	}: Props = $props();
 
 	let showPresentaciones = $state(false);
 	let popoverTop = $state(0);
@@ -90,14 +98,14 @@
 		{/if}
 	</td>
 	<td class="px-4 py-5 font-medium text-light-black">
-		<div class="line-clamp-2">
+		<div class="">
 			{producto.nombre_comercial}
 		</div>
-		{#if producto.descripcion}
+		<!-- {#if producto.descripcion}
 			<div class="mt-1 line-clamp-2 text-xs text-light-two">
 				{producto.descripcion}
 			</div>
-		{/if}
+		{/if} -->
 	</td>
 	<td class="max-w-[200px] px-4 py-5 font-bold text-light-black">
 		<span class="font-semibold text-light-black"

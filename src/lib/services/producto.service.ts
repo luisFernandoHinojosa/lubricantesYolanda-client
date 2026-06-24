@@ -49,7 +49,7 @@ class ProductoService {
 	}
 
 	async createProducto(producto: CreateProductoDto): Promise<Producto> {
-		console.log('producto', producto);
+		//console.log('producto', producto);
 		const { foto, presentaciones, ...scalarData } = producto;
 
 		// Si hay foto, usar FormData; si no, enviar JSON
@@ -118,9 +118,11 @@ class ProductoService {
 
 	async exportarExcel(): Promise<void> {
 		const token = authService.getToken();
-		const headers: HeadersInit = token ? {
-			Authorization: `Bearer ${token}`
-		} : {};
+		const headers: HeadersInit = token
+			? {
+					Authorization: `Bearer ${token}`
+				}
+			: {};
 
 		const response = await fetch(`${API_CONFIG.BASE_URL}/productos/exportar-excel`, {
 			method: 'GET',

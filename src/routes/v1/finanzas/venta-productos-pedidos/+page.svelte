@@ -17,7 +17,7 @@
 	} from '$lib/components/features/puntoventas/ventas';
 
 	const pos = new VentasState();
-	console.log('pos', pos.carrito);
+	//console.log('pos', pos.carrito);
 </script>
 
 {#if pos.modalApertura && !pos.cargandoSesion}

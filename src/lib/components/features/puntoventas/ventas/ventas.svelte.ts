@@ -11,6 +11,7 @@ import type {
 	CreateVentaDto
 } from '$lib/interfaces/venta.interface';
 import { SvelteDate } from 'svelte/reactivity';
+import { POS_CARRITO_KEY } from '$lib/constants';
 
 export class VentasState {
 	sesionActiva = $state<SesionCaja | null>(null);
@@ -41,7 +42,22 @@ export class VentasState {
 	buscando = $state(false);
 	mostrarDropdown = $state(false);
 
-	carrito = $state<CartItem[]>([]);
+	private _carrito = $state<CartItem[]>([]);
+
+	get carrito(): CartItem[] {
+		return this._carrito;
+	}
+
+	set carrito(value: CartItem[]) {
+		this._carrito = value;
+		if (typeof window !== 'undefined') {
+			try {
+				localStorage.setItem(POS_CARRITO_KEY, JSON.stringify(value));
+			} catch (e) {
+				console.error('Error guardando carrito en localStorage', e);
+			}
+		}
+	}
 	itemRecienAgregado = $state<string | null>(null);
 
 	clienteSeleccionado = $state<ClientePOS | null>(null);
@@ -50,10 +66,10 @@ export class VentasState {
 	buscandoCliente = $state(false);
 
 	descuentoTarget = $state<'global' | string>('global');
-	descuentoTipo = $state<'PORCENTAJE' | 'FIJO'>('PORCENTAJE');
+	descuentoTipo = $state<'PORCENTAJE' | 'FIJO'>('FIJO');
 	descuentoValor = $state(0);
 	descuentoGlobal = $state({
-		tipo: 'PORCENTAJE' as 'PORCENTAJE' | 'FIJO' | 'NINGUNO',
+		tipo: 'FIJO' as 'PORCENTAJE' | 'FIJO' | 'NINGUNO',
 		valor: 0
 	});
 
@@ -91,6 +107,16 @@ export class VentasState {
 	);
 
 	constructor() {
+		if (typeof window !== 'undefined') {
+			const saved = localStorage.getItem(POS_CARRITO_KEY);
+			if (saved) {
+				try {
+					this._carrito = JSON.parse(saved);
+				} catch (e) {
+					console.error('Error al restaurar el carrito', e);
+				}
+			}
+		}
 		this.init();
 		this.startTime();
 	}
