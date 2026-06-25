@@ -146,7 +146,11 @@ export interface CreateLoteDto {
 	costo_compra_unitario: number | string;
 	fecha_vencimiento: string | null;
 	fecha_ingreso: string;
-	codigo_lote: string;
+	distribuciones?: {
+		id_ubicacion_fisica?: string | null;
+		id_ubicacion: string;
+		cantidad: number;
+	}[];
 }
 
 export interface UpdateLoteDto extends Partial<CreateLoteDto> {}

@@ -9,8 +9,9 @@ import type {
 } from '$lib/interfaces/producto.interface';
 
 class StockDistribucionService {
-
-	async getStockDistribucion(filters: Record<string, any> = {}): Promise<StockDistribucionResponse['data']> {
+	async getStockDistribucion(
+		filters: Record<string, any> = {}
+	): Promise<StockDistribucionResponse['data']> {
 		const params = new URLSearchParams();
 		Object.entries(filters).forEach(([key, val]) => {
 			if (val !== undefined && val !== null && val !== '') {
@@ -40,6 +41,17 @@ class StockDistribucionService {
 	async trasladarStock(data: TrasladoStockDto): Promise<void> {
 		await apiMilenium.post<{ status: string; message: string }>(
 			'/stock_distribucion/traslado',
+			data
+		);
+	}
+
+	async ajustarStock(
+		id_stock_distribucion: string,
+		data: { cantidad: number; observacion?: string }
+	): Promise<void> {
+		console.log('ajustarStock', data);
+		await apiMilenium.post<{ status: string; message: string }>(
+			`/stock_distribucion/${id_stock_distribucion}/ajuste`,
 			data
 		);
 	}

@@ -1,17 +1,55 @@
 <script lang="ts">
 	import type { Lote } from '$lib/interfaces';
 	import { Text } from '$lib/components/ui';
-	import { HashIcon, PencilIcon, TrashIcon } from '$lib/icons/outline';
-	import { formatDate } from '$lib/utils';
+	import { HashIcon, PencilIcon, TrashIcon, MinusIcon, PlusIcon } from '$lib/icons/outline';
+	import { formatDate, alert } from '$lib/utils';
 	import { CalendarIcon, CoinIcon, TruckIcon } from '$lib/icons/solid';
+	import StockAjusteModal from './StockAjusteModal.svelte';
+	import { stockDistribucionService } from '$lib/services/stockDistribucion.service';
 
 	interface Props {
 		lote: Lote;
 		onEdit?: (lote: Lote) => void;
 		onDelete?: (id: string) => void;
+		onStockUpdate?: () => void;
 	}
 
-	let { lote, onEdit, onDelete }: Props = $props();
+	let { lote, onEdit, onDelete, onStockUpdate }: Props = $props();
+
+	let isAjusteModalOpen = $state(false);
+	let selectedStockDistId = $state<string | null>(null);
+	let ajusteTipo = $state<'sumar' | 'restar'>('sumar');
+	let isAjusting = $state(false);
+
+	function openAjusteModal(id: string, tipo: 'sumar' | 'restar') {
+		selectedStockDistId = id;
+		ajusteTipo = tipo;
+		isAjusteModalOpen = true;
+	}
+
+	async function handleAjusteStock(data: { id_stock_distribucion: string; cantidad: number; observacion: string }) {
+		isAjusting = true;
+		try {
+			await stockDistribucionService.ajustarStock(data.id_stock_distribucion, {
+				cantidad: data.cantidad,
+				observacion: data.observacion
+			});
+			const dist = lote.stock_distribuciones?.find(d => d.id === data.id_stock_distribucion);
+			if (dist) {
+				dist.cantidad_actual = Number(dist.cantidad_actual) + data.cantidad;
+			}
+			lote.stock_lote_total = Number(lote.stock_lote_total) + data.cantidad;
+			
+			alert('success', 'Stock ajustado correctamente.');
+			isAjusteModalOpen = false;
+			onStockUpdate?.();
+		} catch (error) {
+			console.error(error);
+			alert('error', 'Error al ajustar el stock.');
+		} finally {
+			isAjusting = false;
+		}
+	}
 </script>
 
 <div
@@ -140,10 +178,37 @@
 								>
 							</div>
 						</div>
-						<span class="text-[0.75rem] font-black text-[#8b7355]">{dist.cantidad_actual}</span>
+						<div class="flex items-center gap-2">
+							<button
+								type="button"
+								class="flex h-5 w-5 items-center justify-center rounded-md border border-[#e8e0d8] text-[#8b7355] transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+								onclick={() => openAjusteModal(dist.id, 'restar')}
+								title="Restar stock"
+							>
+								<MinusIcon class="size-3" />
+							</button>
+							<span class="min-w-[20px] text-center text-[0.75rem] font-black text-[#8b7355]">{dist.cantidad_actual}</span>
+							<button
+								type="button"
+								class="flex h-5 w-5 items-center justify-center rounded-md border border-[#e8e0d8] text-[#8b7355] transition-colors hover:border-green-200 hover:bg-green-50 hover:text-green-600"
+								onclick={() => openAjusteModal(dist.id, 'sumar')}
+								title="Aumentar stock"
+							>
+								<PlusIcon class="size-3" />
+							</button>
+						</div>
 					</div>
 				{/each}
 			</div>
 		</div>
 	{/if}
+
+	<StockAjusteModal
+		isOpen={isAjusteModalOpen}
+		stockDistribucionId={selectedStockDistId}
+		tipoAjuste={ajusteTipo}
+		loading={isAjusting}
+		onClose={() => isAjusteModalOpen = false}
+		onSave={handleAjusteStock}
+	/>
 </div>

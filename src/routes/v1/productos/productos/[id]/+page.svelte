@@ -102,18 +102,12 @@
 		isSavingLote = true;
 		try {
 			if (isEditLote && selectedLote) {
-				const updated = await loteService.updateLote(selectedLote.id, data as UpdateLoteDto);
-				if (producto && producto.lotes) {
-					producto.lotes = producto.lotes.map((l) =>
-						l.id === selectedLote!.id ? { ...l, ...updated } : l
-					);
-				}
+				await loteService.updateLote(selectedLote.id, data as UpdateLoteDto);
+				await loadProducto(false);
 				alert('success', 'Lote actualizado correctamente.');
 			} else {
-				const created = await loteService.createLote({ ...data, id_producto: id } as CreateLoteDto);
-				if (producto) {
-					producto.lotes = [...(producto.lotes || []), created];
-				}
+				await loteService.createLote({ ...data, id_producto: id } as CreateLoteDto);
+				await loadProducto(false);
 				alert('success', 'Lote creado correctamente.');
 			}
 			showModalLote = false;
@@ -226,9 +220,9 @@
 	let fotoPreview = $state<string | null>(null);
 	let fileInput: HTMLInputElement;
 
-	async function loadProducto() {
+	async function loadProducto(showLoading = true) {
 		try {
-			isLoading = true;
+			if (showLoading) isLoading = true;
 			producto = await productoService.getProductoConLotes(id);
 		} catch (error) {
 			console.error('Error loading product:', error);
@@ -1037,6 +1031,7 @@
 									{lote}
 									onEdit={() => openEditLote(lote)}
 									onDelete={() => confirmDelLote(lote.id)}
+									onStockUpdate={() => loadProducto(false)}
 								/>
 							{/each}
 						</div>

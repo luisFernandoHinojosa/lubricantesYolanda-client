@@ -16,3 +16,4 @@ export { default as PresentacionModal } from './PresentacionModal.svelte';
 export { default as LoteCard } from './LoteCard.svelte';
 export { default as LoteForm } from './LoteForm.svelte';
 export { default as LoteModal } from './LoteModal.svelte';
+export { default as StockAjusteModal } from './StockAjusteModal.svelte';
