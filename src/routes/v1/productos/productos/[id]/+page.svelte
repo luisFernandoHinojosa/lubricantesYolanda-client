@@ -102,11 +102,19 @@
 		isSavingLote = true;
 		try {
 			if (isEditLote && selectedLote) {
-				await loteService.updateLote(selectedLote.id, data as UpdateLoteDto);
+				const updated = await loteService.updateLote(selectedLote.id, data as UpdateLoteDto);
+				if (producto && producto.lotes) {
+					producto.lotes = producto.lotes.map((l) =>
+						l.id === selectedLote!.id ? { ...l, ...updated } : l
+					);
+				}
 				await loadProducto(false);
 				alert('success', 'Lote actualizado correctamente.');
 			} else {
-				await loteService.createLote({ ...data, id_producto: id } as CreateLoteDto);
+				const created = await loteService.createLote({ ...data, id_producto: id } as CreateLoteDto);
+				if (producto) {
+					producto.lotes = [...(producto.lotes || []), created];
+				}
 				await loadProducto(false);
 				alert('success', 'Lote creado correctamente.');
 			}
