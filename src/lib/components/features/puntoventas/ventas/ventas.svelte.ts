@@ -418,7 +418,7 @@ export class VentasState {
 	// ─── DESCUENTOS Y PAGOS ────────────────────────────────────────────────────
 	abrirDescuento(target: 'global' | string) {
 		this.descuentoTarget = target;
-		this.descuentoTipo = 'PORCENTAJE';
+		this.descuentoTipo = 'FIJO';
 		this.descuentoValor = 0;
 		this.modalDescuento = true;
 	}
