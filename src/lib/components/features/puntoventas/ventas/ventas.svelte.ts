@@ -435,24 +435,29 @@ export class VentasState {
 	}
 
 	aplicarDescuento() {
+		const val = parseFloat(this.descuentoValor as any) || 0;
 		if (this.descuentoTarget === 'global') {
 			const montoGlobal =
 				this.descuentoTipo === 'PORCENTAJE'
-					? (this.subtotalItems * this.descuentoValor) / 100
-					: this.descuentoValor;
-			if (montoGlobal > this.subtotalItems) {
+					? (this.subtotalItems * val) / 100
+					: val;
+			if (montoGlobal > this.subtotalItems && this.subtotalItems > 0) {
 				alert('error', 'El descuento no puede ser mayor al subtotal de la venta.');
 				return;
 			}
-			this.descuentoGlobal = { tipo: this.descuentoTipo, valor: this.descuentoValor };
+			if (this.subtotalItems <= 0 && val > 0) {
+				alert('error', 'No hay productos para aplicar descuento.');
+				return;
+			}
+			this.descuentoGlobal = { tipo: this.descuentoTipo, valor: val };
 		} else {
 			const item = this.carrito.find((i) => i.cartId === this.descuentoTarget);
 			if (item) {
 				const base = item.precio_unitario * item.cantidad;
 				const montoItem =
 					this.descuentoTipo === 'PORCENTAJE'
-						? (base * this.descuentoValor) / 100
-						: this.descuentoValor;
+						? (base * val) / 100
+						: val;
 				if (montoItem > base) {
 					alert('error', 'El descuento no puede ser mayor al total del producto.');
 					return;
@@ -464,13 +469,13 @@ export class VentasState {
 				const base = i.precio_unitario * i.cantidad;
 				const monto =
 					this.descuentoTipo === 'PORCENTAJE'
-						? (base * this.descuentoValor) / 100
-						: this.descuentoValor;
+						? (base * val) / 100
+						: val;
 				return { ...i, monto_descuento: monto, subtotal: Math.max(0, base - monto) };
 			});
 		}
 		this.modalDescuento = false;
-		if (this.descuentoValor === 0) {
+		if (val === 0) {
 			alert('success', 'Descuento eliminado');
 		} else {
 			alert('success', 'Descuento aplicado');
