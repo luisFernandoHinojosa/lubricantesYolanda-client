@@ -326,8 +326,7 @@ export class VentasState {
 		this.carrito = this.carrito
 			.map((i) => {
 				if (i.cartId !== cartId) return i;
-				const nueva = i.cantidad + delta;
-				if (nueva <= 0) return null as any;
+				const nueva = Math.max(0, i.cantidad + delta);
 				if (nueva > i.stock_disponible) {
 					alert('error', `Máximo disponible: ${i.stock_disponible}`);
 					return i;
@@ -337,17 +336,15 @@ export class VentasState {
 					cantidad: nueva,
 					subtotal: Math.max(0, i.precio_unitario * nueva - i.monto_descuento)
 				};
-			})
-			.filter(Boolean);
+			});
 	}
 
 	setCantidad(cartId: string, nueva: number) {
-		if (isNaN(nueva) || nueva < 0) return;
+		const cantidadFinal = isNaN(nueva) || nueva < 0 ? 0 : nueva;
 		this.carrito = this.carrito
 			.map((i) => {
 				if (i.cartId !== cartId) return i;
-				if (nueva === 0) return null as any;
-				if (nueva > i.stock_disponible) {
+				if (cantidadFinal > i.stock_disponible) {
 					alert('error', `Máximo disponible: ${i.stock_disponible}`);
 					const max = i.stock_disponible;
 					return {
@@ -358,11 +355,10 @@ export class VentasState {
 				}
 				return {
 					...i,
-					cantidad: nueva,
-					subtotal: Math.max(0, i.precio_unitario * nueva - i.monto_descuento)
+					cantidad: cantidadFinal,
+					subtotal: Math.max(0, i.precio_unitario * cantidadFinal - i.monto_descuento)
 				};
-			})
-			.filter(Boolean);
+			});
 	}
 
 	eliminarItem(cartId: string) {
@@ -447,6 +443,11 @@ export class VentasState {
 
 	irACobrar() {
 		if (this.carrito.length === 0) return;
+		const productoConCero = this.carrito.find((i) => i.cantidad <= 0);
+		if (productoConCero) {
+			alert('error', `El producto "${productoConCero.nombre_comercial}" no puede tener cantidad cero.`);
+			return;
+		}
 		const sinSerie = this.carrito.find((i) => i.maneja_serie && !i.numero_serie.trim());
 		if (sinSerie) {
 			alert('error', `Ingrese número de serie para: ${sinSerie.nombre_comercial}`);

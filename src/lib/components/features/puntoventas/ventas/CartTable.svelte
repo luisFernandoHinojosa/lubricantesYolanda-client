@@ -123,7 +123,7 @@
 								value={item.cantidad}
 								oninput={(e) =>
 									onSetCantidad(item.cartId, parseFloat((e.target as HTMLInputElement).value))}
-								class="w-16 border-x border-x-light-four border-t-transparent border-b-transparent bg-transparent text-center text-xl leading-7 font-bold text-light-one ring-0 outline-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+								class="w-20 border-x border-x-light-four border-t-transparent border-b-transparent bg-transparent text-center text-xl leading-7 font-bold text-light-one ring-0 outline-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
 							/>
 							<button
 								onclick={() => onCambiarCantidad(item.cartId, 1)}
