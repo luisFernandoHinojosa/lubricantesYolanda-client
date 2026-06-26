@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fade, scale } from 'svelte/transition';
-	import { PercentIcon, XIcon } from '$lib/icons/outline';
+	import { PercentIcon, XMarkIcon } from '$lib/icons/outline';
 	import { Button, Input } from '$lib/components/ui';
 
 	interface Props {
@@ -39,7 +39,7 @@
 					{descuentoTarget === 'global' ? 'Descuento Global' : 'Descuento por ítem'}
 				</h3>
 			</div>
-			<Button onclick={onCerrar} variant="ghost"><XIcon class="h-5 w-5" /></Button>
+			<Button onclick={onCerrar} variant="ghost"><XMarkIcon class="h-5 w-5" /></Button>
 		</div>
 
 		<div class="space-y-5 p-6">
