@@ -477,6 +477,20 @@ export class VentasState {
 		}
 	}
 
+	quitarDescuentoGlobal() {
+		this.descuentoGlobal = { tipo: 'NINGUNO', valor: 0 };
+		alert('success', 'Descuento global eliminado');
+	}
+
+	quitarDescuentoItem(cartId: string) {
+		this.carrito = this.carrito.map((i) => {
+			if (i.cartId !== cartId) return i;
+			const base = i.precio_unitario * i.cantidad;
+			return { ...i, monto_descuento: 0, subtotal: base };
+		});
+		alert('success', 'Descuento eliminado');
+	}
+
 	irACobrar() {
 		if (this.carrito.length === 0) return;
 		const productoConCero = this.carrito.find((i) => i.cantidad <= 0);

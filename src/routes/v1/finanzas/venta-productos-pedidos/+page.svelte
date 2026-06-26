@@ -78,6 +78,7 @@
 				onSetCantidad={(id, n) => pos.setCantidad(id, n)}
 				onEliminarItem={(id) => pos.eliminarItem(id)}
 				onAbrirDescuento={(t) => pos.abrirDescuento(t)}
+				onQuitarDescuentoItem={(id) => pos.quitarDescuentoItem(id)}
 				onActualizarSerie={(id, s) => pos.actualizarSerie(id, s)}
 				fmt={pos.fmt}
 			/>
@@ -89,6 +90,7 @@
 				totalFinal={pos.totalFinal}
 				onAbrirCliente={() => (pos.modalCliente = true)}
 				onAbrirDescuento={(t) => pos.abrirDescuento(t)}
+				onQuitarDescuentoGlobal={() => pos.quitarDescuentoGlobal()}
 				onIrACobrar={() => pos.irACobrar()}
 				fmt={pos.fmt}
 			/>

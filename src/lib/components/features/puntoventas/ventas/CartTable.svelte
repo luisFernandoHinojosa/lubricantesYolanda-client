@@ -13,6 +13,7 @@
 		onSetCantidad: (cartId: string, nueva: number) => void;
 		onEliminarItem: (cartId: string) => void;
 		onAbrirDescuento: (target: 'global' | string) => void;
+		onQuitarDescuentoItem: (cartId: string) => void;
 		onActualizarSerie: (cartId: string, serie: string) => void;
 		fmt: (n: number) => string;
 	}
@@ -26,6 +27,7 @@
 		onSetCantidad,
 		onEliminarItem,
 		onAbrirDescuento,
+		onQuitarDescuentoItem,
 		onActualizarSerie,
 		fmt
 	}: Props = $props();
@@ -81,9 +83,19 @@
 								>
 							{/if}
 							{#if item.monto_descuento > 0}
-								<span class="rounded-md bg-light-one_d px-1.5 py-0.5 font-bold text-light-error"
-									>-{fmt(item.monto_descuento)}</span
-								>
+								<span class="inline-flex items-center gap-0.5 rounded-md bg-light-one_d pl-1.5 pr-0.5 py-0.5 font-bold text-light-error">
+									-{fmt(item.monto_descuento)}
+									<button
+										onclick={(e) => {
+											e.stopPropagation();
+											onQuitarDescuentoItem(item.cartId);
+										}}
+										class="rounded hover:bg-light-error/20 p-0.5 transition"
+										title="Quitar descuento"
+									>
+										<XIcon class="h-3 w-3" />
+									</button>
+								</span>
 							{/if}
 							{#if item.maneja_serie}
 								<input

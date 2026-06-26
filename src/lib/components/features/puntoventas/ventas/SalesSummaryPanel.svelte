@@ -10,6 +10,7 @@
 		totalFinal: number;
 		onAbrirCliente: () => void;
 		onAbrirDescuento: (target: 'global' | string) => void;
+		onQuitarDescuentoGlobal: () => void;
 		onIrACobrar: () => void;
 		fmt: (n: number) => string;
 	}
@@ -21,6 +22,7 @@
 		totalFinal,
 		onAbrirCliente,
 		onAbrirDescuento,
+		onQuitarDescuentoGlobal,
 		onIrACobrar,
 		fmt
 	}: Props = $props();
@@ -52,28 +54,43 @@
 	</button>
 
 	<!-- Descuento global -->
-	<button
-		onclick={() => onAbrirDescuento('global')}
-		class="flex items-center justify-between border-b border-light-five px-5 py-3 transition hover:bg-light-three_d {montoDescuentoGlobal >
+	<div
+		class="flex items-center justify-between border-b border-light-five px-5 py-3 transition {montoDescuentoGlobal >
 		0
 			? 'bg-light-error/20'
-			: ''}"
+			: 'hover:bg-light-three_d'}"
 	>
-		<span
-			class="flex items-center gap-1.5 text-xs font-bold {montoDescuentoGlobal > 0
+		<button
+			onclick={() => onAbrirDescuento('global')}
+			class="flex-1 flex items-center gap-1.5 text-xs font-bold text-left {montoDescuentoGlobal > 0
 				? 'text-white'
 				: 'text-light-one'}"
 		>
 			<PercentIcon class="h-3 w-3" />Descuento global
-		</span>
-		<span
-			class="font-mono text-xs font-bold {montoDescuentoGlobal > 0
-				? 'text-white'
-				: 'text-light-one'}"
-		>
-			{montoDescuentoGlobal > 0 ? `-${fmt(montoDescuentoGlobal)}` : '—'}
-		</span>
-	</button>
+		</button>
+		
+		<div class="flex items-center gap-1.5">
+			<span
+				class="font-mono text-xs font-bold {montoDescuentoGlobal > 0
+					? 'text-white'
+					: 'text-light-one'}"
+			>
+				{montoDescuentoGlobal > 0 ? `-${fmt(montoDescuentoGlobal)}` : '—'}
+			</span>
+			{#if montoDescuentoGlobal > 0}
+				<button
+					onclick={(e) => {
+						e.stopPropagation();
+						onQuitarDescuentoGlobal();
+					}}
+					class="flex items-center justify-center rounded p-0.5 text-white hover:bg-white/20 transition"
+					title="Quitar descuento global"
+				>
+					<XIcon class="h-3 w-3" />
+				</button>
+			{/if}
+		</div>
+	</div>
 
 	<!-- Total -->
 	<div class="flex flex-1 flex-col items-center justify-center px-5 py-6">
