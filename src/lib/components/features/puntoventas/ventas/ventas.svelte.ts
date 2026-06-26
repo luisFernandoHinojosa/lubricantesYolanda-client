@@ -418,15 +418,47 @@ export class VentasState {
 	// ─── DESCUENTOS Y PAGOS ────────────────────────────────────────────────────
 	abrirDescuento(target: 'global' | string) {
 		this.descuentoTarget = target;
-		this.descuentoTipo = 'FIJO';
-		this.descuentoValor = 0;
+		if (target === 'global') {
+			this.descuentoTipo = this.descuentoGlobal.tipo === 'NINGUNO' ? 'FIJO' : this.descuentoGlobal.tipo;
+			this.descuentoValor = this.descuentoGlobal.valor;
+		} else {
+			const item = this.carrito.find((i) => i.cartId === target);
+			if (item && item.monto_descuento > 0) {
+				this.descuentoTipo = 'FIJO';
+				this.descuentoValor = item.monto_descuento;
+			} else {
+				this.descuentoTipo = 'FIJO';
+				this.descuentoValor = 0;
+			}
+		}
 		this.modalDescuento = true;
 	}
 
 	aplicarDescuento() {
 		if (this.descuentoTarget === 'global') {
+			const montoGlobal =
+				this.descuentoTipo === 'PORCENTAJE'
+					? (this.subtotalItems * this.descuentoValor) / 100
+					: this.descuentoValor;
+			if (montoGlobal > this.subtotalItems) {
+				alert('error', 'El descuento no puede ser mayor al subtotal de la venta.');
+				return;
+			}
 			this.descuentoGlobal = { tipo: this.descuentoTipo, valor: this.descuentoValor };
 		} else {
+			const item = this.carrito.find((i) => i.cartId === this.descuentoTarget);
+			if (item) {
+				const base = item.precio_unitario * item.cantidad;
+				const montoItem =
+					this.descuentoTipo === 'PORCENTAJE'
+						? (base * this.descuentoValor) / 100
+						: this.descuentoValor;
+				if (montoItem > base) {
+					alert('error', 'El descuento no puede ser mayor al total del producto.');
+					return;
+				}
+			}
+
 			this.carrito = this.carrito.map((i) => {
 				if (i.cartId !== this.descuentoTarget) return i;
 				const base = i.precio_unitario * i.cantidad;
@@ -438,7 +470,11 @@ export class VentasState {
 			});
 		}
 		this.modalDescuento = false;
-		alert('success', 'Descuento aplicado');
+		if (this.descuentoValor === 0) {
+			alert('success', 'Descuento eliminado');
+		} else {
+			alert('success', 'Descuento aplicado');
+		}
 	}
 
 	irACobrar() {

@@ -64,14 +64,27 @@
 				>
 			</div>
 
-			<Button
-				onclick={onAplicarDescuento}
-				disabled={!descuentoValor || descuentoValor <= 0}
-				variant="primary"
-				fullWidth
-			>
-				Aplicar descuento
-			</Button>
-		</div>
+			<div class="flex flex-col gap-2.5">
+				<Button
+					onclick={onAplicarDescuento}
+					disabled={!descuentoValor || descuentoValor <= 0}
+					variant="primary"
+					fullWidth
+				>
+					Aplicar descuento
+				</Button>
+				
+				<Button
+					onclick={() => {
+						descuentoValor = 0;
+						onAplicarDescuento();
+					}}
+					variant="ghost"
+					fullWidth
+					class="text-light-error hover:bg-light-error/10 hover:text-light-error"
+				>
+					Quitar descuento
+				</Button>
+			</div>
 	</div>
 </div>
