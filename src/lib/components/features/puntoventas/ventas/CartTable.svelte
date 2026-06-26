@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
-	import { ScanBarcodeIcon, XIcon, PercentIcon, MinusIcon, PlusIcon } from '$lib/icons/outline';
+	import { ScanBarcodeIcon, MinusIcon, PlusIcon, XMarkIcon } from '$lib/icons/outline';
 	import type { CartItem } from '$lib/interfaces/venta.interface';
 	import { Button } from '$lib/components/ui';
 
@@ -83,17 +83,19 @@
 								>
 							{/if}
 							{#if item.monto_descuento > 0}
-								<span class="inline-flex items-center gap-0.5 rounded-md bg-light-one_d pl-1.5 pr-0.5 py-0.5 font-bold text-light-error">
+								<span
+									class="inline-flex items-center gap-0.5 rounded-md bg-light-one_d py-0.5 pr-0.5 pl-1.5 font-bold text-light-error"
+								>
 									-{fmt(item.monto_descuento)}
 									<button
 										onclick={(e) => {
 											e.stopPropagation();
 											onQuitarDescuentoItem(item.cartId);
 										}}
-										class="rounded hover:bg-light-error/20 p-0.5 transition"
+										class="rounded p-0.5 transition hover:bg-light-error/20"
 										title="Quitar descuento"
 									>
-										<XIcon class="h-3 w-3" />
+										<XMarkIcon class="h-3 w-3" />
 									</button>
 								</span>
 							{/if}
@@ -159,7 +161,7 @@
 					<!-- Acciones -->
 					<div class="flex flex-col items-center justify-center gap-1.5 py-3.5">
 						<Button onclick={() => onEliminarItem(item.cartId)} variant="ghost" size="xs">
-							<XIcon class="h-5 w-5" />
+							<XMarkIcon class="h-5 w-5" />
 						</Button>
 						<!-- <button
 							onclick={() => onAbrirDescuento(item.cartId)}

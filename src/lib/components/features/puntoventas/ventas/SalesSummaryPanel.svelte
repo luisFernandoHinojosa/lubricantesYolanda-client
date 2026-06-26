@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { UserIcon, PercentIcon, CreditCardIcon } from '$lib/icons/outline';
+	import { UserIcon, PercentIcon, CreditCardIcon, XMarkIcon } from '$lib/icons/outline';
 	import { Button } from '$lib/components/ui';
 	import type { ClientePOS, CartItem } from '$lib/interfaces/venta.interface';
 
@@ -62,13 +62,13 @@
 	>
 		<button
 			onclick={() => onAbrirDescuento('global')}
-			class="flex-1 flex items-center gap-1.5 text-xs font-bold text-left {montoDescuentoGlobal > 0
+			class="flex flex-1 items-center gap-1.5 text-left text-xs font-bold {montoDescuentoGlobal > 0
 				? 'text-white'
 				: 'text-light-one'}"
 		>
 			<PercentIcon class="h-3 w-3" />Descuento global
 		</button>
-		
+
 		<div class="flex items-center gap-1.5">
 			<span
 				class="font-mono text-xs font-bold {montoDescuentoGlobal > 0
@@ -83,10 +83,10 @@
 						e.stopPropagation();
 						onQuitarDescuentoGlobal();
 					}}
-					class="flex items-center justify-center rounded p-0.5 text-white hover:bg-white/20 transition"
+					class="flex items-center justify-center rounded p-0.5 text-white transition hover:bg-white/20"
 					title="Quitar descuento global"
 				>
-					<XIcon class="h-3 w-3" />
+					<XMarkIcon class="h-3 w-3" />
 				</button>
 			{/if}
 		</div>
