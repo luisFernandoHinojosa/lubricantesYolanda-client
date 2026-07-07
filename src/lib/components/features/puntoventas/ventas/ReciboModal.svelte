@@ -12,9 +12,20 @@
 		fmt: (n: number) => string;
 		fmtPrec: (n: number) => string;
 		fmtDate: (d: string) => string;
+		titulo?: string;
+		textoBotonCerrar?: string;
 	}
 
-	let { ultimaVenta, onCerrar, onImprimir, fmt, fmtDate, fmtPrec }: Props = $props();
+	let {
+		ultimaVenta,
+		onCerrar,
+		onImprimir,
+		fmt,
+		fmtDate,
+		fmtPrec,
+		titulo = 'Venta registrada',
+		textoBotonCerrar = 'Nueva venta'
+	}: Props = $props();
 
 	// Base64 del logo — se genera una sola vez al montar el componente
 	let logoBase64 = $state('');
@@ -52,13 +63,13 @@
 			/>
 		{/if}
 		<p style="font-weight:900; line-height:1.3;">LUBRICANTES YOLANDA</p>
-		<p style="font-size:0.85em;">Sucursal Central</p>
+		<p style="font-size:11px;">Sucursal Central</p>
 		<!-- <p style="font-size:0.85em;">
 			Av. Principal internacional, al frente de Supermercado EyM y alado de Clinica Penaranda
 		</p> -->
-		<p style="font-size:0.85em;">Tel: 591-72123855</p>
-		<p style="font-size:0.85em;">WhatsApp: 591-72123855</p>
-		<p style="font-size:0.85em;">Horario: Lun-Vie 7:30 - 19:30 | Sab 7:30 - 17:00</p>
+		<p style="font-size:11px;">Tel: 591-72123855</p>
+		<p style="font-size:11px;">WhatsApp: 591-72123855</p>
+		<p style="font-size:11px;">Horario: Lun-Vie 7:30 - 19:30 | Sab 7:30 - 17:00</p>
 	</div>
 
 	<div style="margin-bottom:5px; line-height:1.6; word-break:break-word;">
@@ -131,7 +142,7 @@
 				</tr>
 			{/if}
 
-			<tr style="font-weight:900; font-size:1.1em; border-top:1px solid #666;">
+			<tr style="font-weight:900; font-size:11px; border-top:1px solid #666;">
 				<td style="padding-top:3px;">TOTAL:</td>
 				<td style="text-align:right; white-space:nowrap; padding-top:3px;"
 					>{fmt(parseFloat(ultimaVenta.total))}</td
@@ -154,22 +165,22 @@
 	</table>
 
 	<p
-		style="text-align:center; border-top:1px dashed #666; margin-top:7px; padding-top:5px; font-weight:700;"
+		style="text-align:center; border-top:1px dashed #666; margin-top:7px; padding-top:5px; font-weight:700; font-size:11px;"
 	>
 		¡Gracias por su compra!
 	</p>
 	<p
-		style="text-align:center; border-top:1px dashed #666; margin-top:7px; padding-top:5px; font-size:0.8em;"
+		style="text-align:center; border-top:1px dashed #666; margin-top:7px; padding-top:5px; font-size:11px;"
 	>
 		Cambios y devoluciones solo con ticket
 	</p>
 	<p
-		style="text-align:center; border-top:1px dashed #666; margin-top:7px; padding-top:5px; font-size:0.8em;"
+		style="text-align:center; border-top:1px dashed #666; margin-top:7px; padding-top:5px; font-size:11px;"
 	>
 		No se aceptan devoluciones después de 7 días
 	</p>
 	<p
-		style="text-align:center; border-top:1px dashed #666; margin-top:7px; padding-top:5px; font-size:0.8em;"
+		style="text-align:center; border-top:1px dashed #666; margin-top:7px; padding-top:5px; font-size:11px;"
 	>
 		Productos en oferta no tienen cambio
 	</p>
@@ -190,7 +201,7 @@
 				<div class="flex h-8 w-8 items-center justify-center rounded-full">
 					<CheckCircleIcon class="h-6 w-6 text-light-success" />
 				</div>
-				<h3 class="font-bold text-light-black">Venta registrada</h3>
+				<h3 class="font-bold text-light-black">{titulo}</h3>
 			</div>
 		</div>
 
@@ -204,7 +215,7 @@
 					{/snippet}
 					Imprimir
 				</Button>
-				<Button onclick={onCerrar} variant="primary" fullWidth>Nueva venta</Button>
+				<Button onclick={onCerrar} variant="primary" fullWidth>{textoBotonCerrar}</Button>
 			</div>
 		</div>
 	</div>
@@ -242,9 +253,9 @@
 			right: 0 !important;
 			width: 100% !important;
 			margin: 0 !important;
-			padding: 6mm 8mm !important;
+			padding: 8mm 10mm !important;
 			box-sizing: border-box !important;
-			font-size: 10px !important;
+			font-size: 11px !important;
 			background-color: white !important;
 			z-index: 999999 !important;
 		}

@@ -5,6 +5,7 @@
 	import { Heading, Pagination } from '$lib/components/ui';
 	import { ZoomIcon } from '$lib/icons/outline';
 	import VentaDetalleModal from '$lib/components/features/puntoventas/ventas/ventaDetalleModal.svelte';
+	import { ReciboModal } from '$lib/components/features/puntoventas/ventas';
 	import { MainLayout } from '$lib/components/layout';
 
 	let ventas = $state<VentaListItem[]>([]);
@@ -25,6 +26,10 @@
 	let selectedVenta = $state<VentaResponse | null>(null);
 	let isModalOpen = $state(false);
 	let isLoadingDetalles = $state(false);
+
+	let isReciboOpen = $state(false);
+	let selectedVentaToPrint = $state<VentaResponse | null>(null);
+	let isLoadingPrint = $state<string | null>(null);
 
 	const loadData = async () => {
 		try {
@@ -87,6 +92,24 @@
 		}, 200);
 	}
 
+	async function openPrint(id: string) {
+		try {
+			isLoadingPrint = id;
+			selectedVentaToPrint = await posService.getVenta(id);
+			isReciboOpen = true;
+			setTimeout(() => window.print(), 500);
+		} catch (error) {
+			console.error('Error fetching sale details for printing:', error);
+		} finally {
+			isLoadingPrint = null;
+		}
+	}
+
+	function closeRecibo() {
+		isReciboOpen = false;
+		selectedVentaToPrint = null;
+	}
+
 	function formatCurrency(amount: string | number) {
 		return new Intl.NumberFormat('es-BO', {
 			style: 'currency',
@@ -102,6 +125,23 @@
 			hour: '2-digit',
 			minute: '2-digit'
 		});
+	}
+
+	function fmt(n: number) {
+		return new Intl.NumberFormat('es-BO', { style: 'currency', currency: 'BOB' }).format(n);
+	}
+
+	function fmtDate(d: string) {
+		return new Intl.DateTimeFormat('es-BO', { dateStyle: 'short', timeStyle: 'short' }).format(
+			new Date(d)
+		);
+	}
+
+	function fmtPrec(n: number) {
+		return new Intl.NumberFormat('es-BO', {
+			minimumFractionDigits: 1,
+			maximumFractionDigits: 1
+		}).format(n);
 	}
 </script>
 
@@ -241,50 +281,99 @@
 									{/if}
 								</td>
 								<td class="px-6 py-4 text-center">
-									<button
-										onclick={() => openDetalles(venta.id)}
-										disabled={isLoadingDetalles && selectedVenta?.id === venta.id}
-										class="inline-flex items-center justify-center rounded-lg bg-light-black/5 p-2 text-light-black/70 transition-colors outline-none hover:bg-light-black/10 hover:text-light-black focus:ring-2 focus:ring-[#B91C1C]/20 disabled:opacity-50"
-										title="Ver Detalles"
-									>
-										{#if isLoadingDetalles && selectedVenta?.id === venta.id}
-											<svg
-												class="h-5 w-5 animate-spin"
-												xmlns="http://www.w3.org/2000/svg"
-												fill="none"
-												viewBox="0 0 24 24"
-												><circle
-													class="opacity-25"
-													cx="12"
-													cy="12"
-													r="10"
+									<div class="flex justify-center gap-2">
+										<button
+											onclick={() => openDetalles(venta.id)}
+											disabled={isLoadingDetalles && selectedVenta?.id === venta.id}
+											class="inline-flex items-center justify-center rounded-lg bg-light-black/5 p-2 text-light-black/70 transition-colors outline-none hover:bg-light-black/10 hover:text-light-black focus:ring-2 focus:ring-[#B91C1C]/20 disabled:opacity-50"
+											title="Ver Detalles"
+										>
+											{#if isLoadingDetalles && selectedVenta?.id === venta.id}
+												<svg
+													class="h-5 w-5 animate-spin"
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 24 24"
+													><circle
+														class="opacity-25"
+														cx="12"
+														cy="12"
+														r="10"
+														stroke="currentColor"
+														stroke-width="4"
+													></circle><path
+														class="opacity-75"
+														fill="currentColor"
+														d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+													></path></svg
+												>
+											{:else}
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													class="h-5 w-5"
+													viewBox="0 0 24 24"
+													stroke-width="2"
 													stroke="currentColor"
-													stroke-width="4"
-												></circle><path
-													class="opacity-75"
-													fill="currentColor"
-													d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-												></path></svg
-											>
-										{:else}
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												class="h-5 w-5"
-												viewBox="0 0 24 24"
-												stroke-width="2"
-												stroke="currentColor"
-												fill="none"
-												stroke-linecap="round"
-												stroke-linejoin="round"
-											>
-												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-												<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-												<path
-													d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"
-												></path>
-											</svg>
-										{/if}
-									</button>
+													fill="none"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+												>
+													<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+													<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+													<path
+														d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"
+													></path>
+												</svg>
+											{/if}
+										</button>
+										<button
+											onclick={() => openPrint(venta.id)}
+											disabled={isLoadingPrint === venta.id}
+											class="inline-flex items-center justify-center rounded-lg bg-light-black/5 p-2 text-light-black/70 transition-colors outline-none hover:bg-light-black/10 hover:text-light-black focus:ring-2 focus:ring-[#B91C1C]/20 disabled:opacity-50"
+											title="Imprimir"
+										>
+											{#if isLoadingPrint === venta.id}
+												<svg
+													class="h-5 w-5 animate-spin"
+													xmlns="http://www.w3.org/2000/svg"
+													fill="none"
+													viewBox="0 0 24 24"
+													><circle
+														class="opacity-25"
+														cx="12"
+														cy="12"
+														r="10"
+														stroke="currentColor"
+														stroke-width="4"
+													></circle><path
+														class="opacity-75"
+														fill="currentColor"
+														d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+													></path></svg
+												>
+											{:else}
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													class="h-5 w-5"
+													viewBox="0 0 24 24"
+													stroke-width="2"
+													stroke="currentColor"
+													fill="none"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+												>
+													<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+													<path
+														d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2"
+													></path>
+													<path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4"></path>
+													<path
+														d="M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z"
+													></path>
+												</svg>
+											{/if}
+										</button>
+									</div>
 								</td>
 							</tr>
 						{/each}
@@ -308,3 +397,16 @@
 </MainLayout>
 
 <VentaDetalleModal isOpen={isModalOpen} venta={selectedVenta} onClose={closeModal} />
+
+{#if isReciboOpen && selectedVentaToPrint}
+	<ReciboModal
+		ultimaVenta={selectedVentaToPrint}
+		onCerrar={closeRecibo}
+		onImprimir={() => window.print()}
+		{fmt}
+		{fmtDate}
+		{fmtPrec}
+		titulo="Impresión de Recibo"
+		textoBotonCerrar="Cerrar"
+	/>
+{/if}
