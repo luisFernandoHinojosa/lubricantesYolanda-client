@@ -1,3 +1,4 @@
+import { APP_SITE_CONFIG } from '$lib/constants';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -55,7 +56,7 @@ export function addPdfHeader(
 	doc.setFont('helvetica', 'bold');
 	doc.setFontSize(9);
 	doc.setTextColor(...PDF_COLORS.white);
-	doc.text('MILÉNUM', MARGIN, 10);
+	doc.text(APP_SITE_CONFIG.APP_NAME.toUpperCase(), MARGIN, 10);
 
 	// Report title
 	doc.setFontSize(15);
@@ -109,7 +110,11 @@ export function addPdfFooter(doc: jsPDF): void {
 		doc.setFontSize(7);
 		doc.setFont('helvetica', 'normal');
 		doc.setTextColor(...PDF_COLORS.medium);
-		doc.text('© Milénum – Reporte generado automáticamente', MARGIN, PAGE_H - 4);
+		doc.text(
+			`© ${APP_SITE_CONFIG.APP_NAME} – Reporte generado automáticamente`,
+			MARGIN,
+			PAGE_H - 4
+		);
 		doc.text(`Pág. ${i} / ${totalPages}`, PAGE_W - MARGIN, PAGE_H - 4, { align: 'right' });
 	}
 }
