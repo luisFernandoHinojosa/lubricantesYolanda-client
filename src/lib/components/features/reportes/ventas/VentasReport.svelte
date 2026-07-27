@@ -177,10 +177,10 @@
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-blue-500/5"></div>
 				<div class="flex flex-col gap-1">
 					<span class="text-[10px] font-black tracking-widest text-blue-600 uppercase"
-						>Ticket Promedio</span
+						>Total devoluciones</span
 					>
 					<h4 class="text-3xl font-black tracking-tighter text-light-black">
-						{formatCurrency(data.resumen.ticket_promedio)}
+						{formatCurrency(data.resumen.total_devoluciones)}
 					</h4>
 					<div class="mt-2 flex items-center gap-1.5">
 						<span class="text-[10px] font-bold text-light-black/40 uppercase">Venta más alta:</span>

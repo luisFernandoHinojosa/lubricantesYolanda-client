@@ -75,6 +75,14 @@ export const posService = {
 		return response.data;
 	},
 
+	async anularVenta(id: string): Promise<{ status: string; message: string }> {
+		const response = await apiMilenium.put<{ status: string; message: string }>(
+			`/ventas/${id}/anular`,
+			{}
+		);
+		return response;
+	},
+
 	// ─── CAJA ──────────────────────────────────────────────────────────────────
 
 	async getSesionActiva(): Promise<SesionCaja | null> {

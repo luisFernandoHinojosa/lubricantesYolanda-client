@@ -2,11 +2,13 @@
 	import { onMount } from 'svelte';
 	import { posService } from '$lib/services/pos.service';
 	import type { VentaListItem, VentaResponse } from '$lib/interfaces/venta.interface';
-	import { Heading, Pagination } from '$lib/components/ui';
+	import { Heading, Pagination, ModalConfirm } from '$lib/components/ui';
 	import { ZoomIcon } from '$lib/icons/outline';
 	import VentaDetalleModal from '$lib/components/features/puntoventas/ventas/ventaDetalleModal.svelte';
-	import { ReciboModal } from '$lib/components/features/puntoventas/ventas';
+	import { ReciboModal, VentaTableRow } from '$lib/components/features/puntoventas/ventas';
 	import { MainLayout } from '$lib/components/layout';
+	import { alert } from '$lib/utils';
+	//import { toast } from 'svelte-sonner';
 
 	let ventas = $state<VentaListItem[]>([]);
 	let total = $state(0);
@@ -30,6 +32,9 @@
 	let isReciboOpen = $state(false);
 	let selectedVentaToPrint = $state<VentaResponse | null>(null);
 	let isLoadingPrint = $state<string | null>(null);
+	let isAnulando = $state<string | null>(null);
+	let isConfirmAnularOpen = $state(false);
+	let idVentaToAnular = $state<string | null>(null);
 
 	const loadData = async () => {
 		try {
@@ -108,6 +113,31 @@
 	function closeRecibo() {
 		isReciboOpen = false;
 		selectedVentaToPrint = null;
+	}
+
+	function handleAnularClick(id: string) {
+		idVentaToAnular = id;
+		isConfirmAnularOpen = true;
+	}
+
+	async function confirmAnular() {
+		if (!idVentaToAnular) return;
+		try {
+			isAnulando = idVentaToAnular;
+			const res = await posService.anularVenta(idVentaToAnular);
+			if (res.status === 'success') {
+				alert('success', res.message);
+				await loadData();
+			}
+		} catch (error: any) {
+			console.error('Error anulando venta:', error);
+			const msg = error.response?.data?.message || 'Error al anular la venta';
+			alert('error', msg);
+		} finally {
+			isAnulando = null;
+			isConfirmAnularOpen = false;
+			idVentaToAnular = null;
+		}
 	}
 
 	function formatCurrency(amount: string | number) {
@@ -228,154 +258,15 @@
 						</tr>
 					{:else}
 						{#each ventas as venta, i (venta.id)}
-							<tr
-								class="{i % 2 === 0
-									? 'bg-[#D19999]/20'
-									: 'bg-[#D19999]/40'} transition-colors hover:bg-red-100/50"
-							>
-								<td class="border-r border-gray-200/50 px-6 py-4">
-									<p class="font-bold text-gray-700">{venta.numero_comprobante}</p>
-									<p class="mt-1 font-mono text-[10px] text-gray-500">
-										Caja: {venta.id_sesion_caja?.substring(0, 8)}
-									</p>
-								</td>
-								<td class="border-r border-gray-200/50 px-6 py-4 font-medium text-gray-600">
-									{formatDate(venta.createdAt)}
-								</td>
-								<td class="border-r border-gray-200/50 px-6 py-4">
-									{#if venta.cliente && venta.cliente.ci !== '000000'}
-										<p class="font-bold text-gray-700">
-											{venta.cliente.nombre}
-											{venta.cliente.apellido_paterno}
-										</p>
-										<p class="mt-0.5 text-xs text-gray-600">CI/NIT: {venta.cliente.ci}</p>
-									{:else}
-										<span class="text-xs font-bold text-gray-600 italic">Público General</span>
-									{/if}
-								</td>
-								<td class="border-r border-gray-200/50 px-6 py-4">
-									{#if venta.cajero}
-										<p class="font-medium text-gray-600">
-											{venta.cajero.nombre}
-											{venta.cajero.apellido_paterno}
-										</p>
-									{:else}
-										<span class="text-xs text-gray-600 italic">Desconocido</span>
-									{/if}
-								</td>
-								<td class="border-r border-gray-200/50 px-6 py-4 text-center">
-									<span
-										class="inline-flex items-center justify-center rounded-full border border-[#B91C1C]/20 bg-[#D19999]/20 px-3 py-1 text-[10px] font-bold text-[#8B1515] uppercase"
-									>
-										{venta.metodo_pago}
-									</span>
-								</td>
-								<td class="border-r border-gray-200/50 px-6 py-4 text-right">
-									<p class="text-base font-extrabold text-[#B91C1C]">
-										{formatCurrency(venta.total)}
-									</p>
-									{#if parseFloat(venta.monto_descuento_global) > 0}
-										<p class="mt-0.5 text-[10px] font-bold text-gray-600">
-											- {formatCurrency(venta.monto_descuento_global)} Desc.
-										</p>
-									{/if}
-								</td>
-								<td class="px-6 py-4 text-center">
-									<div class="flex justify-center gap-2">
-										<button
-											onclick={() => openDetalles(venta.id)}
-											disabled={isLoadingDetalles && selectedVenta?.id === venta.id}
-											class="inline-flex items-center justify-center rounded-lg bg-light-black/5 p-2 text-light-black/70 transition-colors outline-none hover:bg-light-black/10 hover:text-light-black focus:ring-2 focus:ring-[#B91C1C]/20 disabled:opacity-50"
-											title="Ver Detalles"
-										>
-											{#if isLoadingDetalles && selectedVenta?.id === venta.id}
-												<svg
-													class="h-5 w-5 animate-spin"
-													xmlns="http://www.w3.org/2000/svg"
-													fill="none"
-													viewBox="0 0 24 24"
-													><circle
-														class="opacity-25"
-														cx="12"
-														cy="12"
-														r="10"
-														stroke="currentColor"
-														stroke-width="4"
-													></circle><path
-														class="opacity-75"
-														fill="currentColor"
-														d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-													></path></svg
-												>
-											{:else}
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													class="h-5 w-5"
-													viewBox="0 0 24 24"
-													stroke-width="2"
-													stroke="currentColor"
-													fill="none"
-													stroke-linecap="round"
-													stroke-linejoin="round"
-												>
-													<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-													<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-													<path
-														d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"
-													></path>
-												</svg>
-											{/if}
-										</button>
-										<button
-											onclick={() => openPrint(venta.id)}
-											disabled={isLoadingPrint === venta.id}
-											class="inline-flex items-center justify-center rounded-lg bg-light-black/5 p-2 text-light-black/70 transition-colors outline-none hover:bg-light-black/10 hover:text-light-black focus:ring-2 focus:ring-[#B91C1C]/20 disabled:opacity-50"
-											title="Imprimir"
-										>
-											{#if isLoadingPrint === venta.id}
-												<svg
-													class="h-5 w-5 animate-spin"
-													xmlns="http://www.w3.org/2000/svg"
-													fill="none"
-													viewBox="0 0 24 24"
-													><circle
-														class="opacity-25"
-														cx="12"
-														cy="12"
-														r="10"
-														stroke="currentColor"
-														stroke-width="4"
-													></circle><path
-														class="opacity-75"
-														fill="currentColor"
-														d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-													></path></svg
-												>
-											{:else}
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													class="h-5 w-5"
-													viewBox="0 0 24 24"
-													stroke-width="2"
-													stroke="currentColor"
-													fill="none"
-													stroke-linecap="round"
-													stroke-linejoin="round"
-												>
-													<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-													<path
-														d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2"
-													></path>
-													<path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4"></path>
-													<path
-														d="M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z"
-													></path>
-												</svg>
-											{/if}
-										</button>
-									</div>
-								</td>
-							</tr>
+							<VentaTableRow
+								{venta}
+								isLoadingDetalles={isLoadingDetalles && selectedVenta?.id === venta.id}
+								isLoadingPrint={isLoadingPrint === venta.id}
+								isAnulando={isAnulando === venta.id}
+								onView={openDetalles}
+								onPrint={openPrint}
+								onAnular={handleAnularClick}
+							/>
 						{/each}
 					{/if}
 				</tbody>
@@ -410,3 +301,14 @@
 		textoBotonCerrar="Cerrar"
 	/>
 {/if}
+
+<ModalConfirm
+	isOpen={isConfirmAnularOpen}
+	message="¿Está seguro de anular esta venta? Esta acción no se puede deshacer ni recuperar y se va a revertir el stock."
+	loading={isAnulando !== null}
+	onConfirm={confirmAnular}
+	onCancel={() => {
+		isConfirmAnularOpen = false;
+		idVentaToAnular = null;
+	}}
+/>

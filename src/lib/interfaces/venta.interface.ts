@@ -136,6 +136,7 @@ export interface VentaListItem {
 		apellido_materno: string | null;
 	} | null;
 	sucursal: { id: string; nombre: string } | null;
+	esta_activo: boolean;
 }
 
 export interface VentasResponse {

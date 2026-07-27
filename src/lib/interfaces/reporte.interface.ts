@@ -22,6 +22,7 @@ export interface VentaResumen {
 	total_descuentos: number;
 	venta_maxima: number;
 	venta_minima: number;
+	total_devoluciones: number;
 }
 
 export interface MetodoPagoStats {
