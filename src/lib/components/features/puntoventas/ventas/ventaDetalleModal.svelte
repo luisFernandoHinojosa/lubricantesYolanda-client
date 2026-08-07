@@ -55,7 +55,7 @@
 			</div>
 
 			<!-- Body -->
-			<div class="scrollbar-thin flex-1 overflow-y-auto p-6">
+			<div class="flex-1 scrollbar-thin overflow-y-auto p-6">
 				<!-- Info grid -->
 				<div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 					<div class="rounded-xl border border-light-black/10 bg-[#D19999]/10 p-4">

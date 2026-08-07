@@ -32,6 +32,7 @@ class ReporteService {
 		const response = await apiMilenium.get<ReportApiResponse<VentaReportData>>(
 			`/reportes/ventas?${params.toString()}`
 		);
+		console.log('response', response.data);
 		return response.data;
 	}
 

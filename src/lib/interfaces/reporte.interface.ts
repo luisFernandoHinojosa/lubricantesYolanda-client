@@ -15,20 +15,50 @@ export interface VentaReportFilters {
 	agrupar_por: ReportGrouping;
 }
 
-export interface VentaResumen {
-	total_ventas: number;
-	cantidad_ventas: number;
-	ticket_promedio: number;
-	total_descuentos: number;
-	venta_maxima: number;
-	venta_minima: number;
-	total_devoluciones: number;
+export interface VentaReportSummary {
+	receipts: number;
+	products: number;
+	subtotal: number;
+	discount: number;
+	returnedAmount: number;
+	exchangeDifference: number;
+	cancelledAmount: number;
+	netTotal: number;
+	paymentMethods: Record<string, { total: number; cantidad: number }>;
 }
 
-export interface MetodoPagoStats {
+export interface VentaReportItem {
+	id: string;
+	productId: string;
+	code: string;
+	name: string;
+	quantity: number;
+	unitPrice: number;
 	total: number;
-	cantidad: number;
-	porcentaje: number;
+	movement: string;
+	referenceReceipt: string | null;
+}
+
+export interface VentaReportReceipt {
+	id: string;
+	number: string;
+	date: string;
+	status: string;
+	paymentMethod: string;
+	customer: {
+		id: string;
+		name: string;
+	};
+	seller: {
+		id: string;
+		name: string;
+	};
+	subtotal: number;
+	discount: number;
+	returnedAmount: number;
+	exchangeDifference: number;
+	netTotal: number;
+	items: VentaReportItem[];
 }
 
 export interface VentaSerieTemporal {
@@ -37,32 +67,13 @@ export interface VentaSerieTemporal {
 	cantidad: number;
 }
 
-export interface VentaPorSucursal {
-	id_sucursal: string;
-	sucursal: string;
-	total: number;
-	cantidad: number;
-}
-
-export interface TopCajero {
-	empleado: string;
-	total: number;
-	cantidad: number;
-}
-
-export interface ComparativaPeriodo {
-	total_actual: number;
-	total_anterior: number;
-	variacion_porcentual: number;
-}
-
 export interface VentaReportData {
-	resumen: VentaResumen;
-	por_metodo_pago: Record<string, MetodoPagoStats>;
-	serie_temporal: VentaSerieTemporal[];
-	por_sucursal: VentaPorSucursal[];
-	top_cajeros: TopCajero[];
-	comparativa_periodo_anterior: ComparativaPeriodo;
+	summary: VentaReportSummary;
+	receipts: VentaReportReceipt[];
+	total: number;
+	page: number;
+	perPage: number;
+	totalPages: number;
 }
 
 // Purchase Report Interfaces

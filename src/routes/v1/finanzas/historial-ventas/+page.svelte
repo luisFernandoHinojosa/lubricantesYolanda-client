@@ -12,6 +12,7 @@
 
 	let ventas = $state<VentaListItem[]>([]);
 	let total = $state(0);
+	let totalMontoVentas = $state(0);
 	let totalPages = $state(1);
 	let isLoading = $state(true);
 
@@ -42,6 +43,7 @@
 			const response = await posService.listarVentas(filters);
 			ventas = response.ventas;
 			total = response.total;
+			totalMontoVentas = response.totalMontoVentas;
 			totalPages = response.totalPages;
 		} catch (error) {
 			console.error('Error fetching sales history:', error);
@@ -194,6 +196,17 @@
 						<span>Ventas Registradas</span>
 					</div>
 					<div class="text-4xl font-extrabold tracking-tighter">{total}</div>
+				</div>
+			</div>
+
+			<div
+				class="group relative max-w-[280px] flex-1 overflow-hidden rounded-xl bg-white p-4 text-[#B91C1C] border border-[#B91C1C]/20 shadow-md"
+			>
+				<div class="relative z-10">
+					<div class="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase opacity-80">
+						<span>Monto Total</span>
+					</div>
+					<div class="text-3xl font-extrabold tracking-tighter">{formatCurrency(totalMontoVentas)}</div>
 				</div>
 			</div>
 		</div>

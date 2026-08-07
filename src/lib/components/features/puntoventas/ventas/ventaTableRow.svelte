@@ -82,6 +82,11 @@
 				>
 			{/if}
 		</div>
+		{#if venta.sucursal}
+			<p class="mt-1 font-mono text-[10px] text-gray-500">
+				Sucursal: {venta.sucursal.nombre}
+			</p>
+		{/if}
 		<p class="mt-1 font-mono text-[10px] text-gray-500">
 			Caja: {venta.id_sesion_caja?.substring(0, 8)}
 		</p>

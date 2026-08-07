@@ -142,6 +142,7 @@ export interface VentaListItem {
 export interface VentasResponse {
 	ventas: VentaListItem[];
 	total: number;
+	totalMontoVentas: number;
 	page: number;
 	perPage: number;
 	totalPages: number;

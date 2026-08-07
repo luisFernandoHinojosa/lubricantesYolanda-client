@@ -72,6 +72,7 @@ export const posService = {
 	async listarVentas(params: Record<string, string | number> = {}): Promise<VentasResponse> {
 		const query = new URLSearchParams(params as any);
 		const response = await apiMilenium.get<ApiResponse<VentasResponse>>(`/ventas?${query}`);
+		console.log(response.data);
 		return response.data;
 	},
 
