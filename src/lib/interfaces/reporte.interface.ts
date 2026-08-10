@@ -13,6 +13,8 @@ export interface VentaReportFilters {
 	id_sucursal?: string;
 	metodo_pago?: PaymentMethodValue;
 	agrupar_por: ReportGrouping;
+	page?: number;
+	perPage?: number;
 }
 
 export interface VentaReportSummary {

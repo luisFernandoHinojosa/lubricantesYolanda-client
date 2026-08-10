@@ -28,6 +28,8 @@ class ReporteService {
 		if (filters.id_sucursal) params.append('id_sucursal', filters.id_sucursal);
 		if (filters.metodo_pago) params.append('metodo_pago', filters.metodo_pago);
 		if (filters.agrupar_por) params.append('agrupar_por', filters.agrupar_por);
+		if (filters.page) params.append('page', String(filters.page));
+		if (filters.perPage) params.append('perPage', String(filters.perPage));
 
 		const response = await apiMilenium.get<ReportApiResponse<VentaReportData>>(
 			`/reportes/ventas?${params.toString()}`

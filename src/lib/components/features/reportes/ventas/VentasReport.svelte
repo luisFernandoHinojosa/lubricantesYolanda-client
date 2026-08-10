@@ -8,6 +8,7 @@
 	import { generateVentasPdf } from '$lib/utils/pdf/ventas.pdf';
 	import { PencilIcon, ShoppingCartIcon } from '$lib/icons/outline';
 	import { CoinIcon } from '$lib/icons/solid';
+	import { Pagination } from '$lib/components/ui';
 
 	let loading = $state(false);
 	let downloadingPdf = $state(false);
@@ -16,12 +17,14 @@
 	const now = new Date();
 	const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 	console.log('data', data);
-	let filters = $state<VentaReportFilters>({
+	let filters = $state<VentaReportFilters & { page: number; perPage: number }>({
 		desde: firstDayOfMonth.toISOString().split('T')[0],
 		hasta: now.toISOString().split('T')[0],
 		agrupar_por: 'dia',
 		id_sucursal: '',
-		metodo_pago: undefined
+		metodo_pago: undefined,
+		page: 1,
+		perPage: 2
 	});
 
 	async function loadData() {
@@ -39,6 +42,11 @@
 		} finally {
 			loading = false;
 		}
+	}
+
+	function handlePageChange(page: number) {
+		filters.page = page;
+		loadData();
 	}
 
 	onMount(loadData);
@@ -326,6 +334,19 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- Pagination -->
+			{#if data.receipts.length > 0}
+				<div class="mt-8 flex justify-center">
+					<Pagination
+						currentPage={data.page}
+						totalPages={data.totalPages}
+						perPage={data.perPage}
+						total={data.total}
+						onPageChange={handlePageChange}
+					/>
+				</div>
+			{/if}
 		</div>
 	{:else}
 		<div
