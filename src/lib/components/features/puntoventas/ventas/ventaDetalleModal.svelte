@@ -58,47 +58,66 @@
 			<div class="flex-1 scrollbar-thin overflow-y-auto p-6">
 				<!-- Info grid -->
 				<div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-					<div class="rounded-xl border border-light-black/10 bg-[#D19999]/10 p-4">
+					<div class="rounded-xl border border-light-black/10 bg-slate-50 p-4">
 						<p class="text-[10px] font-bold tracking-widest text-light-black/50 uppercase">
 							Cliente
 						</p>
 						<p class="mt-1 font-medium text-light-black">
-							{venta.cliente.nombre}
-							{venta.cliente.apellido_paterno}
+							{venta.cliente?.nombre || 'Cliente'}
+							{venta.cliente?.apellido_paterno || ''}
 						</p>
 						<p class="mt-1 text-xs text-light-black/60">
-							CI/NIT: <span class="font-mono">{venta.cliente.ci}</span>
+							CI/NIT: <span class="font-mono">{venta.cliente?.ci || 'S/N'}</span>
 						</p>
+						<div class="mt-3 border-t border-black/5 pt-2">
+							<p class="text-[10px] font-bold tracking-widest text-light-black/50 uppercase">
+								Cajero
+							</p>
+							<p class="font-medium text-light-black text-sm">
+								{venta.cajero?.nombre || ''} {venta.cajero?.apellido_paterno || ''}
+							</p>
+						</div>
 					</div>
 
-					<div class="rounded-xl border border-light-black/10 bg-[#D19999]/10 p-4">
-						<p class="text-[10px] font-bold tracking-widest text-light-black/50 uppercase">Total</p>
-						<p class="mt-1 text-xl font-bold text-green-700">{formatCurrency(venta.total)}</p>
-						<p class="mt-1 text-xs text-light-black/60">
-							Subtotal: {formatCurrency(venta.subtotal)}
-						</p>
+					<div class="rounded-xl border border-light-black/10 bg-green-50 p-4">
+						<p class="text-[10px] font-bold tracking-widest text-light-black/50 uppercase">Total Venta</p>
+						<p class="mt-1 text-2xl font-black text-green-700">{formatCurrency(venta.total)}</p>
+						<div class="mt-3 space-y-1 border-t border-black/5 pt-2">
+							<p class="text-xs text-light-black/60 flex justify-between">
+								<span>Subtotal:</span> <span class="font-medium">{formatCurrency(venta.subtotal)}</span>
+							</p>
+							{#if Number(venta.monto_descuento_global) > 0}
+								<p class="text-xs text-red-600/80 flex justify-between">
+									<span>Descuento:</span> <span class="font-medium">-{formatCurrency(venta.monto_descuento_global)}</span>
+								</p>
+							{/if}
+						</div>
 					</div>
 
-					<div class="rounded-xl border border-light-black/10 bg-[#D19999]/10 p-4">
+					<div class="rounded-xl border border-light-black/10 bg-blue-50 p-4">
 						<p class="text-[10px] font-bold tracking-widest text-light-black/50 uppercase">
-							Método Pago
+							Pago: {venta.metodo_pago}
 						</p>
-						<p class="mt-1 font-medium text-light-black">{venta.metodo_pago}</p>
-						<p class="mt-1 text-xs text-light-black/60">
-							Pagado: {formatCurrency(venta.monto_pagado)}
-						</p>
+						<p class="mt-1 font-black text-blue-700 text-2xl">{formatCurrency(venta.monto_pagado)}</p>
+						<div class="mt-3 space-y-1 border-t border-black/5 pt-2">
+							<p class="text-xs text-light-black/60 flex justify-between">
+								<span>Cambio Entregado:</span> <span class="font-medium">{formatCurrency(venta.cambio_entregado)}</span>
+							</p>
+						</div>
 					</div>
 
-					<div class="rounded-xl border border-light-black/10 bg-[#D19999]/10 p-4">
+					<div class="rounded-xl border border-light-black/10 bg-orange-50 p-4">
 						<p class="text-[10px] font-bold tracking-widest text-light-black/50 uppercase">
-							Descuento Global
+							Devoluciones / Cambios
 						</p>
-						<p class="mt-1 font-medium text-[#B91C1C]">
-							-{formatCurrency(venta.monto_descuento_global)}
+						<p class="mt-1 font-black text-orange-700 text-2xl">
+							{formatCurrency(venta.monto_devuelto || 0)}
 						</p>
-						<p class="mt-1 text-xs text-light-black/60">
-							Cambio devuelto: {formatCurrency(venta.cambio_entregado)}
-						</p>
+						<div class="mt-3 space-y-1 border-t border-black/5 pt-2">
+							<p class="text-xs text-light-black/60 flex justify-between">
+								<span>Dif. a favor:</span> <span class="font-medium">{formatCurrency(venta.diferencia_cambio || 0)}</span>
+							</p>
+						</div>
 					</div>
 				</div>
 
@@ -108,6 +127,7 @@
 						<thead class="bg-light-black/5 text-xs tracking-wider text-light-black/70 uppercase">
 							<tr>
 								<th class="px-5 py-4 font-bold">Producto</th>
+								<th class="px-5 py-4 text-center font-bold">Tipo</th>
 								<th class="px-5 py-4 text-center font-bold">Unidad / Present.</th>
 								<th class="px-5 py-4 text-center font-bold">Cant.</th>
 								<th class="px-5 py-4 text-right font-bold">Precio Unit.</th>
@@ -119,18 +139,37 @@
 								<tr class="transition-colors hover:bg-light-black/5">
 									<td class="px-5 py-4">
 										<p class="font-bold text-light-black">{item.producto.nombre_comercial}</p>
-										<div class="mt-1.5 flex gap-2 text-xs text-light-black/60">
+										<div class="mt-1.5 flex flex-wrap gap-2 text-xs text-light-black/60">
 											<span class="rounded-md bg-light-black/5 px-2 py-0.5 font-mono">
 												CB: {item.producto.codigo_barras || '--'}
 											</span>
 											{#if item.numero_serie}
-												<span
-													class="rounded-md bg-[#D19999]/20 px-2 py-0.5 font-mono text-[#8B1515]"
-												>
+												<span class="rounded-md bg-[#D19999]/20 px-2 py-0.5 font-mono text-[#8B1515]">
 													NS: {item.numero_serie}
 												</span>
 											{/if}
 										</div>
+										{#if item.notas}
+											<p class="mt-2 text-xs font-medium text-amber-700 bg-amber-50 p-2 rounded-lg border border-amber-100">
+												{item.notas}
+											</p>
+										{/if}
+										{#if item.referencia_comprobante}
+											<p class="mt-1 text-xs text-light-black/50 font-mono">
+												Ref: {item.referencia_comprobante}
+											</p>
+										{/if}
+									</td>
+									<td class="px-5 py-4 text-center">
+										{#if item.movimiento === 'VENTA'}
+											<span class="rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-700">VENTA</span>
+										{:else if item.movimiento === 'DEVOLUCION'}
+											<span class="rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-700">DEVOLUCIÓN</span>
+										{:else if item.movimiento === 'CAMBIO'}
+											<span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700">CAMBIO</span>
+										{:else}
+											<span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-bold text-gray-700">{item.movimiento || 'VENTA'}</span>
+										{/if}
 									</td>
 									<td class="px-5 py-4 text-center">
 										{#if item.presentacion}
@@ -141,8 +180,7 @@
 											</span>
 										{:else}
 											<span class="text-xs font-medium text-light-black/50 italic"
-												>{item.producto.unidad_medida.nombre} ({item.producto.unidad_medida
-													.abreviatura})</span
+												>{item.producto.unidad_medida?.nombre || ''} ({item.producto.unidad_medida?.abreviatura || ''})</span
 											>
 										{/if}
 									</td>
@@ -150,9 +188,9 @@
 									<td class="px-5 py-4 text-right font-medium text-light-black/70"
 										>{formatCurrency(item.precio_unitario)}</td
 									>
-									<td class="px-5 py-4 text-right text-base font-bold text-light-black"
-										>{formatCurrency(item.subtotal)}</td
-									>
+									<td class="px-5 py-4 text-right text-base font-bold" class:text-[#B91C1C]={Number(item.subtotal) < 0} class:text-light-black={Number(item.subtotal) >= 0}>
+										{formatCurrency(item.subtotal)}
+									</td>
 								</tr>
 							{/each}
 						</tbody>

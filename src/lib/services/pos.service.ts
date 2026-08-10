@@ -66,6 +66,7 @@ export const posService = {
 
 	async getVenta(id: string): Promise<VentaResponse> {
 		const response = await apiMilenium.get<ApiResponse<VentaResponse>>(`/ventas/${id}`);
+		console.log('venta individual', response.data);
 		return response.data;
 	},
 
