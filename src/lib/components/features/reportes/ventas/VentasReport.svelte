@@ -24,7 +24,7 @@
 		id_sucursal: '',
 		metodo_pago: undefined,
 		page: 1,
-		perPage: 2
+		perPage: 15
 	});
 
 	async function loadData() {
