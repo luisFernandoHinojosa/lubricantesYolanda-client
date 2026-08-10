@@ -383,7 +383,7 @@
 		</div>
 	</div>
 
-	{#if !isLoading && totalPages > 1}
+	{#if !isLoading && ventas.length > 0}
 		<div class="mt-8 flex justify-center">
 			<Pagination
 				currentPage={filters.page}
