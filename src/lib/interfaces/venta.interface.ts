@@ -1,5 +1,5 @@
 // ─── POS / VENTAS ─────────────────────────────────────────────────────────────
-
+export type METODOS_PAGO = 'EFECTIVO' | 'QR' | 'TARJETA';
 export interface PresentacionPOS {
 	id: string;
 	nombre: string;
@@ -62,8 +62,11 @@ export interface CreateVentaDto {
 	items: CreateVentaItem[];
 	tipo_descuento_global?: 'PORCENTAJE' | 'FIJO' | 'NINGUNO';
 	valor_descuento_global?: number;
-	metodo_pago: 'EFECTIVO' | 'QR' | 'TARJETA' | 'TRANSFERENCIA';
-	monto_pagado: number;
+	pagos: {
+		metodo_pago: 'EFECTIVO' | 'QR' | 'TARJETA' | 'TRANSFERENCIA' | 'CHEQUE' | 'OTRO';
+		monto: number;
+		referencia?: string;
+	}[];
 	notas?: string;
 }
 
@@ -83,7 +86,12 @@ export interface VentaResponse {
 	monto_descuento_global: string;
 	cambio_entregado: string;
 	monto_pagado: string;
-	metodo_pago: string;
+	pagos: {
+		id: string;
+		metodo_pago: string;
+		monto: string;
+		referencia: string | null;
+	}[];
 	createdAt: string;
 	cliente: {
 		id: string;
@@ -123,11 +131,16 @@ export interface VentaListItem {
 	valor_descuento_global: string;
 	monto_descuento_global: string;
 	total: string;
-	metodo_pago: string;
 	monto_pagado: string;
 	cambio_entregado: string;
 	createdAt: string;
 	updatedAt: string;
+	pagos: {
+		id: string;
+		metodo_pago: string;
+		monto: string;
+		referencia: string | null;
+	}[];
 	cliente: { id: string; nombre: string; apellido_paterno: string; ci: string } | null;
 	cajero: {
 		id: string;

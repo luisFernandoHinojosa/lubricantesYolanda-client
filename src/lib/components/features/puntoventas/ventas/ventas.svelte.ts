@@ -73,8 +73,7 @@ export class VentasState {
 		valor: 0
 	});
 
-	metodoPago = $state<'EFECTIVO' | 'QR' | 'TARJETA' | 'TRANSFERENCIA'>('EFECTIVO');
-	montoPagado = $state('');
+	pagos = $state<Array<{ metodo_pago: 'EFECTIVO' | 'QR' | 'TARJETA' | 'TRANSFERENCIA' | 'CHEQUE' | 'OTRO'; monto: number; referencia?: string }>>([]);
 	notasVenta = $state('');
 	procesandoVenta = $state(false);
 	ultimaVenta = $state<VentaResponse | null>(null);
@@ -98,12 +97,14 @@ export class VentasState {
 
 	totalFinal = $derived(Math.max(0, this.subtotalItems - this.montoDescuentoGlobal()));
 
+	totalPagado = $derived(this.pagos.reduce((acc, p) => acc + (Number(p.monto) || 0), 0));
+
 	cambio = $derived(
-		this.montoPagado ? Math.max(0, parseFloat(this.montoPagado) - this.totalFinal) : 0
+		this.totalPagado > 0 ? Math.max(0, this.totalPagado - this.totalFinal) : 0
 	);
 
 	pagoSuficiente = $derived(
-		!!this.montoPagado && parseFloat(this.montoPagado) >= this.totalFinal && this.totalFinal > 0
+		this.totalPagado >= this.totalFinal && this.totalFinal > 0
 	);
 
 	constructor() {
@@ -508,7 +509,7 @@ export class VentasState {
 			alert('error', `Ingrese número de serie para: ${sinSerie.nombre_comercial}`);
 			return;
 		}
-		this.montoPagado = '';
+		this.pagos = [{ metodo_pago: 'EFECTIVO', monto: this.totalFinal }];
 		this.modalPago = true;
 	}
 
@@ -529,8 +530,7 @@ export class VentasState {
 				tipo_descuento_global:
 					this.descuentoGlobal.valor > 0 ? this.descuentoGlobal.tipo : 'NINGUNO',
 				valor_descuento_global: this.descuentoGlobal.valor,
-				metodo_pago: this.metodoPago,
-				monto_pagado: parseFloat(this.montoPagado),
+				pagos: this.pagos.filter(p => p.monto > 0),
 				notas: this.notasVenta || undefined
 			};
 			this.ultimaVenta = await posService.crearVenta(dto);

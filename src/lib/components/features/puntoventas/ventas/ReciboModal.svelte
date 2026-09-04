@@ -149,12 +149,23 @@
 				>
 			</tr>
 
-			<tr>
-				<td>Pagado ({ultimaVenta.metodo_pago}):</td>
-				<td style="text-align:right; white-space:nowrap;"
-					>{fmt(parseFloat(ultimaVenta.monto_pagado))}</td
-				>
-			</tr>
+			{#if ultimaVenta.pagos && ultimaVenta.pagos.length > 0}
+				{#each ultimaVenta.pagos as pago}
+					<tr>
+						<td>Pagado ({pago.metodo_pago}):</td>
+						<td style="text-align:right; white-space:nowrap;"
+							>{fmt(parseFloat(pago.monto))}</td
+						>
+					</tr>
+				{/each}
+			{:else}
+				<tr>
+					<td>Total Pagado:</td>
+					<td style="text-align:right; white-space:nowrap;"
+						>{fmt(parseFloat(ultimaVenta.monto_pagado))}</td
+					>
+				</tr>
+			{/if}
 			<tr>
 				<td>Cambio:</td>
 				<td style="text-align:right; white-space:nowrap;"

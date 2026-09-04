@@ -95,11 +95,25 @@
 					</div>
 
 					<div class="rounded-xl border border-light-black/10 bg-blue-50 p-4">
-						<p class="text-[10px] font-bold tracking-widest text-light-black/50 uppercase">
-							Pago: {venta.metodo_pago}
+						<p class="text-[10px] font-bold tracking-widest text-light-black/50 uppercase mb-2">
+							Pagos Realizados
 						</p>
-						<p class="mt-1 font-black text-blue-700 text-2xl">{formatCurrency(venta.monto_pagado)}</p>
+						<div class="space-y-1.5 mb-3">
+							{#if venta.pagos && venta.pagos.length > 0}
+								{#each venta.pagos as pago}
+									<div class="flex justify-between items-center text-sm">
+										<span class="font-semibold text-blue-800">{pago.metodo_pago}</span>
+										<span class="font-bold text-blue-700">{formatCurrency(pago.monto)}</span>
+									</div>
+								{/each}
+							{:else}
+								<p class="text-xs text-light-black/50 italic">Sin registros</p>
+							{/if}
+						</div>
 						<div class="mt-3 space-y-1 border-t border-black/5 pt-2">
+							<p class="text-xs text-light-black/60 flex justify-between">
+								<span>Total Pagado:</span> <span class="font-bold text-light-black">{formatCurrency(venta.monto_pagado)}</span>
+							</p>
 							<p class="text-xs text-light-black/60 flex justify-between">
 								<span>Cambio Entregado:</span> <span class="font-medium">{formatCurrency(venta.cambio_entregado)}</span>
 							</p>

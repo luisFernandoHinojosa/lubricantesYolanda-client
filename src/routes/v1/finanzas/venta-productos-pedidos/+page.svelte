@@ -110,14 +110,12 @@
 {#if pos.modalPago}
 	<PagoModal
 		totalFinal={pos.totalFinal}
-		metodoPago={pos.metodoPago}
-		bind:montoPagado={pos.montoPagado}
+		bind:pagos={pos.pagos}
 		bind:notasVenta={pos.notasVenta}
 		procesandoVenta={pos.procesandoVenta}
 		pagoSuficiente={pos.pagoSuficiente}
 		cambio={pos.cambio}
 		onCerrar={() => (pos.modalPago = false)}
-		onCambiarMetodo={(m) => (pos.metodoPago = m)}
 		onFinalizarVenta={() => pos.finalizarVenta()}
 		fmt={pos.fmt}
 	/>

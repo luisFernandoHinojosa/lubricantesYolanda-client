@@ -116,14 +116,23 @@
 		{/if}
 	</td>
 	<td class="border-r border-gray-200/50 px-6 py-4 text-center">
-		<span
-			class="inline-flex items-center justify-center rounded-full border border-[#B91C1C]/20 px-3 py-1 text-[10px] font-bold uppercase
-			{venta.metodo_pago === 'EFECTIVO'
-				? 'bg-[#D19999]/20 text-[#8B1515]'
-				: 'border-blue-200 bg-blue-100/50 text-blue-700'}"
-		>
-			{venta.metodo_pago}
-		</span>
+		<div class="flex flex-col items-center gap-1">
+			{#if venta.pagos && venta.pagos.length > 0}
+				{#each venta.pagos as pago}
+					<span
+						class="inline-flex items-center justify-center rounded-full border border-[#B91C1C]/20 px-3 py-1 text-[10px] font-bold uppercase
+						{pago.metodo_pago === 'EFECTIVO'
+							? 'bg-[#D19999]/20 text-[#8B1515]'
+							: 'border-blue-200 bg-blue-100/50 text-blue-700'}"
+						title={formatCurrency(pago.monto)}
+					>
+						{pago.metodo_pago}
+					</span>
+				{/each}
+			{:else}
+				<span class="text-[10px] font-bold uppercase text-gray-400">Sin pagos</span>
+			{/if}
+		</div>
 	</td>
 	<td class="border-r border-gray-200/50 px-6 py-4 text-right">
 		<p

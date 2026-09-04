@@ -347,7 +347,7 @@
 						<th class="border-r border-red-800/30 px-6 py-4">Fecha</th>
 						<th class="border-r border-red-800/30 px-6 py-4">Cliente</th>
 						<th class="border-r border-red-800/30 px-6 py-4">Vendedor</th>
-						<th class="border-r border-red-800/30 px-6 py-4 text-center">Pago</th>
+						<th class="border-r border-red-800/30 px-6 py-4 text-center">Pagos</th>
 						<th class="border-r border-red-800/30 px-6 py-4 text-right">Total</th>
 						<th class="px-6 py-4 text-center">Acciones</th>
 					</tr>
