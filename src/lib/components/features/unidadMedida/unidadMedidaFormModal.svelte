@@ -23,7 +23,8 @@
 
 	let formData = $state<CreateUnidadMedidaDto>({
 		nombre: '',
-		abreviatura: ''
+		abreviatura: '',
+		codigo_fact: 0
 	});
 
 	let isSubmitting = $state(false);
@@ -33,7 +34,8 @@
 		if (unidadMedida) {
 			formData = {
 				nombre: unidadMedida.nombre,
-				abreviatura: unidadMedida.abreviatura
+				abreviatura: unidadMedida.abreviatura,
+				codigo_fact: unidadMedida.codigo_fact || 0
 			};
 		} else {
 			resetForm();
@@ -43,7 +45,8 @@
 	function resetForm() {
 		formData = {
 			nombre: '',
-			abreviatura: ''
+			abreviatura: '',
+			codigo_fact: 0
 		};
 		validationErrors = {};
 	}
@@ -122,6 +125,19 @@
 								placeholder="Ej: kg"
 								required
 								error={validationErrors.abreviatura}
+								disabled={isReadOnly}
+							/>
+						</div>
+
+						<div class="col-span-2">
+							<Input
+								type="number"
+								id="codigo_fact"
+								label="Código de Facturación"
+								bind:value={formData.codigo_fact}
+								placeholder="Ej: 1"
+								required
+								error={validationErrors.codigo_fact}
 								disabled={isReadOnly}
 							/>
 						</div>

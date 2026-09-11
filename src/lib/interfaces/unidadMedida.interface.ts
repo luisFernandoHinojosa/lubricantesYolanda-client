@@ -3,7 +3,7 @@ export interface UnidadMedida {
 	esta_activo: boolean;
 	nombre: string;
 	abreviatura: string;
-	codigo_fact: string;
+	codigo_fact: number;
 	updatedAt: string;
 	createdAt: string;
 }
@@ -28,6 +28,7 @@ export interface UnidadMedidaFilters {
 export interface CreateUnidadMedidaDto {
 	nombre: string;
 	abreviatura: string;
+	codigo_fact: number;
 }
 
 export interface UpdateUnidadMedidaDto extends Partial<CreateUnidadMedidaDto> {
