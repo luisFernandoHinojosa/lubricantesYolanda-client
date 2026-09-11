@@ -18,7 +18,7 @@
 
 	let filters = $state<UnidadMedidaFilters>({
 		page: 1,
-		perPage: 15,
+		perPage: 30,
 		search: ''
 	});
 
@@ -208,6 +208,21 @@
 							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
 						>
 							Abreviatura
+						</th>
+						<th
+							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+						>
+							Código Factura
+						</th>
+						<th
+							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+						>
+							Creado en
+						</th>
+						<th
+							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+						>
+							Actualizado en
 						</th>
 						<th
 							class="px-6 py-4 text-right text-xs font-bold tracking-wider text-light-two uppercase"

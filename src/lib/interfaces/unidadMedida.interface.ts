@@ -3,6 +3,7 @@ export interface UnidadMedida {
 	esta_activo: boolean;
 	nombre: string;
 	abreviatura: string;
+	codigo_fact: string;
 	updatedAt: string;
 	createdAt: string;
 }

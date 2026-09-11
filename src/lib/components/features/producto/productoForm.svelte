@@ -535,7 +535,7 @@
 								<Select label="UNIDAD MEDIDA" bind:value={formData.id_unidad_medida} required>
 									<option value="" disabled selected>-- SELECCIONAR --</option>
 									{#each unidades as uni (uni.id)}
-										<option value={uni.id}>{uni.nombre}</option>
+										<option value={uni.id}>{uni.nombre} ({uni.abreviatura})</option>
 									{/each}
 								</Select>
 							</div>

@@ -152,14 +152,12 @@
 	}
 
 	function openAddPres() {
-		loadDropdowns();
 		isEditPres = false;
 		currentPresId = null;
 		showModalPres = true;
 	}
 
 	function openEditPres(pres: Presentacion) {
-		loadDropdowns();
 		isEditPres = true;
 		currentPresId = pres.id;
 		showModalPres = true;
@@ -232,6 +230,12 @@
 		try {
 			if (showLoading) isLoading = true;
 			producto = await productoService.getProductoConLotes(id);
+			console.log('prodicuto', producto);
+			if (producto?.extraData) {
+				categorias = producto.extraData.categorias || [];
+				marcas = producto.extraData.marcas || [];
+				unidades = producto.extraData.unidades_medida as import('$lib/interfaces').UnidadMedida[] || [];
+			}
 		} catch (error) {
 			console.error('Error loading product:', error);
 		} finally {
@@ -239,41 +243,35 @@
 		}
 	}
 
-	async function loadDropdowns() {
-		if (categorias.length > 0) return; // already loaded
-		loadingDropdowns = true;
-		try {
-			const [catData, marcaData, unidadData] = await Promise.all([
-				categoriaService.getCategorias(),
-				marcaService.getMarcas(),
-				unidadMedidaService.getUnidadMedidas()
-			]);
-			categorias = catData.categorias;
-			marcas = marcaData.marcas;
-			unidades = unidadData.unidadMedidas as UnidadMedida[];
-		} catch (e) {
-			console.error('Error loading dropdowns:', e);
-		} finally {
-			loadingDropdowns = false;
-		}
-	}
-
 	function enterEditMode() {
 		if (!producto) return;
+		fotoFile = null;
+		fotoPreview = null;
+		saveError = null;
+
 		form = {
 			nombre_comercial: producto.nombre_comercial,
 			descripcion: producto.descripcion ?? '',
 			codigo_barras: producto.codigo_barras ?? '',
-			id_categoria: producto.id_categoria,
-			id_marca: producto.id_marca,
-			id_unidad_medida: producto.id_unidad_medida,
+			id_categoria:
+				producto.id_categoria ||
+				(producto.categoria as any)?.id ||
+				categorias.find((c) => c.nombre === producto?.categoria?.nombre)?.id ||
+				'',
+			id_marca:
+				producto.id_marca ||
+				(producto.marca as any)?.id ||
+				marcas.find((m) => m.nombre === producto?.marca?.nombre)?.id ||
+				'',
+			id_unidad_medida:
+				producto.id_unidad_medida ||
+				(producto.unidad_medida as any)?.id ||
+				unidades.find((u) => u.nombre === producto?.unidad_medida?.nombre)?.id ||
+				'',
 			stock_minimo: producto.stock_minimo ?? 0,
 			precio_venta: producto.precio_venta ?? 0,
 			maneja_vencimiento: producto.maneja_vencimiento ?? false
 		};
-		fotoFile = null;
-		fotoPreview = null;
-		loadDropdowns();
 		isEditMode = true;
 	}
 
@@ -305,19 +303,19 @@
 
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const updated = await productoService.updateProducto(id, dto as any);
-			
+
 			const cat = categorias.find((c) => c.id === form.id_categoria);
 			const mar = marcas.find((m) => m.id === form.id_marca);
 			const uni = unidades.find((u) => u.id === form.id_unidad_medida);
 
-			producto = { 
-				...producto, 
+			producto = {
+				...producto,
 				...updated,
 				categoria: cat || undefined,
 				marca: mar || undefined,
 				unidad_medida: uni || undefined
 			};
-			
+
 			isEditMode = false;
 			fotoFile = null;
 			fotoPreview = null;
@@ -760,17 +758,17 @@
 
 								<!-- Descripción -->
 								{#if producto.descripcion}
-								<div class="col-span-full flex flex-col gap-1.5">
-									<span
-										class="text-[0.6rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
-										>Descripción</span
-									>
-									<div class="rounded-lg border border-[#e8e0d8] bg-[#f8f5f0] px-3 py-2">
-										<Text variant="body-sm" color="primary">
-											{producto.descripcion}
-										</Text>
+									<div class="col-span-full flex flex-col gap-1.5">
+										<span
+											class="text-[0.6rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+											>Descripción</span
+										>
+										<div class="rounded-lg border border-[#e8e0d8] bg-[#f8f5f0] px-3 py-2">
+											<Text variant="body-sm" color="primary">
+												{producto.descripcion}
+											</Text>
+										</div>
 									</div>
-								</div>
 								{/if}
 
 								<!-- Código de Barras -->

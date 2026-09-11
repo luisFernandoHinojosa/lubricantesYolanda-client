@@ -2,6 +2,12 @@ import type { Categoria } from './categoria.interface';
 import type { Marca } from './marca.interface';
 import type { UnidadMedida } from './unidadMedida.interface';
 
+export interface ProductoExtraData {
+	categorias: Categoria[];
+	unidades_medida: UnidadMedida[];
+	marcas: Marca[];
+}
+
 export interface Producto {
 	id: string;
 	codigo_barras: string;
@@ -40,7 +46,9 @@ export interface Producto {
 	stock_actual_consolidado?: number;
 	presentaciones?: Presentacion[];
 	lotes?: Lote[];
+	extraData?: ProductoExtraData;
 }
+
 
 export interface Lote {
 	id: string;

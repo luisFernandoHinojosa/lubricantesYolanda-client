@@ -36,8 +36,12 @@ class ProductoService {
 	}
 
 	async getProductoConLotes(id: string): Promise<Producto> {
-		const response = await apiMilenium.get<ApiResponse<Producto>>(`/productos/lotes/${id}`);
-		return response.data;
+		const response = await apiMilenium.get<ApiResponse<Producto> & { extraData?: import('$lib/interfaces').ProductoExtraData }>(`/productos/lotes/${id}`);
+		const result = response.data;
+		if (response.extraData) {
+			result.extraData = response.extraData;
+		}
+		return result;
 	}
 
 	async getHistorialCostos(id_producto: string): Promise<HistorialCostoLote[]> {

@@ -18,7 +18,7 @@
 
 	let filters = $state({
 		page: 1,
-		perPage: 15,
+		perPage: 30,
 		search: '',
 		metodo_pago: '',
 		desde: '',

@@ -2,6 +2,7 @@
 	import { DotsVerticalIcon, EyeIcon, PencilIcon, TrashIcon } from '$lib/icons/outline';
 	import type { UnidadMedida, DropdownOption } from '$lib/interfaces';
 	import { DropdownMenu } from '$lib/components/ui';
+	import { formatDateTime, formatValue } from '$lib/utils';
 	interface Props {
 		unidadMedida: UnidadMedida;
 		onEdit: (unidadMedida: UnidadMedida) => void;
@@ -44,10 +45,19 @@
 
 <tr class="text-light-black hover:bg-light-one_d">
 	<td class="px-6 py-4 text-sm whitespace-nowrap">
-		{unidadMedida.nombre}
+		{formatValue(unidadMedida.nombre)}
 	</td>
 	<td class="px-6 py-4 text-sm whitespace-nowrap">
-		{unidadMedida.abreviatura}
+		{formatValue(unidadMedida.abreviatura)}
+	</td>
+	<td class="px-6 py-4 text-sm whitespace-nowrap">
+		{formatValue(unidadMedida.codigo_fact)}
+	</td>
+	<td class="px-6 py-4 text-sm whitespace-nowrap">
+		{formatDateTime(unidadMedida.createdAt)}
+	</td>
+	<td class="px-6 py-4 text-sm whitespace-nowrap">
+		{formatDateTime(unidadMedida.updatedAt)}
 	</td>
 	<td class="px-6 py-4 text-right text-sm whitespace-nowrap">
 		<div class="relative flex items-start justify-end">

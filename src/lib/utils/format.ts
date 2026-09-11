@@ -87,6 +87,22 @@ export function formatDate(dateString?: string): string {
 		year: 'numeric'
 	});
 }
+
+export function formatDateTime(dateString?: string): string {
+	if (isNullish(dateString)) return NO_DATA_LABEL;
+	
+	const date = new Date(dateString);
+	if (isNaN(date.getTime())) return NO_DATA_LABEL;
+
+	return date.toLocaleString('es-ES', {
+		day: '2-digit',
+		month: 'short',
+		year: 'numeric',
+		hour: '2-digit',
+		minute: '2-digit',
+		hour12: true
+	});
+}
 /**
  * Booleanos
  */
