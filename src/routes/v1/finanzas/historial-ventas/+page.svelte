@@ -5,7 +5,7 @@
 	import { Heading, Pagination, ModalConfirm } from '$lib/components/ui';
 	import { ZoomIcon } from '$lib/icons/outline';
 	import VentaDetalleModal from '$lib/components/features/puntoventas/ventas/ventaDetalleModal.svelte';
-	import { ReciboModal, VentaTableRow } from '$lib/components/features/puntoventas/ventas';
+	import { ReciboModal, VentaTableRow, VentaTableRowSkeleton } from '$lib/components/features/puntoventas/ventas';
 	import { MainLayout } from '$lib/components/layout';
 	import { alert } from '$lib/utils';
 	//import { toast } from 'svelte-sonner';
@@ -13,6 +13,12 @@
 	let ventas = $state<VentaListItem[]>([]);
 	let total = $state(0);
 	let totalMontoVentas = $state(0);
+	let widgets = $state({
+		cantidad_ventas_registradas: 0,
+		cantidad_ventas_anuladas: 0,
+		total_monto_registradas: 0,
+		total_monto_anuladas: 0
+	});
 	let totalPages = $state(1);
 	let isLoading = $state(true);
 
@@ -95,6 +101,9 @@
 			ventas = response.ventas;
 			total = response.total;
 			totalMontoVentas = response.totalMontoVentas;
+			if (response.widgets) {
+				widgets = response.widgets;
+			}
 			totalPages = response.totalPages;
 		} catch (error) {
 			console.error('Error fetching sales history:', error);
@@ -238,7 +247,7 @@
 			<Heading level="h4">Historial de Ventas</Heading>
 		</div>
 
-		<div class="grid grid-cols-2 gap-4">
+		<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
 			<div
 				class="group relative flex-1 overflow-hidden rounded-xl bg-[#B91C1C] p-4 text-white shadow-md"
 			>
@@ -246,7 +255,7 @@
 					<div class="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase opacity-80">
 						<span>Ventas Registradas</span>
 					</div>
-					<div class="text-4xl font-extrabold tracking-tighter">{total}</div>
+					<div class="text-4xl font-extrabold tracking-tighter">{widgets.cantidad_ventas_registradas}</div>
 				</div>
 			</div>
 
@@ -255,10 +264,34 @@
 			>
 				<div>
 					<div class="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase opacity-80">
-						<span>Monto Total</span>
+						<span>Monto Registradas</span>
 					</div>
 					<div class="text-3xl font-extrabold tracking-tighter">
-						{formatCurrency(totalMontoVentas)}
+						{formatCurrency(widgets.total_monto_registradas)}
+					</div>
+				</div>
+			</div>
+
+			<div
+				class="group relative flex-1 overflow-hidden rounded-xl bg-gray-500 p-4 text-white shadow-md"
+			>
+				<div class="relative">
+					<div class="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase opacity-80">
+						<span>Ventas Anuladas</span>
+					</div>
+					<div class="text-4xl font-extrabold tracking-tighter">{widgets.cantidad_ventas_anuladas}</div>
+				</div>
+			</div>
+
+			<div
+				class="flex flex-1 overflow-hidden rounded-xl border border-gray-500/20 bg-white p-4 text-gray-500 shadow-md"
+			>
+				<div>
+					<div class="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase opacity-80">
+						<span>Monto Anuladas</span>
+					</div>
+					<div class="text-3xl font-extrabold tracking-tighter">
+						{formatCurrency(widgets.total_monto_anuladas)}
 					</div>
 				</div>
 			</div>
@@ -354,11 +387,9 @@
 				</thead>
 				<tbody class="divide-y divide-gray-100">
 					{#if isLoading}
-						<tr>
-							<td colspan="7" class="p-12 text-center font-medium text-light-black/50"
-								>Cargando historial...</td
-							>
-						</tr>
+						{#each Array.from({ length: 8 }, (_, i) => i) as i (i)}
+							<VentaTableRowSkeleton index={i} />
+						{/each}
 					{:else if ventas.length === 0}
 						<tr>
 							<td colspan="7" class="p-12 text-center font-medium text-light-black/50"

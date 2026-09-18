@@ -156,6 +156,12 @@ export interface VentasResponse {
 	ventas: VentaListItem[];
 	total: number;
 	totalMontoVentas: number;
+	widgets: {
+		cantidad_ventas_registradas: number;
+		cantidad_ventas_anuladas: number;
+		total_monto_registradas: number;
+		total_monto_anuladas: number;
+	};
 	page: number;
 	perPage: number;
 	totalPages: number;

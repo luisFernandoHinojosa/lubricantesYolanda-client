@@ -13,3 +13,4 @@ export { default as DescuentoModal } from './DescuentoModal.svelte';
 export { default as CantidadManualModal } from './CantidadManualModal.svelte';
 export { VentasState } from './ventas.svelte';
 export { default as VentaTableRow } from './ventaTableRow.svelte';
+export { default as VentaTableRowSkeleton } from './ventaTableRowSkeleton.svelte';
