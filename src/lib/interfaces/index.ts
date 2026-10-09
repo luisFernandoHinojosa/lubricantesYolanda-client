@@ -22,3 +22,4 @@ export * from './presentacion.interface';
 export * from './inventario_ingresos.interface';
 export * from './layout.interface';
 export * from './sucursal.interface';
+export * from './dataFacturacion';

@@ -85,7 +85,12 @@
 
 			<SalesSummaryPanel
 				carrito={pos.carrito}
+				clienteActivo={pos.clienteActivo}
 				clienteSeleccionado={pos.clienteSeleccionado}
+				clienteForm={pos.clienteForm}
+				facturar={pos.facturar}
+				datosFacturacion={pos.datosFacturacion}
+				onToggleFacturar={() => pos.toggleFacturacion()}
 				montoDescuentoGlobal={pos.montoDescuentoGlobal()}
 				totalFinal={pos.totalFinal}
 				onAbrirCliente={() => (pos.modalCliente = true)}
@@ -115,6 +120,15 @@
 		procesandoVenta={pos.procesandoVenta}
 		pagoSuficiente={pos.pagoSuficiente}
 		cambio={pos.cambio}
+		bind:facturar={pos.facturar}
+		bind:datosFacturacion={pos.datosFacturacion}
+		clienteActivo={pos.clienteActivo}
+		clienteForm={pos.clienteForm}
+		clienteSeleccionado={pos.clienteSeleccionado}
+		onAbrirClienteModal={() => {
+			pos.modalPago = false;
+			pos.modalCliente = true;
+		}}
 		onCerrar={() => (pos.modalPago = false)}
 		onFinalizarVenta={() => pos.finalizarVenta()}
 		fmt={pos.fmt}
@@ -147,15 +161,20 @@
 
 {#if pos.modalCliente}
 	<ClienteModal
+		bind:clienteActivo={pos.clienteActivo}
 		clienteSeleccionado={pos.clienteSeleccionado}
+		bind:clienteForm={pos.clienteForm}
+		clienteEncontrado={pos.clienteEncontrado}
+		buscandoCi={pos.buscandoCi}
+		bind:facturar={pos.facturar}
+		bind:datosFacturacion={pos.datosFacturacion}
 		bind:busquedaCliente={pos.busquedaCliente}
 		buscandoCliente={pos.buscandoCliente}
 		resultadosCliente={pos.resultadosCliente}
 		onCerrar={() => (pos.modalCliente = false)}
-		onSeleccionarCliente={(c) => {
-			pos.clienteSeleccionado = c;
-			pos.modalCliente = false;
-		}}
+		onBuscarCi={(ci) => pos.buscarClientePorCi(ci)}
+		onSeleccionarPublicoGeneral={() => pos.seleccionarClientePublicoGeneral()}
+		onSeleccionarClienteDeBusqueda={(c) => pos.seleccionarClienteDeBusqueda(c)}
 		onBusquedaCliente={(e) => pos.onBusquedaCliente(e)}
 	/>
 {/if}

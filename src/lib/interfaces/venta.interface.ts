@@ -56,18 +56,38 @@ export interface CartItem {
 	unidad_medida_nombre: string;
 }
 
+export interface ClienteVentaDto {
+	ci: string;
+	nombre: string;
+	apellido_paterno?: string;
+	apellido_materno?: string;
+	fecha_nacimiento?: string;
+	telefono?: string;
+	correo_electronico?: string;
+	genero?: 'M' | 'F' | 'O';
+}
+
+export interface DatosFacturacionDto {
+	razonSocial: string;
+	tipoDocumento: number;
+	numeroDocumento: string;
+}
+
 export interface CreateVentaDto {
 	id_sesion_caja: string;
-	id_cliente: string | null;
-	items: CreateVentaItem[];
+	id_cliente?: string | null;
+	cliente?: ClienteVentaDto;
 	tipo_descuento_global?: 'PORCENTAJE' | 'FIJO' | 'NINGUNO';
 	valor_descuento_global?: number;
+	items: CreateVentaItem[];
 	pagos: {
 		metodo_pago: 'EFECTIVO' | 'QR' | 'TARJETA' | 'TRANSFERENCIA' | 'CHEQUE' | 'OTRO';
 		monto: number;
 		referencia?: string;
 	}[];
 	notas?: string;
+	facturar: boolean;
+	datos_facturacion?: DatosFacturacionDto;
 }
 
 export interface CreateVentaItem {
@@ -78,14 +98,43 @@ export interface CreateVentaItem {
 	numero_serie?: string | null;
 }
 
+export interface FacturaVentaResponse {
+	id: string;
+	id_venta: string;
+	estado: string;
+	numero_factura: number;
+	cuf: string;
+	url_factura_pdf: string;
+	xml_factura?: string;
+	monto_iva?: string;
+	errores_facturacion?: string | null;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface ResultadoFacturacionResponse {
+	success: boolean;
+	numeroFactura?: number;
+	cuf?: string;
+	urlPdf?: string;
+	error?: string;
+}
+
 export interface VentaResponse {
 	id: string;
 	numero_comprobante: string;
+	id_sucursal?: string;
+	id_sesion_caja?: string;
+	id_empleado?: string;
+	id_cliente?: string | null;
 	total: string;
 	subtotal: string;
+	tipo_descuento_global?: string;
+	valor_descuento_global?: string;
 	monto_descuento_global: string;
 	cambio_entregado: string;
 	monto_pagado: string;
+	notas?: string | null;
 	pagos: {
 		id: string;
 		metodo_pago: string;
@@ -93,15 +142,30 @@ export interface VentaResponse {
 		referencia: string | null;
 	}[];
 	createdAt: string;
-	cliente: {
+	cliente?: {
+		id: string;
+		nombre: string;
+		apellido_paterno?: string;
+		apellido_materno?: string;
+		ci: string;
+		telefono?: string;
+	} | null;
+	sucursal?: {
+		id: string;
+		nombre: string;
+	};
+	cajero?: {
 		id: string;
 		nombre: string;
 		apellido_paterno: string;
-		apellido_materno: string;
-		ci: string;
+		apellido_materno: string | null;
 	};
+	factura?: FacturaVentaResponse | null;
+	resultado_facturacion?: ResultadoFacturacionResponse | null;
 	detalles: DetalleVentaResponse[];
+	devoluciones?: any[];
 }
+
 
 export interface DetalleVentaResponse {
 	id: string;

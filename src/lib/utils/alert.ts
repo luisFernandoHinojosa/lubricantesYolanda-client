@@ -45,12 +45,20 @@ if (browser) {
 export function alert(
 	type: 'success' | 'error' | 'warning' | 'info',
 	text: string,
-	position: { x: 'left' | 'center' | 'right'; y: 'top' | 'bottom' } = { x: 'right', y: 'top' }
+	position: { x: 'left' | 'center' | 'right'; y: 'top' | 'bottom' } = { x: 'right', y: 'top' },
+	options: { permanent?: boolean } = {}
 ) {
 	if (!browser || !notyf) {
 		console.warn('Notyf is not available on the server');
 		return;
 	}
 
-	notyf.open({ type, message: text, position });
+	const { permanent = false } = options;
+
+	notyf.open({
+		type,
+		message: text,
+		position,
+		...(permanent && { duration: 0, dismissible: true })
+	});
 }

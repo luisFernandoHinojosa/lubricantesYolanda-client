@@ -30,6 +30,20 @@ class ClientesService {
 		return response.data;
 	}
 
+	async getClienteByCi(ci: string): Promise<Cliente | null> {
+		try {
+			const response = await apiMilenium.get<ApiResponse<Cliente>>(`/clientes/ci/${encodeURIComponent(ci)}`);
+			return response.data;
+		} catch (error: any) {
+			try {
+				const fallback = await apiMilenium.get<ApiResponse<Cliente>>(`/ci/${encodeURIComponent(ci)}`);
+				return fallback.data;
+			} catch {
+				return null;
+			}
+		}
+	}
+
 	async createCliente(cliente: CreateClienteDto): Promise<Cliente> {
 		const response = await apiMilenium.post<ApiResponse<Cliente>>('/clientes', cliente);
 		return response.data;
@@ -50,3 +64,5 @@ class ClientesService {
 }
 
 export const clientesService = new ClientesService();
+export const clienteService = clientesService;
+

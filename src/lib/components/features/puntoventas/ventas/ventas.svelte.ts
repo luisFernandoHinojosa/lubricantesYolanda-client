@@ -1,4 +1,5 @@
 import { posService } from '$lib/services/pos.service';
+import { clienteService } from '$lib/services/cliente.service';
 import { alert } from '$lib/utils';
 import type {
 	ProductoPOS,
@@ -8,7 +9,9 @@ import type {
 	VentaResponse,
 	ResumenCierre,
 	ResumenVentasSesion,
-	CreateVentaDto
+	CreateVentaDto,
+	ClienteVentaDto,
+	DatosFacturacionDto
 } from '$lib/interfaces/venta.interface';
 import { SvelteDate } from 'svelte/reactivity';
 import { POS_CARRITO_KEY } from '$lib/constants';
@@ -64,6 +67,38 @@ export class VentasState {
 	busquedaCliente = $state('');
 	resultadosCliente = $state<ClientePOS[]>([]);
 	buscandoCliente = $state(false);
+
+	// Facturación
+	facturar = $state(false);
+	datosFacturacion = $state<DatosFacturacionDto>({
+		razonSocial: '',
+		tipoDocumento: 1, // CI por defecto
+		numeroDocumento: ''
+	});
+
+	// Cliente en la venta actual
+	clienteActivo = $state(false);
+	clienteEncontrado = $state<boolean | null>(null); // null = no buscado aún, true = existe, false = nuevo
+	buscandoCi = $state(false);
+	clienteForm = $state<{
+		ci: string;
+		nombre: string;
+		apellido_paterno: string;
+		apellido_materno: string;
+		fecha_nacimiento: string;
+		telefono: string;
+		correo_electronico: string;
+		genero: 'M' | 'F' | 'O';
+	}>({
+		ci: '',
+		nombre: '',
+		apellido_paterno: '',
+		apellido_materno: '',
+		fecha_nacimiento: '2000-01-01',
+		telefono: '',
+		correo_electronico: '',
+		genero: 'O'
+	});
 
 	descuentoTarget = $state<'global' | string>('global');
 	descuentoTipo = $state<'PORCENTAJE' | 'FIJO'>('FIJO');
@@ -515,11 +550,42 @@ export class VentasState {
 
 	async finalizarVenta() {
 		if (!this.sesionActiva || !this.pagoSuficiente) return;
+
+		// Validaciones de Facturación
+		if (this.facturar) {
+			if (!this.datosFacturacion.numeroDocumento.trim()) {
+				alert('error', 'El número de documento (NIT/CI) es obligatorio para facturar.');
+				return;
+			}
+			if (!this.datosFacturacion.razonSocial.trim()) {
+				alert('error', 'La Razón Social es obligatoria para emitir la factura.');
+				return;
+			}
+			if (!this.datosFacturacion.tipoDocumento) {
+				alert('error', 'Seleccione el tipo de documento de identidad para la factura.');
+				return;
+			}
+		}
+
+		// Validaciones de Cliente si se asigna un cliente
+		if (this.clienteActivo) {
+			if (!this.clienteForm.ci.trim()) {
+				alert('error', 'Ingrese el CI o NIT del cliente.');
+				return;
+			}
+			if (!this.clienteForm.nombre.trim()) {
+				alert('error', 'El nombre del cliente es obligatorio.');
+				return;
+			}
+		}
+
 		this.procesandoVenta = true;
 		try {
 			const dto: CreateVentaDto = {
 				id_sesion_caja: this.sesionActiva.id,
-				id_cliente: this.clienteSeleccionado?.id ?? null,
+				tipo_descuento_global:
+					this.descuentoGlobal.valor > 0 ? this.descuentoGlobal.tipo : 'NINGUNO',
+				valor_descuento_global: this.descuentoGlobal.valor,
 				items: this.carrito.map((i) => ({
 					id_producto: i.id_producto,
 					id_presentacion: i.id_presentacion,
@@ -527,20 +593,60 @@ export class VentasState {
 					monto_descuento: i.monto_descuento,
 					numero_serie: i.numero_serie || null
 				})),
-				tipo_descuento_global:
-					this.descuentoGlobal.valor > 0 ? this.descuentoGlobal.tipo : 'NINGUNO',
-				valor_descuento_global: this.descuentoGlobal.valor,
 				pagos: this.pagos.filter(p => p.monto > 0),
-				notas: this.notasVenta || undefined
+				notas: this.notasVenta || undefined,
+				facturar: this.facturar
 			};
-			this.ultimaVenta = await posService.crearVenta(dto);
+
+			// Si la venta es con cliente, se envía el atributo "cliente"; si es sin cliente, NO se envía
+			if (this.clienteActivo && this.clienteForm.ci.trim() && this.clienteForm.nombre.trim()) {
+				dto.cliente = {
+					ci: this.clienteForm.ci.trim(),
+					nombre: this.clienteForm.nombre.trim(),
+					apellido_paterno: this.clienteForm.apellido_paterno.trim() || undefined,
+					apellido_materno: this.clienteForm.apellido_materno.trim() || undefined,
+					fecha_nacimiento: this.clienteForm.fecha_nacimiento || '2000-01-01',
+					telefono: this.clienteForm.telefono.trim() || undefined,
+					correo_electronico: this.clienteForm.correo_electronico.trim() || undefined,
+					genero: this.clienteForm.genero || 'O'
+				};
+			}
+
+			// Si es facturada, se envían los datos_facturacion
+			if (this.facturar) {
+				dto.datos_facturacion = {
+					razonSocial: this.datosFacturacion.razonSocial.trim(),
+					tipoDocumento: Number(this.datosFacturacion.tipoDocumento) || 1,
+					numeroDocumento: this.datosFacturacion.numeroDocumento.trim()
+				};
+			}
+
+			const venta = await posService.crearVenta(dto);
+			this.ultimaVenta = venta;
 			this.modalPago = false;
 			this.modalRecibo = true;
 			this.carrito = [];
 			this.descuentoGlobal = { tipo: 'PORCENTAJE', valor: 0 };
 			this.notasVenta = '';
-			this.clienteSeleccionado = null;
-			setTimeout(() => window.print(), 500);
+			this.seleccionarClientePublicoGeneral();
+			this.facturar = false;
+			this.datosFacturacion = {
+				razonSocial: '',
+				tipoDocumento: 1,
+				numeroDocumento: ''
+			};
+			setTimeout(() => {
+				window.print();
+				// Se muestra después de imprimir para que la alerta no salga en el recibo
+				if (venta.resultado_facturacion?.success === false) {
+					alert(
+						'error',
+						`La venta ${venta.numero_comprobante} se registró, pero ocurrió un error al emitir la factura. Puede intentar facturarla nuevamente desde la sección Historial de ventas.`,
+						{ x: 'center', y: 'top' },
+						{ permanent: true }
+					);
+				}
+			}, 500);
 		} catch (e: any) {
 			alert('error', e?.message ?? 'Error al registrar la venta');
 		} finally {
@@ -548,7 +654,148 @@ export class VentasState {
 		}
 	}
 
-	// ─── GESTIÓN DE CLIENTES ──────────────────────────────────────────────────
+	// ─── GESTIÓN DE CLIENTES Y FACTURACIÓN ──────────────────────────────────
+	async buscarClientePorCi(ciIngresado?: string) {
+		const ci = (ciIngresado ?? this.clienteForm.ci).trim();
+		if (!ci) {
+			alert('error', 'Ingrese un número de CI o NIT');
+			return;
+		}
+
+		this.buscandoCi = true;
+		try {
+			const cliente = await clienteService.getClienteByCi(ci);
+			if (cliente) {
+				this.clienteActivo = true;
+				this.clienteEncontrado = true;
+				this.clienteForm = {
+					ci: cliente.ci,
+					nombre: cliente.nombre,
+					apellido_paterno: cliente.apellido_paterno || '',
+					apellido_materno: cliente.apellido_materno || '',
+					fecha_nacimiento: cliente.fecha_nacimiento
+						? cliente.fecha_nacimiento.split('T')[0]
+						: '2000-01-01',
+					telefono: cliente.telefono || '',
+					correo_electronico: cliente.correo_electronico || '',
+					genero: (cliente.genero as any) || 'O'
+				};
+				this.clienteSeleccionado = {
+					id: cliente.id,
+					nombre: cliente.nombre,
+					apellido_paterno: cliente.apellido_paterno || '',
+					apellido_materno: cliente.apellido_materno || '',
+					ci: cliente.ci,
+					nit: (cliente as any).nit || cliente.ci,
+					telefono: cliente.telefono || '',
+					direccion: cliente.direccion || '',
+					puntos: cliente.puntos || 0
+				};
+
+				// Autocompletar datos de facturación
+				const nombreCompleto = [cliente.nombre, cliente.apellido_paterno, cliente.apellido_materno]
+					.filter(Boolean)
+					.join(' ');
+
+				if (!this.datosFacturacion.numeroDocumento || this.datosFacturacion.numeroDocumento === ci) {
+					this.datosFacturacion.numeroDocumento = cliente.ci;
+				}
+				if (!this.datosFacturacion.razonSocial) {
+					this.datosFacturacion.razonSocial = nombreCompleto;
+				}
+				alert('success', `Cliente encontrado: ${nombreCompleto}`);
+			} else {
+				this.clienteActivo = true;
+				this.clienteEncontrado = false;
+				this.clienteSeleccionado = null;
+				this.clienteForm.ci = ci;
+				if (!this.datosFacturacion.numeroDocumento) {
+					this.datosFacturacion.numeroDocumento = ci;
+				}
+				alert('info', 'Cliente no registrado. Puede ingresar sus datos para registrarlo con esta venta.');
+			}
+		} catch {
+			this.clienteActivo = true;
+			this.clienteEncontrado = false;
+			this.clienteSeleccionado = null;
+		} finally {
+			this.buscandoCi = false;
+		}
+	}
+
+	seleccionarClientePublicoGeneral() {
+		this.clienteActivo = false;
+		this.clienteSeleccionado = null;
+		this.clienteEncontrado = null;
+		this.clienteForm = {
+			ci: '',
+			nombre: '',
+			apellido_paterno: '',
+			apellido_materno: '',
+			fecha_nacimiento: '2000-01-01',
+			telefono: '',
+			correo_electronico: '',
+			genero: 'O'
+		};
+		if (!this.facturar) {
+			this.datosFacturacion = {
+				razonSocial: '',
+				tipoDocumento: 1,
+				numeroDocumento: ''
+			};
+		}
+	}
+
+	seleccionarClienteDeBusqueda(c: ClientePOS | null) {
+		if (!c) {
+			this.seleccionarClientePublicoGeneral();
+			return;
+		}
+		this.clienteSeleccionado = c;
+		this.clienteActivo = true;
+		this.clienteEncontrado = true;
+		this.clienteForm = {
+			ci: c.ci,
+			nombre: c.nombre,
+			apellido_paterno: c.apellido_paterno || '',
+			apellido_materno: c.apellido_materno || '',
+			fecha_nacimiento: '2000-01-01',
+			telefono: c.telefono || '',
+			correo_electronico: '',
+			genero: 'O'
+		};
+		if (!this.datosFacturacion.numeroDocumento) {
+			this.datosFacturacion.numeroDocumento = c.ci;
+		}
+		const nombreCompleto = [c.nombre, c.apellido_paterno, c.apellido_materno]
+			.filter(Boolean)
+			.join(' ');
+		if (!this.datosFacturacion.razonSocial) {
+			this.datosFacturacion.razonSocial = nombreCompleto;
+		}
+	}
+
+	toggleFacturacion(forzarValor?: boolean) {
+		const nuevoValor = forzarValor !== undefined ? forzarValor : !this.facturar;
+		this.facturar = nuevoValor;
+
+		if (nuevoValor) {
+			if (!this.datosFacturacion.numeroDocumento && this.clienteForm.ci) {
+				this.datosFacturacion.numeroDocumento = this.clienteForm.ci;
+			}
+			if (!this.datosFacturacion.razonSocial && (this.clienteForm.nombre || this.clienteSeleccionado)) {
+				const nom = [
+					this.clienteForm.nombre,
+					this.clienteForm.apellido_paterno,
+					this.clienteForm.apellido_materno
+				]
+					.filter(Boolean)
+					.join(' ');
+				this.datosFacturacion.razonSocial = nom;
+			}
+		}
+	}
+
 	onBusquedaCliente(e: Event) {
 		this.busquedaCliente = (e.target as HTMLInputElement).value;
 		clearTimeout(this.clienteTimeout);

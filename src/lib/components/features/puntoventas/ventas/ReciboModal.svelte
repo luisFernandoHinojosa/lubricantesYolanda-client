@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
-	import { CheckCircleIcon, PrinterIcon } from '$lib/icons/outline';
+	import { CheckCircleIcon, PrinterIcon, FileDescriptionIcon, ArrowUpRightIcon } from '$lib/icons/outline';
 	import { Button } from '$lib/components/ui';
 	import type { VentaResponse } from '$lib/interfaces/venta.interface';
 
@@ -26,6 +26,20 @@
 		titulo = 'Venta registrada',
 		textoBotonCerrar = 'Nueva venta'
 	}: Props = $props();
+
+	// Solo se considera factura si SIAT la emitió; si falló, el ticket sale como nota de venta
+	let facturaEmitida = $derived(
+		!!ultimaVenta.factura &&
+			ultimaVenta.factura.estado !== 'ERROR' &&
+			!!ultimaVenta.factura.numero_factura
+	);
+	let facturaConError = $derived(
+		ultimaVenta.factura?.estado === 'ERROR' || ultimaVenta.resultado_facturacion?.success === false
+	);
+
+	let urlFacturaPdf = $derived(
+		ultimaVenta.factura?.url_factura_pdf || ultimaVenta.resultado_facturacion?.urlPdf || ''
+	);
 
 	// Base64 del logo — se genera una sola vez al montar el componente
 	let logoBase64 = $state('');
@@ -73,13 +87,30 @@
 	</div>
 
 	<div style="margin-bottom:5px; line-height:1.6; word-break:break-word;">
-		<p><strong>N°:</strong> {ultimaVenta.numero_comprobante}</p>
+		{#if facturaEmitida && ultimaVenta.factura}
+			<p style="font-weight:bold; text-align:center; font-size:12px; margin-bottom:4px;">
+				FACTURA COMPRA-VENTA
+			</p>
+			<p><strong>N° Factura:</strong> {ultimaVenta.factura.numero_factura}</p>
+		{/if}
+		<p><strong>N° Comprobante:</strong> {ultimaVenta.numero_comprobante}</p>
 		<p><strong>Fecha:</strong> {fmtDate(ultimaVenta.createdAt)}</p>
 		<p>
 			<strong>Cliente:</strong>
-			{ultimaVenta.cliente.nombre}
-			{ultimaVenta.cliente.apellido_paterno}
+			{#if ultimaVenta.cliente}
+				{ultimaVenta.cliente.nombre} {ultimaVenta.cliente.apellido_paterno || ''}
+			{:else}
+				Público General
+			{/if}
 		</p>
+		{#if ultimaVenta.cliente?.ci}
+			<p><strong>NIT/CI:</strong> {ultimaVenta.cliente.ci}</p>
+		{/if}
+		{#if facturaEmitida && ultimaVenta.factura}
+			<p style="font-size:9px; word-break:break-all; line-height:1.2; margin-top:2px;">
+				<strong>CUF:</strong> {ultimaVenta.factura.cuf}
+			</p>
+		{/if}
 	</div>
 
 	<table
@@ -217,14 +248,59 @@
 		</div>
 
 		<div class="overflow-y-auto p-6 font-mono">
+			{#if facturaEmitida && ultimaVenta.factura}
+				<div class="mb-4 rounded-2xl border border-emerald-300 bg-emerald-50 p-4 font-sans text-xs">
+					<div class="flex items-center justify-between mb-1.5">
+						<div class="flex items-center gap-1.5">
+							<FileDescriptionIcon class="h-4 w-4 text-emerald-600" />
+							<span class="font-bold text-emerald-950 text-sm">
+								Factura N° {ultimaVenta.factura.numero_factura}
+							</span>
+						</div>
+						<span class="rounded-full bg-emerald-600 px-2 py-0.5 font-bold text-[10px] text-white">
+							{ultimaVenta.factura.estado || 'FACTURADA'}
+						</span>
+					</div>
+					<p class="text-[10px] text-emerald-800 font-mono truncate mb-3" title={ultimaVenta.factura.cuf}>
+						CUF: {ultimaVenta.factura.cuf}
+					</p>
+					{#if urlFacturaPdf}
+						<a
+							href={urlFacturaPdf}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="inline-flex items-center justify-center gap-1.5 w-full rounded-xl bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition"
+						>
+							<ArrowUpRightIcon class="h-4 w-4" />
+							Ver / Imprimir Factura Oficial SIAT (PDF)
+						</a>
+					{/if}
+				</div>
+			{:else if facturaConError}
+				<div class="mb-4 rounded-2xl border border-red-300 bg-red-50 p-4 font-sans text-xs">
+					<div class="flex items-center justify-between mb-1.5">
+						<div class="flex items-center gap-1.5">
+							<FileDescriptionIcon class="h-4 w-4 text-red-600" />
+							<span class="font-bold text-red-950 text-sm">Factura no emitida</span>
+						</div>
+						<span class="rounded-full bg-red-600 px-2 py-0.5 font-bold text-[10px] text-white">
+							ERROR
+						</span>
+					</div>
+					<p class="text-[11px] text-red-800">
+						La venta se registró correctamente. Puede volver a facturarla desde Historial de ventas.
+					</p>
+				</div>
+			{/if}
+
 			{@render contenidoTicket()}
 
-			<div class="mt-6 flex gap-3">
+			<div class="mt-6 flex gap-3 font-sans">
 				<Button onclick={onImprimir} variant="secondary" fullWidth>
 					{#snippet leftIcon()}
 						<PrinterIcon class="h-5 w-5" />
 					{/snippet}
-					Imprimir
+					Imprimir Ticket
 				</Button>
 				<Button onclick={onCerrar} variant="primary" fullWidth>{textoBotonCerrar}</Button>
 			</div>
