@@ -1,3 +1,4 @@
+import { fechaLocal } from '$lib/utils/fechas';
 import type {
 	InventarioReportData,
 	InventarioReportFilters
@@ -135,5 +136,5 @@ export async function generateInventarioPdf(data: InventarioReportData): Promise
 	}
 
 	addPdfFooter(doc);
-	doc.save(`reporte-inventario_${new Date().toISOString().split('T')[0]}.pdf`);
+	doc.save(`reporte-inventario_${fechaLocal()}.pdf`);
 }

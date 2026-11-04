@@ -59,6 +59,7 @@ export interface Lote {
 	precio_venta_sugerido: string | number;
 	fecha_vencimiento: string | null;
 	fecha_ingreso: string;
+	esta_activo?: boolean;
 	createdAt: string;
 	updatedAt: string;
 	proveedor?: {

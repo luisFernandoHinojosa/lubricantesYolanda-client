@@ -11,10 +11,31 @@ import type {
 	ResumenVentasSesion,
 	CreateVentaDto,
 	ClienteVentaDto,
-	DatosFacturacionDto
+	PagoVenta
 } from '$lib/interfaces/venta.interface';
 import { SvelteDate } from 'svelte/reactivity';
 import { POS_CARRITO_KEY } from '$lib/constants';
+
+export interface ClienteFormState {
+	ci: string;
+	// Código SIAT: 1=CI, 2=CEX, 3=PAS, 4=OD, 5=NIT
+	tipo_documento: number;
+	complemento: string;
+	nombre: string;
+	apellido_paterno: string;
+	telefono: string;
+	genero: 'M' | 'F' | 'O' | '';
+}
+
+const clienteFormVacio = (): ClienteFormState => ({
+	ci: '',
+	tipo_documento: 1, // CI por defecto
+	complemento: '',
+	nombre: '',
+	apellido_paterno: '',
+	telefono: '',
+	genero: ''
+});
 
 export class VentasState {
 	sesionActiva = $state<SesionCaja | null>(null);
@@ -22,10 +43,7 @@ export class VentasState {
 
 	modalApertura = $state(true);
 	modalCierre = $state(false);
-	modalPago = $state(false);
 	modalRecibo = $state(false);
-	modalCliente = $state(false);
-	modalDescuento = $state(false);
 	modalCantidad = $state(false);
 
 	pendingProduct = $state<{ producto: ProductoPOS; id_presentacion: string | null } | null>(null);
@@ -64,51 +82,34 @@ export class VentasState {
 	itemRecienAgregado = $state<string | null>(null);
 
 	clienteSeleccionado = $state<ClientePOS | null>(null);
-	busquedaCliente = $state('');
-	resultadosCliente = $state<ClientePOS[]>([]);
-	buscandoCliente = $state(false);
 
-	// Facturación
+	// Facturación: la factura se emite con los datos del cliente (CI/NIT, nombre y tipo de documento)
 	facturar = $state(false);
-	datosFacturacion = $state<DatosFacturacionDto>({
-		razonSocial: '',
-		tipoDocumento: 1, // CI por defecto
-		numeroDocumento: ''
-	});
+	// Recargo del IVA que se cobra al cliente cuando la venta es con factura (0 a 100)
+	porcentajeRecargoIva = $state(13);
 
 	// Cliente en la venta actual
 	clienteActivo = $state(false);
 	clienteEncontrado = $state<boolean | null>(null); // null = no buscado aún, true = existe, false = nuevo
 	buscandoCi = $state(false);
-	clienteForm = $state<{
-		ci: string;
-		nombre: string;
-		apellido_paterno: string;
-		apellido_materno: string;
-		fecha_nacimiento: string;
-		telefono: string;
-		correo_electronico: string;
-		genero: 'M' | 'F' | 'O';
-	}>({
-		ci: '',
-		nombre: '',
-		apellido_paterno: '',
-		apellido_materno: '',
-		fecha_nacimiento: '2000-01-01',
-		telefono: '',
-		correo_electronico: '',
-		genero: 'O'
-	});
+	clienteForm = $state<ClienteFormState>(clienteFormVacio());
 
-	descuentoTarget = $state<'global' | string>('global');
-	descuentoTipo = $state<'PORCENTAJE' | 'FIJO'>('FIJO');
-	descuentoValor = $state(0);
+	// El backend registra el cliente si su CI no existe; en ese caso exige el teléfono
+	esClienteNuevo = $derived(
+		this.clienteActivo && this.clienteSeleccionado?.ci !== this.clienteForm.ci.trim()
+	);
+
+	// No se puede facturar a Público General: se requiere un cliente con CI/NIT
+	clienteFacturable = $derived(this.clienteActivo && this.clienteForm.ci.trim().length > 0);
+
 	descuentoGlobal = $state({
 		tipo: 'FIJO' as 'PORCENTAJE' | 'FIJO' | 'NINGUNO',
 		valor: 0
 	});
 
-	pagos = $state<Array<{ metodo_pago: 'EFECTIVO' | 'QR' | 'TARJETA' | 'TRANSFERENCIA' | 'CHEQUE' | 'OTRO'; monto: number; referencia?: string }>>([]);
+	pagos = $state<PagoVenta[]>([{ metodo_pago: 'EFECTIVO', monto: 0 }]);
+	// Mientras el cajero no edite los pagos, el único pago sigue al total de la venta
+	pagoAutomatico = $state(true);
 	notasVenta = $state('');
 	procesandoVenta = $state(false);
 	ultimaVenta = $state<VentaResponse | null>(null);
@@ -118,7 +119,6 @@ export class VentasState {
 	);
 
 	private searchTimeout: unknown;
-	private clienteTimeout: unknown;
 
 	// ─── DERIVADOS ─────────────────────────────────────────────────────────────
 	subtotalItems = $derived(this.carrito.reduce((acc, i) => acc + i.subtotal, 0));
@@ -130,7 +130,21 @@ export class VentasState {
 		return this.descuentoGlobal.valor;
 	});
 
-	totalFinal = $derived(Math.max(0, this.subtotalItems - this.montoDescuentoGlobal()));
+	descuentoExcedido = $derived(this.montoDescuentoGlobal() > this.subtotalItems);
+
+	totalSinRecargo = $derived(Math.max(0, this.subtotalItems - this.montoDescuentoGlobal()));
+
+	recargoIvaValido = $derived(
+		this.porcentajeRecargoIva >= 0 && this.porcentajeRecargoIva <= 100
+	);
+
+	montoRecargoIva = $derived(
+		this.facturar && this.recargoIvaValido && this.porcentajeRecargoIva > 0
+			? Math.round(this.totalSinRecargo * this.porcentajeRecargoIva) / 100
+			: 0
+	);
+
+	totalFinal = $derived(this.totalSinRecargo + this.montoRecargoIva);
 
 	totalPagado = $derived(this.pagos.reduce((acc, p) => acc + (Number(p.monto) || 0), 0));
 
@@ -153,6 +167,11 @@ export class VentasState {
 				}
 			}
 		}
+		$effect(() => {
+			if (this.pagoAutomatico && this.pagos.length === 1) {
+				this.pagos[0].monto = this.totalFinal;
+			}
+		});
 		this.init();
 		this.startTime();
 	}
@@ -315,11 +334,7 @@ export class VentasState {
 			this.carrito = this.carrito.map((i) => {
 				if (i.cartId === existente.cartId) {
 					const nueva_cant = i.cantidad + 1;
-					return {
-						...i,
-						cantidad: nueva_cant,
-						subtotal: Math.max(0, precio * nueva_cant - i.monto_descuento)
-					};
+					return this.conCantidad(i, nueva_cant);
 				}
 				return i;
 			});
@@ -358,6 +373,13 @@ export class VentasState {
 		this.mostrarDropdown = false;
 	}
 
+	// El descuento del ítem es un monto fijo en Bs: si baja la cantidad no puede superar el nuevo total
+	private conCantidad(i: CartItem, cantidad: number): CartItem {
+		const base = i.precio_unitario * cantidad;
+		const monto_descuento = Math.min(i.monto_descuento, base);
+		return { ...i, cantidad, monto_descuento, subtotal: base - monto_descuento };
+	}
+
 	cambiarCantidad(cartId: string, delta: number) {
 		this.carrito = this.carrito
 			.map((i) => {
@@ -367,11 +389,7 @@ export class VentasState {
 					alert('error', `Máximo disponible: ${i.stock_disponible}`);
 					return i;
 				}
-				return {
-					...i,
-					cantidad: nueva,
-					subtotal: Math.max(0, i.precio_unitario * nueva - i.monto_descuento)
-				};
+				return this.conCantidad(i, nueva);
 			});
 	}
 
@@ -382,18 +400,9 @@ export class VentasState {
 				if (i.cartId !== cartId) return i;
 				if (cantidadFinal > i.stock_disponible) {
 					alert('error', `Máximo disponible: ${i.stock_disponible}`);
-					const max = i.stock_disponible;
-					return {
-						...i,
-						cantidad: max,
-						subtotal: Math.max(0, i.precio_unitario * max - i.monto_descuento)
-					};
+					return this.conCantidad(i, i.stock_disponible);
 				}
-				return {
-					...i,
-					cantidad: cantidadFinal,
-					subtotal: Math.max(0, i.precio_unitario * cantidadFinal - i.monto_descuento)
-				};
+				return this.conCantidad(i, cantidadFinal);
 			});
 	}
 
@@ -452,129 +461,87 @@ export class VentasState {
 	}
 
 	// ─── DESCUENTOS Y PAGOS ────────────────────────────────────────────────────
-	abrirDescuento(target: 'global' | string) {
-		this.descuentoTarget = target;
-		if (target === 'global') {
-			this.descuentoTipo = this.descuentoGlobal.tipo === 'NINGUNO' ? 'FIJO' : this.descuentoGlobal.tipo;
-			this.descuentoValor = this.descuentoGlobal.valor;
-		} else {
-			const item = this.carrito.find((i) => i.cartId === target);
-			if (item && item.monto_descuento > 0) {
-				this.descuentoTipo = 'FIJO';
-				this.descuentoValor = item.monto_descuento;
-			} else {
-				this.descuentoTipo = 'FIJO';
-				this.descuentoValor = 0;
-			}
-		}
-		this.modalDescuento = true;
-	}
-
-	aplicarDescuento() {
-		const val = parseFloat(this.descuentoValor as any) || 0;
-		if (this.descuentoTarget === 'global') {
-			const montoGlobal =
-				this.descuentoTipo === 'PORCENTAJE'
-					? (this.subtotalItems * val) / 100
-					: val;
-			if (montoGlobal > this.subtotalItems && this.subtotalItems > 0) {
-				alert('error', 'El descuento no puede ser mayor al subtotal de la venta.');
-				return;
-			}
-			if (this.subtotalItems <= 0 && val > 0) {
-				alert('error', 'No hay productos para aplicar descuento.');
-				return;
-			}
-			this.descuentoGlobal = { tipo: this.descuentoTipo, valor: val };
-		} else {
-			const item = this.carrito.find((i) => i.cartId === this.descuentoTarget);
-			if (item) {
-				const base = item.precio_unitario * item.cantidad;
-				const montoItem =
-					this.descuentoTipo === 'PORCENTAJE'
-						? (base * val) / 100
-						: val;
-				if (montoItem > base) {
-					alert('error', 'El descuento no puede ser mayor al total del producto.');
-					return;
-				}
-			}
-
-			this.carrito = this.carrito.map((i) => {
-				if (i.cartId !== this.descuentoTarget) return i;
-				const base = i.precio_unitario * i.cantidad;
-				const monto =
-					this.descuentoTipo === 'PORCENTAJE'
-						? (base * val) / 100
-						: val;
-				return { ...i, monto_descuento: monto, subtotal: Math.max(0, base - monto) };
-			});
-		}
-		this.modalDescuento = false;
-		if (val === 0) {
-			alert('success', 'Descuento eliminado');
-		} else {
-			alert('success', 'Descuento aplicado');
-		}
-	}
-
-	quitarDescuentoGlobal() {
-		this.descuentoGlobal = { tipo: 'NINGUNO', valor: 0 };
-		alert('success', 'Descuento global eliminado');
-	}
-
-	quitarDescuentoItem(cartId: string) {
+	// Descuento del ítem en Bs, editado directamente en la fila del carrito
+	setDescuentoItem(cartId: string, monto: number) {
 		this.carrito = this.carrito.map((i) => {
 			if (i.cartId !== cartId) return i;
 			const base = i.precio_unitario * i.cantidad;
-			return { ...i, monto_descuento: 0, subtotal: base };
+			let monto_descuento = isNaN(monto) || monto < 0 ? 0 : Math.round(monto * 100) / 100;
+			if (monto_descuento > base) {
+				alert('error', 'El descuento no puede ser mayor al total del producto.');
+				monto_descuento = base;
+			}
+			return { ...i, monto_descuento, subtotal: base - monto_descuento };
 		});
-		alert('success', 'Descuento eliminado');
 	}
 
-	irACobrar() {
-		if (this.carrito.length === 0) return;
+	// El nuevo pago se propone con lo que falta cubrir, para que el cajero solo elija el método
+	agregarPago() {
+		this.pagoAutomatico = false;
+		const falta = Math.max(0, Math.round((this.totalFinal - this.totalPagado) * 100) / 100);
+		this.pagos = [...this.pagos, { metodo_pago: 'QR', monto: falta }];
+	}
+
+	// Al volver a un solo pago, este vuelve a seguir el total de la venta
+	removerPago(index: number) {
+		this.pagos = this.pagos.filter((_, i) => i !== index);
+		if (this.pagos.length === 1) this.pagoAutomatico = true;
+	}
+
+	marcarPagoManual() {
+		this.pagoAutomatico = false;
+	}
+
+	private validarCarrito(): boolean {
+		if (this.carrito.length === 0) return false;
 		const productoConCero = this.carrito.find((i) => i.cantidad <= 0);
 		if (productoConCero) {
 			alert('error', `El producto "${productoConCero.nombre_comercial}" no puede tener cantidad cero.`);
-			return;
+			return false;
 		}
 		const sinSerie = this.carrito.find((i) => i.maneja_serie && !i.numero_serie.trim());
 		if (sinSerie) {
 			alert('error', `Ingrese número de serie para: ${sinSerie.nombre_comercial}`);
-			return;
+			return false;
 		}
-		this.pagos = [{ metodo_pago: 'EFECTIVO', monto: this.totalFinal }];
-		this.modalPago = true;
+		return true;
 	}
 
 	async finalizarVenta() {
-		if (!this.sesionActiva || !this.pagoSuficiente) return;
+		if (!this.sesionActiva || !this.validarCarrito() || !this.pagoSuficiente) return;
+
+		if (this.descuentoExcedido) {
+			alert('error', 'El descuento no puede ser mayor al subtotal de la venta.');
+			return;
+		}
 
 		// Validaciones de Facturación
-		if (this.facturar) {
-			if (!this.datosFacturacion.numeroDocumento.trim()) {
-				alert('error', 'El número de documento (NIT/CI) es obligatorio para facturar.');
-				return;
-			}
-			if (!this.datosFacturacion.razonSocial.trim()) {
-				alert('error', 'La Razón Social es obligatoria para emitir la factura.');
-				return;
-			}
-			if (!this.datosFacturacion.tipoDocumento) {
-				alert('error', 'Seleccione el tipo de documento de identidad para la factura.');
-				return;
-			}
+		if (this.facturar && !this.clienteFacturable) {
+			alert('error', 'Para facturar asigne un cliente con CI o NIT. No se puede facturar a Público General.');
+			return;
+		}
+
+		if (this.facturar && !this.recargoIvaValido) {
+			alert('error', 'El recargo del IVA debe estar entre 0 y 100%.');
+			return;
 		}
 
 		// Validaciones de Cliente si se asigna un cliente
 		if (this.clienteActivo) {
 			if (!this.clienteForm.ci.trim()) {
-				alert('error', 'Ingrese el CI o NIT del cliente.');
+				alert('error', 'Ingrese y busque el CI o NIT del cliente.');
 				return;
 			}
 			if (!this.clienteForm.nombre.trim()) {
 				alert('error', 'El nombre del cliente es obligatorio.');
+				return;
+			}
+			if (this.esClienteNuevo && !this.clienteForm.telefono.trim()) {
+				alert('error', 'El teléfono es obligatorio para registrar un cliente nuevo.');
+				return;
+			}
+			if (this.esClienteNuevo && !this.clienteForm.genero) {
+				alert('error', 'Seleccione el género para registrar un cliente nuevo.');
 				return;
 			}
 		}
@@ -585,7 +552,8 @@ export class VentasState {
 				id_sesion_caja: this.sesionActiva.id,
 				tipo_descuento_global:
 					this.descuentoGlobal.valor > 0 ? this.descuentoGlobal.tipo : 'NINGUNO',
-				valor_descuento_global: this.descuentoGlobal.valor,
+				// El input vacío deja el valor en null
+				valor_descuento_global: Number(this.descuentoGlobal.valor) || 0,
 				items: this.carrito.map((i) => ({
 					id_producto: i.id_producto,
 					id_presentacion: i.id_presentacion,
@@ -595,46 +563,32 @@ export class VentasState {
 				})),
 				pagos: this.pagos.filter(p => p.monto > 0),
 				notas: this.notasVenta || undefined,
-				facturar: this.facturar
+				facturar: this.facturar,
+				porcentaje_recargo_iva: this.facturar ? Number(this.porcentajeRecargoIva) || 0 : 0
 			};
 
 			// Si la venta es con cliente, se envía el atributo "cliente"; si es sin cliente, NO se envía
 			if (this.clienteActivo && this.clienteForm.ci.trim() && this.clienteForm.nombre.trim()) {
 				dto.cliente = {
 					ci: this.clienteForm.ci.trim(),
+					tipo_documento: Number(this.clienteForm.tipo_documento) || 1,
+					complemento: this.clienteForm.complemento.trim() || undefined,
 					nombre: this.clienteForm.nombre.trim(),
 					apellido_paterno: this.clienteForm.apellido_paterno.trim() || undefined,
-					apellido_materno: this.clienteForm.apellido_materno.trim() || undefined,
-					fecha_nacimiento: this.clienteForm.fecha_nacimiento || '2000-01-01',
 					telefono: this.clienteForm.telefono.trim() || undefined,
-					correo_electronico: this.clienteForm.correo_electronico.trim() || undefined,
-					genero: this.clienteForm.genero || 'O'
-				};
-			}
-
-			// Si es facturada, se envían los datos_facturacion
-			if (this.facturar) {
-				dto.datos_facturacion = {
-					razonSocial: this.datosFacturacion.razonSocial.trim(),
-					tipoDocumento: Number(this.datosFacturacion.tipoDocumento) || 1,
-					numeroDocumento: this.datosFacturacion.numeroDocumento.trim()
+					genero: this.clienteForm.genero || undefined
 				};
 			}
 
 			const venta = await posService.crearVenta(dto);
 			this.ultimaVenta = venta;
-			this.modalPago = false;
 			this.modalRecibo = true;
 			this.carrito = [];
-			this.descuentoGlobal = { tipo: 'PORCENTAJE', valor: 0 };
+			this.descuentoGlobal = { tipo: 'FIJO', valor: 0 };
+			this.pagos = [{ metodo_pago: 'EFECTIVO', monto: 0 }];
+			this.pagoAutomatico = true;
 			this.notasVenta = '';
 			this.seleccionarClientePublicoGeneral();
-			this.facturar = false;
-			this.datosFacturacion = {
-				razonSocial: '',
-				tipoDocumento: 1,
-				numeroDocumento: ''
-			};
 			setTimeout(() => {
 				window.print();
 				// Se muestra después de imprimir para que la alerta no salga en el recibo
@@ -670,15 +624,12 @@ export class VentasState {
 				this.clienteEncontrado = true;
 				this.clienteForm = {
 					ci: cliente.ci,
+					tipo_documento: cliente.tipo_documento ?? 1,
+					complemento: cliente.complemento || '',
 					nombre: cliente.nombre,
 					apellido_paterno: cliente.apellido_paterno || '',
-					apellido_materno: cliente.apellido_materno || '',
-					fecha_nacimiento: cliente.fecha_nacimiento
-						? cliente.fecha_nacimiento.split('T')[0]
-						: '2000-01-01',
 					telefono: cliente.telefono || '',
-					correo_electronico: cliente.correo_electronico || '',
-					genero: (cliente.genero as any) || 'O'
+					genero: cliente.genero || ''
 				};
 				this.clienteSeleccionado = {
 					id: cliente.id,
@@ -687,37 +638,26 @@ export class VentasState {
 					apellido_materno: cliente.apellido_materno || '',
 					ci: cliente.ci,
 					nit: (cliente as any).nit || cliente.ci,
+					tipo_documento: cliente.tipo_documento,
+					complemento: cliente.complemento,
 					telefono: cliente.telefono || '',
 					direccion: cliente.direccion || '',
 					puntos: cliente.puntos || 0
 				};
 
-				// Autocompletar datos de facturación
 				const nombreCompleto = [cliente.nombre, cliente.apellido_paterno, cliente.apellido_materno]
 					.filter(Boolean)
 					.join(' ');
-
-				if (!this.datosFacturacion.numeroDocumento || this.datosFacturacion.numeroDocumento === ci) {
-					this.datosFacturacion.numeroDocumento = cliente.ci;
-				}
-				if (!this.datosFacturacion.razonSocial) {
-					this.datosFacturacion.razonSocial = nombreCompleto;
-				}
 				alert('success', `Cliente encontrado: ${nombreCompleto}`);
 			} else {
 				this.clienteActivo = true;
 				this.clienteEncontrado = false;
 				this.clienteSeleccionado = null;
-				this.clienteForm.ci = ci;
-				if (!this.datosFacturacion.numeroDocumento) {
-					this.datosFacturacion.numeroDocumento = ci;
-				}
-				alert('info', 'Cliente no registrado. Puede ingresar sus datos para registrarlo con esta venta.');
+				this.clienteForm = { ...clienteFormVacio(), ci };
+				alert('info', 'Cliente no registrado. Complete sus datos para registrarlo con esta venta.');
 			}
-		} catch {
-			this.clienteActivo = true;
-			this.clienteEncontrado = false;
-			this.clienteSeleccionado = null;
+		} catch (e: any) {
+			alert('error', e?.message ?? 'No se pudo buscar el cliente');
 		} finally {
 			this.buscandoCi = false;
 		}
@@ -727,87 +667,35 @@ export class VentasState {
 		this.clienteActivo = false;
 		this.clienteSeleccionado = null;
 		this.clienteEncontrado = null;
-		this.clienteForm = {
-			ci: '',
-			nombre: '',
-			apellido_paterno: '',
-			apellido_materno: '',
-			fecha_nacimiento: '2000-01-01',
-			telefono: '',
-			correo_electronico: '',
-			genero: 'O'
-		};
-		if (!this.facturar) {
-			this.datosFacturacion = {
-				razonSocial: '',
-				tipoDocumento: 1,
-				numeroDocumento: ''
-			};
-		}
+		this.clienteForm = clienteFormVacio();
+		// A Público General no se le puede facturar
+		this.facturar = false;
 	}
 
-	seleccionarClienteDeBusqueda(c: ClientePOS | null) {
-		if (!c) {
-			this.seleccionarClientePublicoGeneral();
-			return;
-		}
-		this.clienteSeleccionado = c;
+	// "Cambiar" cliente: sigue siendo venta con cliente, pero vuelve a la búsqueda
+	nuevaBusquedaCliente() {
 		this.clienteActivo = true;
-		this.clienteEncontrado = true;
-		this.clienteForm = {
-			ci: c.ci,
-			nombre: c.nombre,
-			apellido_paterno: c.apellido_paterno || '',
-			apellido_materno: c.apellido_materno || '',
-			fecha_nacimiento: '2000-01-01',
-			telefono: c.telefono || '',
-			correo_electronico: '',
-			genero: 'O'
-		};
-		if (!this.datosFacturacion.numeroDocumento) {
-			this.datosFacturacion.numeroDocumento = c.ci;
-		}
-		const nombreCompleto = [c.nombre, c.apellido_paterno, c.apellido_materno]
-			.filter(Boolean)
-			.join(' ');
-		if (!this.datosFacturacion.razonSocial) {
-			this.datosFacturacion.razonSocial = nombreCompleto;
-		}
+		this.clienteSeleccionado = null;
+		this.clienteEncontrado = null;
+		this.clienteForm = clienteFormVacio();
+	}
+
+	// Cliente nuevo: se registra junto con la venta
+	registrarClienteNuevo(datos: Partial<Pick<ClienteFormState, 'ci' | 'nombre'>> = {}) {
+		this.clienteActivo = true;
+		this.clienteSeleccionado = null;
+		this.clienteEncontrado = false;
+		this.clienteForm = { ...clienteFormVacio(), ...datos };
 	}
 
 	toggleFacturacion(forzarValor?: boolean) {
 		const nuevoValor = forzarValor !== undefined ? forzarValor : !this.facturar;
 		this.facturar = nuevoValor;
 
-		if (nuevoValor) {
-			if (!this.datosFacturacion.numeroDocumento && this.clienteForm.ci) {
-				this.datosFacturacion.numeroDocumento = this.clienteForm.ci;
-			}
-			if (!this.datosFacturacion.razonSocial && (this.clienteForm.nombre || this.clienteSeleccionado)) {
-				const nom = [
-					this.clienteForm.nombre,
-					this.clienteForm.apellido_paterno,
-					this.clienteForm.apellido_materno
-				]
-					.filter(Boolean)
-					.join(' ');
-				this.datosFacturacion.razonSocial = nom;
-			}
+		// Para facturar se necesita un cliente con CI/NIT: si aún no hay, se pasa a "Cliente" para asignarlo
+		if (nuevoValor && !this.clienteFacturable) {
+			this.clienteActivo = true;
 		}
-	}
-
-	onBusquedaCliente(e: Event) {
-		this.busquedaCliente = (e.target as HTMLInputElement).value;
-		clearTimeout(this.clienteTimeout);
-		if (!this.busquedaCliente.trim()) {
-			this.resultadosCliente = [];
-			return;
-		}
-		this.clienteTimeout = setTimeout(async () => {
-			this.buscandoCliente = true;
-			this.resultadosCliente = await posService.buscarClientes(this.busquedaCliente);
-			this.buscandoCliente = false;
-		}, 300);
 	}
 
 	// ─── HELPERS ──────────────────────────────────────────────────────────────
@@ -833,30 +721,18 @@ export class VentasState {
 			e.preventDefault();
 			if (
 				this.carrito.length > 0 &&
-				!this.modalPago &&
+				!this.procesandoVenta &&
 				!this.modalRecibo &&
 				!this.modalCierre &&
 				!this.modalApertura &&
-				!this.modalCliente &&
-				!this.modalDescuento &&
 				!this.modalCantidad
 			)
-				this.irACobrar();
+				this.finalizarVenta();
 		}
 		if (e.key === 'Escape') {
-			this.modalPago = false;
-			this.modalCliente = false;
-			this.modalDescuento = false;
 			this.modalCierre = false;
 			this.modalCantidad = false;
 			this.mostrarDropdown = false;
-		}
-		if (e.key === 'Enter' && this.modalPago && this.pagoSuficiente && !this.procesandoVenta) {
-			const activeTag = document.activeElement?.tagName.toLowerCase();
-			if (activeTag !== 'button') {
-				e.preventDefault();
-				this.finalizarVenta();
-			}
 		}
 	}
 }

@@ -355,6 +355,14 @@
 		redirect('/v1/productos/productos');
 	}
 
+	// Activos primero, inactivos al final
+	const lotesOrdenados = $derived(
+		[...(producto?.lotes ?? [])].sort(
+			(a, b) => Number(a.esta_activo === false) - Number(b.esta_activo === false)
+		)
+	);
+	const lotesInactivos = $derived(lotesOrdenados.filter((l) => l.esta_activo === false).length);
+
 	const stockPercent = $derived(() => {
 		if (!producto) return 0;
 		const actual = producto.stock_actual_consolidado ?? producto.stock_actual ?? 0;
@@ -1016,6 +1024,13 @@
 							<span class="text-[0.62rem] font-bold tracking-[0.05em] text-[#9a8060] uppercase">
 								{producto.lotes?.length || 0} lote{(producto.lotes?.length || 0) !== 1 ? 's' : ''}
 							</span>
+							{#if lotesInactivos > 0}
+								<span
+									class="rounded-[100px] border border-red-500/25 bg-red-500/10 px-[0.5rem] py-[0.1rem] text-[0.6rem] font-bold tracking-[0.05em] text-red-600 uppercase"
+								>
+									{lotesInactivos} inactivo{lotesInactivos !== 1 ? 's' : ''}
+								</span>
+							{/if}
 							<Button
 								variant="secondary"
 								size="sm"
@@ -1030,9 +1045,9 @@
 						</div>
 					</div>
 
-					{#if producto.lotes && producto.lotes.length > 0}
+					{#if lotesOrdenados.length > 0}
 						<div class="flex flex-col gap-4">
-							{#each producto.lotes as lote (lote.id)}
+							{#each lotesOrdenados as lote (lote.id)}
 								<LoteCard
 									{lote}
 									onEdit={() => openEditLote(lote)}

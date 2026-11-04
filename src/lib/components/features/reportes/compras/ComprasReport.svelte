@@ -13,7 +13,7 @@
 		ChevronRightIcon
 	} from '$lib/icons/outline';
 	import Button from '$lib/components/ui/button.svelte';
-	import { alert } from '$lib/utils';
+	import { alert, fechaLocal } from '$lib/utils';
 	import { generateComprasPdf } from '$lib/utils/pdf/compras.pdf';
 
 	Chart.register(...registerables);
@@ -40,8 +40,8 @@
 	const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
 	let filters = $state<CompraReportFilters>({
-		desde: firstDayOfMonth.toISOString().split('T')[0],
-		hasta: now.toISOString().split('T')[0],
+		desde: fechaLocal(firstDayOfMonth),
+		hasta: fechaLocal(now),
 		id_sucursal: '',
 		id_proveedor: '',
 		estado_pago: undefined

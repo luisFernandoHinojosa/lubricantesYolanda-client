@@ -16,6 +16,8 @@
 
 	let { lote, onEdit, onDelete, onStockUpdate }: Props = $props();
 
+	const isInactivo = $derived(lote.esta_activo === false);
+
 	let isAjusteModalOpen = $state(false);
 	let selectedStockDistId = $state<string | null>(null);
 	let ajusteTipo = $state<'sumar' | 'restar'>('sumar');
@@ -53,7 +55,9 @@
 </script>
 
 <div
-	class="group relative flex flex-col gap-4 rounded-2xl border border-[#e8e0d8] bg-white p-5 transition-all hover:border-[#b09475] hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
+	class="group relative flex flex-col gap-4 rounded-2xl border p-5 transition-all hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] {isInactivo
+		? 'border-dashed border-[#d6cdc2] bg-[#faf8f5] hover:border-[#b09475]'
+		: 'border-[#e8e0d8] bg-white hover:border-[#b09475]'}"
 >
 	<!-- Botones de Acción -->
 	<div
@@ -85,14 +89,28 @@
 			<div class="flex h-7 w-7 items-center justify-center rounded-lg bg-[#f5f0e8] text-[#8b7355]">
 				<HashIcon class="size-4" />
 			</div>
-			<Text variant="body-sm" color="primary" weight="bold" class="tracking-tight uppercase">
+			<Text
+				variant="body-sm"
+				color="primary"
+				weight="bold"
+				class="tracking-tight uppercase {isInactivo ? 'line-through opacity-60' : ''}"
+			>
 				Lote: {lote.codigo_lote}
 			</Text>
 		</div>
+		{#if isInactivo}
+			<span
+				class="inline-flex shrink-0 items-center gap-[0.3rem] rounded-[100px] border border-red-500/25 bg-red-500/10 px-[0.55rem] py-[0.2rem] text-[0.6rem] font-extrabold tracking-[0.05em] text-red-600 uppercase"
+				title="Este lote está inactivo y no suma al inventario consolidado"
+			>
+				<span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+				Inactivo
+			</span>
+		{/if}
 	</div>
 
 	<!-- Info Grid -->
-	<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+	<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 {isInactivo ? 'opacity-60 grayscale' : ''}">
 		<!-- Proveedor -->
 		<div class="col-span-full flex items-center gap-2 rounded-lg bg-[#f8f5f0] p-2">
 			<TruckIcon class="size-4 text-[#9a8060]" />
@@ -160,7 +178,11 @@
 
 	<!-- Distribuciones -->
 	{#if lote.stock_distribuciones && lote.stock_distribuciones.length > 0}
-		<div class="mt-1 flex flex-col gap-2 rounded-xl bg-[#f8f5f0] p-3">
+		<div
+			class="mt-1 flex flex-col gap-2 rounded-xl bg-[#f8f5f0] p-3 {isInactivo
+				? 'opacity-60 grayscale'
+				: ''}"
+		>
 			<span class="text-[0.55rem] font-black tracking-widest text-[#9a8060] uppercase"
 				>Distribución por Ubicación</span
 			>

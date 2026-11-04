@@ -14,7 +14,7 @@
 		ChevronRightIcon,
 		TredingUpIcon
 	} from '$lib/icons/outline';
-	import { alert } from '$lib/utils';
+	import { alert, fechaLocal } from '$lib/utils';
 	import { Button } from '$lib/components/ui';
 	import { generateProductosPdf } from '$lib/utils/pdf/productos.pdf';
 
@@ -72,8 +72,8 @@
 	onMount(() => {
 		const now = new Date();
 		const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-		filters.desde = firstDay.toISOString().split('T')[0];
-		filters.hasta = now.toISOString().split('T')[0];
+		filters.desde = fechaLocal(firstDay);
+		filters.hasta = fechaLocal(now);
 
 		loadData();
 	});

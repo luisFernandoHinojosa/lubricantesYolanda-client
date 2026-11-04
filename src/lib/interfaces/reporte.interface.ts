@@ -1,11 +1,7 @@
+import type { MetodoPagoVenta } from './venta.interface';
+
 export type ReportGrouping = 'dia' | 'semana' | 'mes';
-export type PaymentMethodValue =
-	| 'EFECTIVO'
-	| 'TARJETA'
-	| 'TRANSFERENCIA'
-	| 'QR'
-	| 'CHEQUE'
-	| 'OTRO';
+export type PaymentMethodValue = MetodoPagoVenta;
 
 export interface VentaReportFilters {
 	desde: string;

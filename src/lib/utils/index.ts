@@ -5,3 +5,4 @@ export * from './format';
 export * from './validateSchema';
 export * from './alert';
 export * from './portal';
+export * from './fechas';

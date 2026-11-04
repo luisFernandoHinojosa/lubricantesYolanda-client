@@ -8,7 +8,7 @@
 	} from '$lib/interfaces/reporte.interface';
 	import ReportFilterBar from '$lib/components/features/reportes/ReportFilterBar.svelte';
 	import { UsersIcon, ListIcon, AlertTriangleIcon } from '$lib/icons/outline';
-	import { alert, formatDate } from '$lib/utils';
+	import { alert, formatDate, fechaLocal } from '$lib/utils';
 	import { Button } from '$lib/components/ui';
 	import { generateSesionesPdf } from '$lib/utils/pdf/sesiones.pdf';
 
@@ -57,8 +57,8 @@
 	onMount(() => {
 		const now = new Date();
 		const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-		filters.desde = firstDay.toISOString().split('T')[0];
-		filters.hasta = now.toISOString().split('T')[0];
+		filters.desde = fechaLocal(firstDay);
+		filters.hasta = fechaLocal(now);
 
 		loadData();
 	});

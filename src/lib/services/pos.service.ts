@@ -9,7 +9,7 @@ import type {
 	CerrarCajaDto,
 	ResumenCierre,
 	ResumenVentasSesion,
-	ClientePOS
+	MetodoPagoVenta
 } from '$lib/interfaces/venta.interface';
 
 // ─── CATÁLOGO POS ────────────────────────────────────────────────────────────
@@ -77,6 +77,43 @@ export const posService = {
 		return response.data;
 	},
 
+	// Emite la factura SIAT de una venta que nunca tuvo factura
+	// El backend calcula el monto del recargo a partir del porcentaje (igual que al crear la venta)
+	// y lo registra como un pago más con el método indicado.
+	// Con id_cliente la venta pasa a ese cliente registrado (solo ventas de la caja abierta).
+	async facturarVenta(
+		id: string,
+		porcentaje_recargo_iva: number,
+		metodo_pago_recargo: MetodoPagoVenta = 'EFECTIVO',
+		id_cliente?: string
+	): Promise<VentaResponse> {
+		const response = await apiMilenium.post<ApiResponse<VentaResponse>>(`/ventas/${id}/facturar`, {
+			porcentaje_recargo_iva,
+			metodo_pago_recargo,
+			...(id_cliente ? { id_cliente } : {})
+		});
+		return response.data;
+	},
+
+	// Vuelve a emitir la factura de una venta cuya factura falló (ERROR) o se anuló.
+	// Los montos no cambian; con id_cliente la venta pasa a ese cliente ya registrado.
+	async reintentarFactura(id: string, id_cliente?: string): Promise<VentaResponse> {
+		const response = await apiMilenium.post<ApiResponse<VentaResponse>>(
+			`/ventas/${id}/reintentar-factura`,
+			id_cliente ? { id_cliente } : {}
+		);
+		return response.data;
+	},
+
+	// Anula en el SIAT la factura vigente; la venta y su recargo no cambian
+	async anularFactura(id: string): Promise<{ status: string; message: string; data: VentaResponse }> {
+		const response = await apiMilenium.post<{ status: string; message: string; data: VentaResponse }>(
+			`/ventas/${id}/anular-factura`,
+			{}
+		);
+		return response;
+	},
+
 	async anularVenta(id: string): Promise<{ status: string; message: string }> {
 		const response = await apiMilenium.put<{ status: string; message: string }>(
 			`/ventas/${id}/anular`,
@@ -114,15 +151,5 @@ export const posService = {
 			data
 		);
 		return response.data;
-	},
-
-	// ─── CLIENTES ─────────────────────────────────────────────────────────────
-
-	async buscarClientes(q: string): Promise<ClientePOS[]> {
-		const params = new URLSearchParams({ search: q, perPage: '10' });
-		const response = await apiMilenium.get<{ status: string; data: { clientes: ClientePOS[] } }>(
-			`/clientes?${params}`
-		);
-		return response.data.clientes ?? [];
 	}
 };

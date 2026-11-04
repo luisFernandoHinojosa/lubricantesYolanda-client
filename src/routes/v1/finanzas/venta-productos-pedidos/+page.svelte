@@ -7,11 +7,8 @@
 		ProductSearchControl,
 		ProductResultDropdown,
 		CartTable,
-		SalesSummaryPanel,
-		PagoModal,
+		VentaPanel,
 		ReciboModal,
-		ClienteModal,
-		DescuentoModal,
 		CantidadManualModal,
 		VentasState
 	} from '$lib/components/features/puntoventas/ventas';
@@ -41,64 +38,50 @@
 			fmt={pos.fmt}
 		/>
 
-		<ProductSearchControl
-			bind:modoBusqueda={pos.modoBusqueda}
-			busqueda={pos.busqueda}
-			buscando={pos.buscando}
-			onModoBusqueda={(modo) => {
-				pos.modoBusqueda = modo;
-				pos.busqueda = '';
-				if (modo === 'TEXTO') pos.buscarProductos('');
-				else pos.productos = [];
-				pos.mostrarDropdown = false;
-				document.getElementById('scan-input')?.focus();
-			}}
-			onBusqueda={(e) => pos.onBusqueda(e)}
-			onBarcode={(e) => pos.onBarcode(e)}
-			onIrACobrar={() => pos.irACobrar()}
-			setMostrarDropdown={(val) => (pos.mostrarDropdown = val)}
-		>
-			{#if pos.modoBusqueda === 'TEXTO' && pos.mostrarDropdown}
-				<ProductResultDropdown
+		<div class="flex min-h-0 flex-1 gap-4 pb-3">
+			<!-- Productos: búsqueda + carrito -->
+			<div class="flex min-w-0 flex-1 flex-col">
+				<ProductSearchControl
+					bind:modoBusqueda={pos.modoBusqueda}
+					busqueda={pos.busqueda}
 					buscando={pos.buscando}
-					productos={pos.productos}
-					onAgregarAlCarrito={(p, id) => pos.agregarAlCarrito(p, id)}
+					onModoBusqueda={(modo) => {
+						pos.modoBusqueda = modo;
+						pos.busqueda = '';
+						if (modo === 'TEXTO') pos.buscarProductos('');
+						else pos.productos = [];
+						pos.mostrarDropdown = false;
+						document.getElementById('scan-input')?.focus();
+					}}
+					onBusqueda={(e) => pos.onBusqueda(e)}
+					onBarcode={(e) => pos.onBarcode(e)}
+					onIrACobrar={() => pos.finalizarVenta()}
+					setMostrarDropdown={(val) => (pos.mostrarDropdown = val)}
+				>
+					{#if pos.modoBusqueda === 'TEXTO' && pos.mostrarDropdown}
+						<ProductResultDropdown
+							buscando={pos.buscando}
+							productos={pos.productos}
+							onAgregarAlCarrito={(p, id) => pos.agregarAlCarrito(p, id)}
+							fmt={pos.fmt}
+						/>
+					{/if}
+				</ProductSearchControl>
+
+				<CartTable
+					carrito={pos.carrito}
+					itemRecienAgregado={pos.itemRecienAgregado}
+					onCambiarCantidad={(id, d) => pos.cambiarCantidad(id, d)}
+					onSetCantidad={(id, n) => pos.setCantidad(id, n)}
+					onEliminarItem={(id) => pos.eliminarItem(id)}
+					onSetDescuentoItem={(id, m) => pos.setDescuentoItem(id, m)}
+					onActualizarSerie={(id, s) => pos.actualizarSerie(id, s)}
 					fmt={pos.fmt}
 				/>
-			{/if}
-		</ProductSearchControl>
+			</div>
 
-		<div class="flex min-h-0 flex-1">
-			<CartTable
-				carrito={pos.carrito}
-				itemRecienAgregado={pos.itemRecienAgregado}
-				subtotalItems={pos.subtotalItems}
-				montoDescuentoGlobal={pos.montoDescuentoGlobal()}
-				onCambiarCantidad={(id, d) => pos.cambiarCantidad(id, d)}
-				onSetCantidad={(id, n) => pos.setCantidad(id, n)}
-				onEliminarItem={(id) => pos.eliminarItem(id)}
-				onAbrirDescuento={(t) => pos.abrirDescuento(t)}
-				onQuitarDescuentoItem={(id) => pos.quitarDescuentoItem(id)}
-				onActualizarSerie={(id, s) => pos.actualizarSerie(id, s)}
-				fmt={pos.fmt}
-			/>
-
-			<SalesSummaryPanel
-				carrito={pos.carrito}
-				clienteActivo={pos.clienteActivo}
-				clienteSeleccionado={pos.clienteSeleccionado}
-				clienteForm={pos.clienteForm}
-				facturar={pos.facturar}
-				datosFacturacion={pos.datosFacturacion}
-				onToggleFacturar={() => pos.toggleFacturacion()}
-				montoDescuentoGlobal={pos.montoDescuentoGlobal()}
-				totalFinal={pos.totalFinal}
-				onAbrirCliente={() => (pos.modalCliente = true)}
-				onAbrirDescuento={(t) => pos.abrirDescuento(t)}
-				onQuitarDescuentoGlobal={() => pos.quitarDescuentoGlobal()}
-				onIrACobrar={() => pos.irACobrar()}
-				fmt={pos.fmt}
-			/>
+			<!-- Configuración y cobro de la venta -->
+			<VentaPanel {pos} />
 		</div>
 	</MainLayout>
 {/if}
@@ -109,29 +92,6 @@
 		bind:cantidadManual={pos.cantidadManual}
 		onCerrar={() => (pos.modalCantidad = false)}
 		onConfirmar={() => pos.confirmarCantidadManual()}
-	/>
-{/if}
-
-{#if pos.modalPago}
-	<PagoModal
-		totalFinal={pos.totalFinal}
-		bind:pagos={pos.pagos}
-		bind:notasVenta={pos.notasVenta}
-		procesandoVenta={pos.procesandoVenta}
-		pagoSuficiente={pos.pagoSuficiente}
-		cambio={pos.cambio}
-		bind:facturar={pos.facturar}
-		bind:datosFacturacion={pos.datosFacturacion}
-		clienteActivo={pos.clienteActivo}
-		clienteForm={pos.clienteForm}
-		clienteSeleccionado={pos.clienteSeleccionado}
-		onAbrirClienteModal={() => {
-			pos.modalPago = false;
-			pos.modalCliente = true;
-		}}
-		onCerrar={() => (pos.modalPago = false)}
-		onFinalizarVenta={() => pos.finalizarVenta()}
-		fmt={pos.fmt}
 	/>
 {/if}
 
@@ -156,39 +116,5 @@
 		onCerrar={() => (pos.modalCierre = false)}
 		onCerrarCaja={() => pos.cerrarCaja()}
 		fmt={pos.fmt}
-	/>
-{/if}
-
-{#if pos.modalCliente}
-	<ClienteModal
-		bind:clienteActivo={pos.clienteActivo}
-		clienteSeleccionado={pos.clienteSeleccionado}
-		bind:clienteForm={pos.clienteForm}
-		clienteEncontrado={pos.clienteEncontrado}
-		buscandoCi={pos.buscandoCi}
-		bind:facturar={pos.facturar}
-		bind:datosFacturacion={pos.datosFacturacion}
-		bind:busquedaCliente={pos.busquedaCliente}
-		buscandoCliente={pos.buscandoCliente}
-		resultadosCliente={pos.resultadosCliente}
-		onCerrar={() => (pos.modalCliente = false)}
-		onBuscarCi={(ci) => pos.buscarClientePorCi(ci)}
-		onSeleccionarPublicoGeneral={() => pos.seleccionarClientePublicoGeneral()}
-		onSeleccionarClienteDeBusqueda={(c) => pos.seleccionarClienteDeBusqueda(c)}
-		onBusquedaCliente={(e) => pos.onBusquedaCliente(e)}
-	/>
-{/if}
-
-{#if pos.modalDescuento}
-	<DescuentoModal
-		descuentoTarget={pos.descuentoTarget}
-		descuentoTipo={pos.descuentoTipo}
-		bind:descuentoValor={pos.descuentoValor}
-		onCerrar={() => (pos.modalDescuento = false)}
-		onAplicarDescuento={() => pos.aplicarDescuento()}
-		onCambiarTipo={(tipo) => {
-			pos.descuentoTipo = tipo;
-			pos.descuentoValor = 0;
-		}}
 	/>
 {/if}

@@ -11,21 +11,21 @@ export const SINCRONIZAR_ACTIVIDADES_FACTURA: SincronizarActividadesFactura[] = 
 		id: 4520100,
 		actived: true,
 		descripcion:
-			'REPARACIONES MECáNICAS, ELéCTRICAS, SISTEMAS DE INYECCIóN ELéCTRICOS Y SERVICIO ORDINARIO',
+			'REPARACIONES MECANICAS, ELECTRICAS, SISTEMAS DE INYECCION ELECTRICOS Y SERVICIO ORDINARIO',
 		tipoActividad: 'S',
 		codigoCaeb: '4520100'
 	},
 	{
 		id: 4530000,
 		actived: true,
-		descripcion: 'VENTA DE PARTES, PIEZAS Y ACCESORIOS PARA VEHíCULOS AUTOMOTORES',
+		descripcion: 'VENTA DE PARTES, PIEZAS Y ACCESORIOS PARA VEHICULOS AUTOMOTORES',
 		tipoActividad: 'S',
 		codigoCaeb: '4530000'
 	},
 	{
 		id: 4730200,
 		actived: true,
-		descripcion: 'VENTA AL POR MENOR DE LUBRICANTES Y REFRIGERANTES PARA VEHíCULOS AUTOMOTORES',
+		descripcion: 'VENTA AL POR MENOR DE LUBRICANTES Y REFRIGERANTES PARA VEHICULOS AUTOMOTORES',
 		tipoActividad: 'P',
 		codigoCaeb: '4730200'
 	}
@@ -93,36 +93,43 @@ export const METODO_PAGO_FACTURA: MetodoPagoFactura[] = [
 	{
 		id: 1,
 		descripcion: 'EFECTIVO',
-		codigoClasificador: 1
-	},
-	{
-		id: 2,
-		descripcion: 'TARJETA',
-		codigoClasificador: 2
-	},
-	{
-		id: 3,
-		descripcion: 'CHEQUE',
-		codigoClasificador: 3
-	},
-	{
-		id: 4,
-		descripcion: 'VALES',
-		codigoClasificador: 4
-	},
-	{
-		id: 5,
-		descripcion: 'OTROS',
-		codigoClasificador: 5
+		codigoClasificador: 1,
+		codigo: 'EFECTIVO'
 	},
 	{
 		id: 7,
 		descripcion: 'TRANSFERENCIA BANCARIA (QR)',
-		codigoClasificador: 7
+		codigoClasificador: 7,
+		codigo: 'QR'
+	},
+	{
+		id: 2,
+		descripcion: 'TARJETA',
+		codigoClasificador: 2,
+		codigo: 'TARJETA'
+	},
+	{
+		id: 3,
+		descripcion: 'CHEQUE',
+		codigoClasificador: 3,
+		codigo: 'CHEQUE'
+	},
+	{
+		id: 4,
+		descripcion: 'VALES',
+		codigoClasificador: 4,
+		codigo: 'VALES'
+	},
+	{
+		id: 5,
+		descripcion: 'OTROS',
+		codigoClasificador: 5,
+		codigo: 'OTROS'
 	},
 	{
 		id: 8,
 		descripcion: 'DEPOSITO EN CUENTA',
-		codigoClasificador: 8
+		codigoClasificador: 8,
+		codigo: 'DEPOSITO'
 	}
 ];

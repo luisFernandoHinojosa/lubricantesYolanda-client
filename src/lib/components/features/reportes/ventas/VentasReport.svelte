@@ -4,7 +4,7 @@
 	import { reporteService } from '$lib/services/reporte.service';
 	import type { VentaReportData, VentaReportFilters } from '$lib/interfaces/reporte.interface';
 	import ReportFilterBar from '$lib/components/features/reportes/ReportFilterBar.svelte';
-	import { alert } from '$lib/utils';
+	import { alert, fechaLocal } from '$lib/utils';
 	import { generateVentasPdf } from '$lib/utils/pdf/ventas.pdf';
 	import { PencilIcon, ShoppingCartIcon } from '$lib/icons/outline';
 	import { CoinIcon } from '$lib/icons/solid';
@@ -18,8 +18,8 @@
 	const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 	console.log('data', data);
 	let filters = $state<VentaReportFilters & { page: number; perPage: number }>({
-		desde: firstDayOfMonth.toISOString().split('T')[0],
-		hasta: now.toISOString().split('T')[0],
+		desde: fechaLocal(firstDayOfMonth),
+		hasta: fechaLocal(now),
 		agrupar_por: 'dia',
 		id_sucursal: '',
 		metodo_pago: undefined,

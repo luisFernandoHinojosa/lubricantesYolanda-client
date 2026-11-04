@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fechaLocal } from '$lib/utils';
 	import { onMount } from 'svelte';
 	import { proveedoresService, ubicacionService } from '$lib/services';
 	import type {
@@ -43,7 +44,7 @@
 		id_proveedor: '',
 		costo_compra_unitario: 0,
 		fecha_vencimiento: '',
-		fecha_ingreso: new Date().toISOString().split('T')[0]
+		fecha_ingreso: fechaLocal()
 	});
 
 	onMount(async () => {

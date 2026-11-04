@@ -17,14 +17,14 @@
 		MovimientoStatsSkeleton,
 		HistorialMovimientoTableSkeleton
 	} from '$lib/components/skeletons';
-	import { alert } from '$lib/utils';
+	import { alert, fechaLocal } from '$lib/utils';
 	import { fade } from 'svelte/transition';
 	import { MainLayout } from '$lib/components/layout';
 
 	// Helper for date formatting YYYY-MM-DD
 	const formatDate = (date: Date) => {
 		const d = new Date(date);
-		return d.toISOString().split('T')[0];
+		return fechaLocal(d);
 	};
 
 	// Date range options

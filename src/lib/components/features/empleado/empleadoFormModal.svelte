@@ -2,7 +2,7 @@
 	import { Button, Input, Select, TextArea } from '$lib/components/ui';
 	import { XIcon } from '$lib/icons/outline';
 	import type { Empleado, CreateEmpleadoDto, Rol, Sucursal } from '$lib/interfaces';
-	import { clickOutside, validateSchema } from '$lib/utils';
+	import { clickOutside, validateSchema, fechaLocal } from '$lib/utils';
 	import { EmpleadoRegisterSchema } from '$lib/zod';
 	import { fade, scale } from 'svelte/transition';
 
@@ -276,7 +276,7 @@
 								label="Fecha de Nacimiento"
 								bind:value={formData.fecha_nacimiento}
 								error={validationErrors.fecha_nacimiento}
-								max={new Date().toISOString().split('T')[0]}
+								max={fechaLocal()}
 								disabled={isReadOnly}
 							/>
 						</div>
@@ -358,7 +358,7 @@
 								label="Fecha de Contratación"
 								bind:value={formData.fecha_contratacion}
 								error={validationErrors.fecha_contratacion}
-								max={new Date().toISOString().split('T')[0]}
+								max={fechaLocal()}
 								disabled={isReadOnly}
 							/>
 						</div>

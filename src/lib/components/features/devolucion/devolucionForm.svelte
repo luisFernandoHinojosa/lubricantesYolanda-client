@@ -71,13 +71,15 @@
 			isSearching = true;
 			searchError = '';
 			ventaEncontrada = await devolucionService.buscarVenta(searchQuery.trim());
-			// Prepare item selections
-			itemSelections = ventaEncontrada.detalles.map((d) => ({
-				detalle: d,
-				selected: false,
-				cantidad_devuelta: parseFloat(d.cantidad),
-				max_devolvible: parseFloat(d.cantidad)
-			}));
+			// Solo las líneas con cantidad pendiente de devolver
+			itemSelections = ventaEncontrada.detalles
+				.filter((d) => d.cantidad_disponible > 0)
+				.map((d) => ({
+					detalle: d,
+					selected: false,
+					cantidad_devuelta: d.cantidad_disponible,
+					max_devolvible: d.cantidad_disponible
+				}));
 		} catch (error: any) {
 			searchError = error?.message || 'No se encontró la venta.';
 			ventaEncontrada = null;
@@ -102,11 +104,20 @@
 		return itemSelections.filter((i) => i.selected);
 	}
 
+	// Reembolso estimado, con el mismo criterio del backend: lo que el cliente pagó por la
+	// línea (con su descuento por ítem) más su parte del descuento global y del recargo por
+	// factura. El monto final lo calcula el backend (puede variar en centavos por redondeo).
+	function reembolsoEstimado(detalle: DetalleVentaResponse, cantidad: number): number {
+		if (!ventaEncontrada || ventaEncontrada.subtotal <= 0 || detalle.cantidad <= 0) return 0;
+		const factorVenta = ventaEncontrada.total / ventaEncontrada.subtotal;
+		return Math.round((detalle.subtotal / detalle.cantidad) * factorVenta * cantidad * 100) / 100;
+	}
+
 	let totalDevuelto = $derived(
-		getSelectedItems().reduce((sum, item) => {
-			const precio = parseFloat(item.detalle.precio_unitario);
-			return sum + precio * item.cantidad_devuelta;
-		}, 0)
+		getSelectedItems().reduce(
+			(sum, item) => sum + reembolsoEstimado(item.detalle, item.cantidad_devuelta),
+			0
+		)
 	);
 
 	let canProceedStep2 = $derived(getSelectedItems().length > 0);
@@ -118,7 +129,7 @@
 				id_detalle_venta: item.detalle.id,
 				cantidad_devuelta: item.cantidad_devuelta,
 				producto_original_nombre: item.detalle.producto.nombre_comercial,
-				subtotal_devuelto: parseFloat(item.detalle.precio_unitario) * item.cantidad_devuelta,
+				subtotal_devuelto: reembolsoEstimado(item.detalle, item.cantidad_devuelta),
 				id_producto_nuevo: '',
 				id_presentacion_nueva: null,
 				cantidad_nueva: 1,
@@ -401,8 +412,8 @@
 									>Cliente</span
 								>
 								<p class="mt-0.5 text-sm font-bold text-green-900">
-									{ventaEncontrada.cliente
-										? `${ventaEncontrada.cliente.nombre} ${ventaEncontrada.cliente.apellido_paterno}`
+									{ventaEncontrada.cliente && ventaEncontrada.cliente.ci !== '000000'
+										? ventaEncontrada.cliente.nombre_completo
 										: 'Público General'}
 								</p>
 							</div>
@@ -411,7 +422,7 @@
 									>Items</span
 								>
 								<p class="mt-0.5 text-sm font-bold text-green-900">
-									{ventaEncontrada.detalles.length} producto(s)
+									{itemSelections.length} producto(s)
 								</p>
 							</div>
 						</div>
@@ -503,9 +514,7 @@
 											>Subtotal</span
 										>
 										<p class="text-sm font-bold text-amber-700">
-											{formatCurrency(
-												parseFloat(item.detalle.precio_unitario) * item.cantidad_devuelta
-											)}
+											{formatCurrency(reembolsoEstimado(item.detalle, item.cantidad_devuelta))}
 										</p>
 									</div>
 								{/if}
@@ -850,9 +859,7 @@
 							<div class="text-right">
 								<span class="text-xs text-light-two">× {item.cantidad_devuelta}</span>
 								<span class="ml-2 text-sm font-bold text-light-black">
-									{formatCurrency(
-										parseFloat(item.detalle.precio_unitario) * item.cantidad_devuelta
-									)}
+									{formatCurrency(reembolsoEstimado(item.detalle, item.cantidad_devuelta))}
 								</span>
 							</div>
 						</div>

@@ -28,6 +28,7 @@ export interface CodigoDocumentoSectorFactura {
 
 export interface MetodoPagoFactura {
 	id: number;
-	descripcion: string;
+	codigo: string;
 	codigoClasificador: number;
+	descripcion?: string;
 }

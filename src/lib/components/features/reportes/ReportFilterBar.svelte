@@ -8,6 +8,7 @@
 		empleadosService
 	} from '$lib/services';
 	import type { Sucursal, Proveedor, Categoria, EmpleadoData } from '$lib/interfaces';
+	import { METODO_PAGO_FACTURA } from '$lib/constants/dataFacturacion';
 	import { FiltersIcon, RefreshIcon, PrinterIcon } from '$lib/icons/outline';
 	import { fade } from 'svelte/transition';
 
@@ -169,12 +170,9 @@
 		{#if showPaymentMethod}
 			<Select label="MÉTODO DE PAGO" bind:value={metodo_pago}>
 				<option value="">-- TODOS --</option>
-				<option value="EFECTIVO">Efectivo</option>
-				<option value="TARJETA">Tarjeta</option>
-				<option value="TRANSFERENCIA">Transferencia</option>
-				<option value="QR">QR / Pago Electrónico</option>
-				<option value="CHEQUE">Cheque</option>
-				<option value="OTRO">Otro</option>
+				{#each METODO_PAGO_FACTURA as metodo (metodo.codigo)}
+					<option value={metodo.codigo}>{metodo.descripcion ?? metodo.codigo}</option>
+				{/each}
 			</Select>
 		{/if}
 

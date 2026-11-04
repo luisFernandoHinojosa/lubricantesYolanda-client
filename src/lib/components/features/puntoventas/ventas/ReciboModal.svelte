@@ -27,12 +27,10 @@
 		textoBotonCerrar = 'Nueva venta'
 	}: Props = $props();
 
+	const CI_CLIENTE_GENERICO = '000000';
+
 	// Solo se considera factura si SIAT la emitió; si falló, el ticket sale como nota de venta
-	let facturaEmitida = $derived(
-		!!ultimaVenta.factura &&
-			ultimaVenta.factura.estado !== 'ERROR' &&
-			!!ultimaVenta.factura.numero_factura
-	);
+	let facturaEmitida = $derived(ultimaVenta.factura?.estado === 'FACTURADA');
 	let facturaConError = $derived(
 		ultimaVenta.factura?.estado === 'ERROR' || ultimaVenta.resultado_facturacion?.success === false
 	);
@@ -40,6 +38,14 @@
 	let urlFacturaPdf = $derived(
 		ultimaVenta.factura?.url_factura_pdf || ultimaVenta.resultado_facturacion?.urlPdf || ''
 	);
+
+	let clienteIdentificado = $derived(
+		!!ultimaVenta.cliente && ultimaVenta.cliente.ci !== CI_CLIENTE_GENERICO
+	);
+
+	// El ticket imprime las líneas tal como se vendieron (aunque luego haya devoluciones),
+	// así cuadran con el total cobrado
+	let items = $derived(ultimaVenta.detalles ?? []);
 
 	// Base64 del logo — se genera una sola vez al montar el componente
 	let logoBase64 = $state('');
@@ -94,16 +100,19 @@
 			<p><strong>N° Factura:</strong> {ultimaVenta.factura.numero_factura}</p>
 		{/if}
 		<p><strong>N° Comprobante:</strong> {ultimaVenta.numero_comprobante}</p>
-		<p><strong>Fecha:</strong> {fmtDate(ultimaVenta.createdAt)}</p>
+		<p><strong>Fecha:</strong> {fmtDate(ultimaVenta.fecha)}</p>
+		{#if ultimaVenta.estado === 'ANULADA'}
+			<p style="font-weight:bold; text-align:center;">*** VENTA ANULADA ***</p>
+		{/if}
 		<p>
 			<strong>Cliente:</strong>
-			{#if ultimaVenta.cliente}
-				{ultimaVenta.cliente.nombre} {ultimaVenta.cliente.apellido_paterno || ''}
+			{#if clienteIdentificado && ultimaVenta.cliente}
+				{ultimaVenta.cliente.nombre_completo}
 			{:else}
 				Público General
 			{/if}
 		</p>
-		{#if ultimaVenta.cliente?.ci}
+		{#if clienteIdentificado && ultimaVenta.cliente}
 			<p><strong>NIT/CI:</strong> {ultimaVenta.cliente.ci}</p>
 		{/if}
 		{#if facturaEmitida && ultimaVenta.factura}
@@ -131,24 +140,30 @@
 			</tr>
 		</thead>
 		<tbody>
-			{#each ultimaVenta.detalles as det, index (index)}
+			{#each items as det (det.id)}
 				<tr>
 					<td style="padding:1px 2px 1px 0; vertical-align:top; word-break:break-word;">
 						{det.cantidad}
-						{det.producto.unidad_medida.abreviatura}
+						{det.presentacion?.nombre ?? det.producto.unidad_medida?.abreviatura ?? ''}
 					</td>
 					<td
 						style="padding:1px 2px 1px 0; vertical-align:top; word-break:break-word; overflow:hidden;"
 					>
 						{det.producto.nombre_comercial}
+						{#if det.numero_serie}
+							<div style="font-size:0.9em;">S/N: {det.numero_serie}</div>
+						{/if}
+						{#if (det.monto_descuento ?? 0) > 0}
+							<div style="font-size:0.9em;">Desc.: -{fmt(det.monto_descuento ?? 0)}</div>
+						{/if}
 					</td>
 					<td
 						style="text-align:right; padding:1px 2px 1px 0; vertical-align:top; white-space:nowrap;"
 					>
-						{fmtPrec(parseFloat(det.precio_unitario))}
+						{fmtPrec(det.precio_unitario)}
 					</td>
 					<td style="text-align:right; padding:1px 0; vertical-align:top; white-space:nowrap;">
-						{fmt(parseFloat(det.subtotal))}
+						{fmt(det.subtotal)}
 					</td>
 				</tr>
 			{/each}
@@ -160,48 +175,46 @@
 			<tr>
 				<td>Subtotal:</td>
 				<td style="text-align:right; white-space:nowrap;"
-					>{fmt(parseFloat(ultimaVenta.subtotal))}</td
+					>{fmt(ultimaVenta.subtotal)}</td
 				>
 			</tr>
 
-			{#if parseFloat(ultimaVenta.monto_descuento_global) > 0}
+			{#if ultimaVenta.monto_descuento_global > 0}
 				<tr>
-					<td>Descuento:</td>
+					<td>
+						Descuento{ultimaVenta.tipo_descuento_global === 'PORCENTAJE'
+							? ` (${ultimaVenta.valor_descuento_global}%)`
+							: ''}:
+					</td>
 					<td style="text-align:right; white-space:nowrap;"
-						>-{fmt(parseFloat(ultimaVenta.monto_descuento_global))}</td
+						>-{fmt(ultimaVenta.monto_descuento_global)}</td
 					>
 				</tr>
 			{/if}
 
-			<tr style="font-weight:900; font-size:11px; border-top:1px solid #666;">
+			<tr style="border-top:1px solid #666;">
 				<td style="padding-top:3px;">TOTAL:</td>
 				<td style="text-align:right; white-space:nowrap; padding-top:3px;"
-					>{fmt(parseFloat(ultimaVenta.total))}</td
+					>{fmt(ultimaVenta.total)}</td
 				>
 			</tr>
 
 			{#if ultimaVenta.pagos && ultimaVenta.pagos.length > 0}
-				{#each ultimaVenta.pagos as pago}
+				{#each ultimaVenta.pagos as pago, i (i)}
 					<tr>
 						<td>Pagado ({pago.metodo_pago}):</td>
-						<td style="text-align:right; white-space:nowrap;"
-							>{fmt(parseFloat(pago.monto))}</td
-						>
+						<td style="text-align:right; white-space:nowrap;">{fmt(pago.monto)}</td>
 					</tr>
 				{/each}
 			{:else}
 				<tr>
 					<td>Total Pagado:</td>
-					<td style="text-align:right; white-space:nowrap;"
-						>{fmt(parseFloat(ultimaVenta.monto_pagado))}</td
-					>
+					<td style="text-align:right; white-space:nowrap;">{fmt(ultimaVenta.monto_pagado)}</td>
 				</tr>
 			{/if}
 			<tr>
 				<td>Cambio:</td>
-				<td style="text-align:right; white-space:nowrap;"
-					>{fmt(parseFloat(ultimaVenta.cambio_entregado))}</td
-				>
+				<td style="text-align:right; white-space:nowrap;">{fmt(ultimaVenta.cambio_entregado)}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -258,7 +271,7 @@
 							</span>
 						</div>
 						<span class="rounded-full bg-emerald-600 px-2 py-0.5 font-bold text-[10px] text-white">
-							{ultimaVenta.factura.estado || 'FACTURADA'}
+							{ultimaVenta.factura.estado}
 						</span>
 					</div>
 					<p class="text-[10px] text-emerald-800 font-mono truncate mb-3" title={ultimaVenta.factura.cuf}>
@@ -287,6 +300,11 @@
 							ERROR
 						</span>
 					</div>
+					{#if ultimaVenta.factura?.error || ultimaVenta.resultado_facturacion?.error}
+						<p class="mb-1.5 text-[11px] font-semibold text-red-900">
+							{ultimaVenta.factura?.error || ultimaVenta.resultado_facturacion?.error}
+						</p>
+					{/if}
 					<p class="text-[11px] text-red-800">
 						La venta se registró correctamente. Puede volver a facturarla desde Historial de ventas.
 					</p>

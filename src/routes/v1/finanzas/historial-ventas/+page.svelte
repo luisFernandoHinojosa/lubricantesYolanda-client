@@ -1,24 +1,29 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { posService } from '$lib/services/pos.service';
-	import type { VentaListItem, VentaResponse } from '$lib/interfaces/venta.interface';
+	import type {
+		DatosFacturar,
+		ResumenVentas,
+		VentaListItem,
+		VentaResponse
+	} from '$lib/interfaces/venta.interface';
+	import { METODO_PAGO_FACTURA } from '$lib/constants/dataFacturacion';
 	import { Heading, Pagination, ModalConfirm } from '$lib/components/ui';
 	import { ZoomIcon } from '$lib/icons/outline';
 	import VentaDetalleModal from '$lib/components/features/puntoventas/ventas/ventaDetalleModal.svelte';
-	import { ReciboModal, VentaTableRow, VentaTableRowSkeleton } from '$lib/components/features/puntoventas/ventas';
+	import {
+		FacturarVentaModal,
+		ReciboModal,
+		VentaTableRow,
+		VentaTableRowSkeleton
+	} from '$lib/components/features/puntoventas/ventas';
 	import { MainLayout } from '$lib/components/layout';
-	import { alert } from '$lib/utils';
+	import { alert, fechaLocal } from '$lib/utils';
 	//import { toast } from 'svelte-sonner';
 
 	let ventas = $state<VentaListItem[]>([]);
 	let total = $state(0);
-	let totalMontoVentas = $state(0);
-	let widgets = $state({
-		cantidad_ventas_registradas: 0,
-		cantidad_ventas_anuladas: 0,
-		total_monto_registradas: 0,
-		total_monto_anuladas: 0
-	});
+	let resumen = $state<ResumenVentas>({ cantidad_registradas: 0 });
 	let totalPages = $state(1);
 	let isLoading = $state(true);
 
@@ -40,22 +45,22 @@
 		let h = '';
 
 		if (preset === 'hoy') {
-			d = today.toISOString().split('T')[0];
+			d = fechaLocal(today);
 			h = d;
 		} else if (preset === 'ayer') {
 			const yesterday = new Date(today);
 			yesterday.setDate(today.getDate() - 1);
-			d = yesterday.toISOString().split('T')[0];
+			d = fechaLocal(yesterday);
 			h = d;
 		} else if (preset === 'semana') {
 			const start = new Date(today);
 			start.setDate(today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1)); // Lunes
-			d = start.toISOString().split('T')[0];
-			h = today.toISOString().split('T')[0];
+			d = fechaLocal(start);
+			h = fechaLocal(today);
 		} else if (preset === 'mes') {
 			const start = new Date(today.getFullYear(), today.getMonth(), 1);
-			d = start.toISOString().split('T')[0];
-			h = today.toISOString().split('T')[0];
+			d = fechaLocal(start);
+			h = fechaLocal(today);
 		}
 
 		if (preset !== 'custom') {
@@ -94,16 +99,27 @@
 	let isConfirmAnularOpen = $state(false);
 	let idVentaToAnular = $state<string | null>(null);
 
+	let ventaAFacturar = $state<VentaListItem | null>(null);
+	let isFacturando = $state(false);
+	// Caja abierta del cajero: al facturar solo se puede cambiar el cliente en ventas de esa sesión
+	let idSesionAbierta = $state<string | null>(null);
+
+	async function abrirFacturar(venta: VentaListItem) {
+		idSesionAbierta = null;
+		ventaAFacturar = venta;
+		idSesionAbierta = (await posService.getSesionActiva())?.id ?? null;
+	}
+
+	let ventaAAnularFactura = $state<VentaListItem | null>(null);
+	let isAnulandoFactura = $state(false);
+
 	const loadData = async () => {
 		try {
 			isLoading = true;
 			const response = await posService.listarVentas(filters);
 			ventas = response.ventas;
 			total = response.total;
-			totalMontoVentas = response.totalMontoVentas;
-			if (response.widgets) {
-				widgets = response.widgets;
-			}
+			resumen = response.resumen;
 			totalPages = response.totalPages;
 		} catch (error) {
 			console.error('Error fetching sales history:', error);
@@ -202,21 +218,54 @@
 		}
 	}
 
-	function formatCurrency(amount: string | number) {
-		return new Intl.NumberFormat('es-BO', {
-			style: 'currency',
-			currency: 'BOB'
-		}).format(Number(amount));
+	async function confirmFacturar(datos: DatosFacturar) {
+		if (!ventaAFacturar) return;
+		try {
+			isFacturando = true;
+			// Sin factura → facturar; con factura fallida o anulada → volver a emitir (sin cambiar montos)
+			const venta = ventaAFacturar.factura
+				? await posService.reintentarFactura(ventaAFacturar.id, datos.id_cliente)
+				: await posService.facturarVenta(
+						ventaAFacturar.id,
+						datos.porcentaje_recargo_iva,
+						datos.metodo_pago_recargo,
+						datos.id_cliente
+					);
+			if (venta.factura?.estado === 'FACTURADA') {
+				alert('success', `Factura N° ${venta.factura.numero_factura} emitida para ${venta.numero_comprobante}.`);
+			} else {
+				const detalle = venta.factura?.error ?? venta.resultado_facturacion?.error;
+				alert(
+					'error',
+					`No se pudo emitir la factura${detalle ? `: ${detalle}` : '.'} Puede reintentarlo desde el menú de la venta.`,
+					{ x: 'center', y: 'top' },
+					{ permanent: true }
+				);
+			}
+			ventaAFacturar = null;
+			await loadData();
+		} catch (error: any) {
+			console.error('Error facturando venta:', error);
+			alert('error', error?.response?.data?.message || error?.message || 'Error al facturar la venta');
+		} finally {
+			isFacturando = false;
+		}
 	}
 
-	function formatDate(dateString: string) {
-		return new Date(dateString).toLocaleString('es-BO', {
-			year: 'numeric',
-			month: 'short',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit'
-		});
+	async function confirmAnularFactura() {
+		if (!ventaAAnularFactura) return;
+		try {
+			isAnulandoFactura = true;
+			const res = await posService.anularFactura(ventaAAnularFactura.id);
+			alert('success', res.message);
+			await loadData();
+		} catch (error: any) {
+			console.error('Error anulando factura:', error);
+			alert('error', error?.response?.data?.message || error?.message || 'Error al anular la factura');
+		} finally {
+			isAnulandoFactura = false;
+			ventaAAnularFactura = null;
+		}
 	}
 
 	function fmt(n: number) {
@@ -247,54 +296,9 @@
 			<Heading level="h4">Historial de Ventas</Heading>
 		</div>
 
-		<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-			<div
-				class="group relative flex-1 overflow-hidden rounded-xl bg-[#B91C1C] p-4 text-white shadow-md"
-			>
-				<div class="relative">
-					<div class="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase opacity-80">
-						<span>Ventas Registradas</span>
-					</div>
-					<div class="text-4xl font-extrabold tracking-tighter">{widgets.cantidad_ventas_registradas}</div>
-				</div>
-			</div>
-
-			<div
-				class="flex flex-1 overflow-hidden rounded-xl border border-[#B91C1C]/20 bg-white p-4 text-[#B91C1C] shadow-md"
-			>
-				<div>
-					<div class="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase opacity-80">
-						<span>Monto Registradas</span>
-					</div>
-					<div class="text-3xl font-extrabold tracking-tighter">
-						{formatCurrency(widgets.total_monto_registradas)}
-					</div>
-				</div>
-			</div>
-
-			<div
-				class="group relative flex-1 overflow-hidden rounded-xl bg-gray-500 p-4 text-white shadow-md"
-			>
-				<div class="relative">
-					<div class="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase opacity-80">
-						<span>Ventas Anuladas</span>
-					</div>
-					<div class="text-4xl font-extrabold tracking-tighter">{widgets.cantidad_ventas_anuladas}</div>
-				</div>
-			</div>
-
-			<div
-				class="flex flex-1 overflow-hidden rounded-xl border border-gray-500/20 bg-white p-4 text-gray-500 shadow-md"
-			>
-				<div>
-					<div class="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase opacity-80">
-						<span>Monto Anuladas</span>
-					</div>
-					<div class="text-3xl font-extrabold tracking-tighter">
-						{formatCurrency(widgets.total_monto_anuladas)}
-					</div>
-				</div>
-			</div>
+		<div class="min-w-48 overflow-hidden rounded-xl bg-[#B91C1C] p-4 text-white shadow-md">
+			<div class="mb-1 text-[10px] font-bold uppercase opacity-80">Ventas Registradas</div>
+			<div class="text-4xl font-extrabold tracking-tighter">{resumen.cantidad_registradas}</div>
 		</div>
 	</div>
 
@@ -321,10 +325,9 @@
 				class="w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 focus:border-[#B91C1C] focus:ring-1 focus:ring-[#B91C1C]"
 			>
 				<option value="">Método: Todos</option>
-				<option value="EFECTIVO">Efectivo</option>
-				<option value="QR">QR</option>
-				<option value="TARJETA">Tarjeta</option>
-				<option value="TRANSFERENCIA">Transferencia</option>
+				{#each METODO_PAGO_FACTURA as metodo (metodo.codigo)}
+					<option value={metodo.codigo}>{metodo.descripcion ?? metodo.codigo}</option>
+				{/each}
 			</select>
 		</div>
 
@@ -406,6 +409,8 @@
 								onView={openDetalles}
 								onPrint={openPrint}
 								onAnular={handleAnularClick}
+								onFacturar={abrirFacturar}
+								onAnularFactura={(v) => (ventaAAnularFactura = v)}
 							/>
 						{/each}
 					{/if}
@@ -441,6 +446,26 @@
 		textoBotonCerrar="Cerrar"
 	/>
 {/if}
+
+<FacturarVentaModal
+	venta={ventaAFacturar}
+	{idSesionAbierta}
+	loading={isFacturando}
+	onClose={() => {
+		if (!isFacturando) ventaAFacturar = null;
+	}}
+	onConfirm={confirmFacturar}
+/>
+
+<ModalConfirm
+	isOpen={!!ventaAAnularFactura}
+	message={`¿Anular la factura N° ${ventaAAnularFactura?.factura?.numero_factura ?? ''} de la venta ${ventaAAnularFactura?.numero_comprobante ?? ''}? Se anulará en el SIAT; la venta y su recargo no cambian. Después podrá volver a emitirla con los datos corregidos.`}
+	loading={isAnulandoFactura}
+	onConfirm={confirmAnularFactura}
+	onCancel={() => {
+		if (!isAnulandoFactura) ventaAAnularFactura = null;
+	}}
+/>
 
 <ModalConfirm
 	isOpen={isConfirmAnularOpen}

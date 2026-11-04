@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { CreateMovimientoDto, Movimiento, CategoriaExtra } from '$lib/interfaces';
-	import { clickOutside, validateSchema } from '$lib/utils';
+	import { clickOutside, validateSchema, fechaLocal } from '$lib/utils';
 	import { fade, scale } from 'svelte/transition';
 	import { Button, Input, Select, TextArea } from '$lib/components/ui';
 	import { MovimientoRegisterSchema } from '$lib/zod';
@@ -29,7 +29,7 @@
 		nombre: '',
 		monto: 0,
 		descripcion: '',
-		fecha: new Date().toISOString().split('T')[0],
+		fecha: fechaLocal(),
 		tipo: defaultTipo,
 		tipoPago: 'EFECTIVO',
 		divisa: 'BOB',
@@ -45,7 +45,7 @@
 				nombre: movimiento.nombre,
 				monto: Number(movimiento.monto),
 				descripcion: movimiento.descripcion,
-				fecha: movimiento.fecha.split('T')[0],
+				fecha: fechaLocal(movimiento.fecha),
 				tipo: movimiento.tipo,
 				tipoPago: movimiento.tipoPago,
 				divisa: movimiento.divisa,
@@ -61,7 +61,7 @@
 			nombre: '',
 			monto: 0,
 			descripcion: '',
-			fecha: new Date().toISOString().split('T')[0],
+			fecha: fechaLocal(),
 			tipo: defaultTipo,
 			tipoPago: 'EFECTIVO',
 			divisa: 'BOB',
