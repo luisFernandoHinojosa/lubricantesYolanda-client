@@ -76,13 +76,13 @@
 		</div>
 
 		<div class="flex items-center gap-2">
-			<button class="rounded-full p-2 transition-colors" aria-label="Notifications">
+			<!-- <button class="rounded-full p-2 transition-colors" aria-label="Notifications">
 				<BellIcon />
 			</button>
 
 			<button class="rounded-full p-2 transition-colors" aria-label="Settings">
 				<SettingsIcon />
-			</button>
+			</button> -->
 			<div class="relative">
 				<button
 					bind:this={trigger}
