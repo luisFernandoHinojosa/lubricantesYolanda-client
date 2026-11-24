@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { kardexService, sucursalService } from '$lib/services';
 	import { Pagination, Heading, Input, Select, Button } from '$lib/components/ui';
-	import { ZoomIcon } from '$lib/icons/outline';
+	import { ZoomIcon, EyeIcon } from '$lib/icons/outline';
 	import { MovimientoTableSkeleton } from '$lib/components/skeletons';
 	import { MainLayout } from '$lib/components/layout';
 	import { redirect } from '$lib/utils';
@@ -14,6 +14,7 @@
 	} from '$lib/interfaces/kardexMovimiento.interface';
 	import PeriodoFiltro from '$lib/components/features/kardex/PeriodoFiltro.svelte';
 	import KardexDetalleModal from '$lib/components/features/kardex/KardexDetalleModal.svelte';
+	import KardexVentaModal from '$lib/components/features/kardex/KardexVentaModal.svelte';
 	import {
 		TIPOS_MOVIMIENTO,
 		NATURALEZAS,
@@ -24,6 +25,7 @@
 		fechaHora,
 		formatFechaCalendario,
 		diasParaVencer,
+		comprobanteVenta,
 		type PresetPeriodo
 	} from '$lib/components/features/kardex/kardex.utils';
 
@@ -50,6 +52,8 @@
 	let error = $state('');
 	let sucursales = $state<Sucursal[]>([]);
 	let seleccionado = $state<KardexMovimiento | null>(null);
+	/** N° de comprobante de la venta abierta en el modal */
+	let ventaNumero = $state<string | null>(null);
 
 	let filters = $state<KardexFilters>(filtrosIniciales());
 	let preset = $state<PresetPeriodo>('todo');
@@ -134,6 +138,11 @@
 	}
 
 	const verTarjeta = (idProducto: string) => redirect(`/v1/inventario/kardex/${idProducto}`);
+
+	const verVenta = (numero: string) => {
+		seleccionado = null;
+		ventaNumero = numero;
+	};
 
 	const flechaOrden = (campo: SortField) =>
 		filters.sortBy === campo ? (filters.sortOrder === 'ASC' ? '▲' : '▼') : '';
@@ -310,6 +319,7 @@
 						{@const tipo = tipoInfo(mov.tipo_movimiento)}
 						{@const fh = fechaHora(mov.fecha)}
 						{@const dias = diasParaVencer(mov.lote.fecha_vencimiento)}
+						{@const numeroVenta = comprobanteVenta(mov.documento)}
 						<tr
 							class="cursor-pointer border-b border-light-four text-light-black transition-colors hover:bg-light-one_d"
 							onclick={() => (seleccionado = mov)}
@@ -319,11 +329,28 @@
 								<div class="text-xs text-gray-400">{fh.hora}</div>
 							</td>
 							<td class="px-4 py-3 text-sm">
-								<span
-									class="inline-flex rounded-full border px-3 py-1 text-[10px] font-bold uppercase {tipo.clase}"
-								>
-									{tipo.label}
-								</span>
+								<div class="flex flex-wrap items-center gap-1.5">
+									<span
+										class="inline-flex rounded-full border px-3 py-1 text-[10px] font-bold uppercase {tipo.clase}"
+									>
+										{tipo.label}
+									</span>
+									{#if numeroVenta}
+										<button
+											type="button"
+											class="inline-flex items-center gap-1 rounded-full border border-light-four bg-white px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap text-gray-600 shadow-sm transition-colors hover:border-light-two hover:bg-light-one_d hover:text-light-two focus-visible:ring-2 focus-visible:ring-light-two focus-visible:outline-none"
+											title="Ver el detalle de la venta {numeroVenta}"
+											aria-label="Ver venta {numeroVenta}"
+											onclick={(e) => {
+												e.stopPropagation();
+												verVenta(numeroVenta);
+											}}
+										>
+											<EyeIcon class="size-3.5" />
+											Ver venta
+										</button>
+									{/if}
+								</div>
 								{#if mov.documento}
 									<div class="mt-1 font-mono text-[11px] text-gray-500">{mov.documento.numero}</div>
 								{/if}
@@ -412,4 +439,7 @@
 		seleccionado = null;
 		verTarjeta(id);
 	}}
+	onVerVenta={verVenta}
 />
+
+<KardexVentaModal numero={ventaNumero} onClose={() => (ventaNumero = null)} />

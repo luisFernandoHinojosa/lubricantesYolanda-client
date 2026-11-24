@@ -15,6 +15,7 @@
 	} from '$lib/interfaces/kardexMovimiento.interface';
 	import PeriodoFiltro from '$lib/components/features/kardex/PeriodoFiltro.svelte';
 	import KardexDetalleModal from '$lib/components/features/kardex/KardexDetalleModal.svelte';
+	import KardexVentaModal from '$lib/components/features/kardex/KardexVentaModal.svelte';
 	import {
 		TIPOS_MOVIMIENTO,
 		tipoInfo,
@@ -43,6 +44,8 @@
 	let error = $state('');
 	let sucursales = $state<Sucursal[]>([]);
 	let seleccionado = $state<KardexMovimiento | null>(null);
+	/** N° de comprobante de la venta abierta en el modal */
+	let ventaNumero = $state<string | null>(null);
 	let filters = $state<TarjetaKardexFilters>(filtrosIniciales());
 	let preset = $state<PresetPeriodo>('mes');
 	let requestId = 0;
@@ -366,4 +369,13 @@
 	{/if}
 </MainLayout>
 
-<KardexDetalleModal movimiento={seleccionado} onClose={() => (seleccionado = null)} />
+<KardexDetalleModal
+	movimiento={seleccionado}
+	onClose={() => (seleccionado = null)}
+	onVerVenta={(numero) => {
+		seleccionado = null;
+		ventaNumero = numero;
+	}}
+/>
+
+<KardexVentaModal numero={ventaNumero} onClose={() => (ventaNumero = null)} />

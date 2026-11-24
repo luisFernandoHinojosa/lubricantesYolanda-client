@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Modal, Button } from '$lib/components/ui';
+	import { EyeIcon } from '$lib/icons/outline';
 	import type { KardexMovimiento, UbicacionKardex } from '$lib/interfaces/kardexMovimiento.interface';
 	import {
 		tipoInfo,
@@ -8,7 +9,8 @@
 		formatBs,
 		fechaHora,
 		formatFechaCalendario,
-		diasParaVencer
+		diasParaVencer,
+		comprobanteVenta
 	} from './kardex.utils';
 
 	interface Props {
@@ -16,11 +18,14 @@
 		onClose: () => void;
 		/** Si se pasa, muestra el botón "Ver kardex del producto" */
 		onVerTarjeta?: (idProducto: string) => void;
+		/** Si se pasa y el movimiento viene de una venta, muestra el botón "Ver venta" */
+		onVerVenta?: (numeroComprobante: string) => void;
 	}
 
-	let { movimiento, onClose, onVerTarjeta }: Props = $props();
+	let { movimiento, onClose, onVerTarjeta, onVerVenta }: Props = $props();
 
 	const fh = $derived(movimiento ? fechaHora(movimiento.fecha) : null);
+	const numeroVenta = $derived(comprobanteVenta(movimiento?.documento ?? null));
 	const dias = $derived(diasParaVencer(movimiento?.lote.fecha_vencimiento));
 </script>
 
@@ -119,6 +124,14 @@
 
 	{#snippet footer()}
 		<div class="flex justify-end gap-2">
+			{#if onVerVenta && numeroVenta}
+				<Button variant="outline" size="sm" onclick={() => onVerVenta(numeroVenta)}>
+					<span class="inline-flex items-center gap-1.5">
+						<EyeIcon class="size-4" />
+						Ver venta
+					</span>
+				</Button>
+			{/if}
 			{#if onVerTarjeta && movimiento}
 				<Button variant="primary" size="sm" onclick={() => onVerTarjeta(movimiento.producto.id)}>
 					Ver kardex del producto

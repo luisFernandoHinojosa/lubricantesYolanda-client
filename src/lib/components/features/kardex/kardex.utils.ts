@@ -79,6 +79,15 @@ export const fechaHora = (iso: string) => {
 	return { fecha: fmtFecha.format(d), hora: formatHora(d) };
 };
 
+/**
+ * Número de comprobante de venta del documento, si lo hay. Las devoluciones y anulaciones
+ * también traen el número de la venta original.
+ */
+export const comprobanteVenta = (documento: { tipo: string; numero: string } | null) =>
+	documento && ['VENTA', 'DEVOLUCION', 'ANULACION'].includes(documento.tipo)
+		? documento.numero
+		: null;
+
 /** Fecha de calendario (DATEONLY) sin aplicar zona horaria */
 export const formatFechaCalendario = (yyyyMmDd: string | null | undefined) => {
 	if (!yyyyMmDd) return '—';

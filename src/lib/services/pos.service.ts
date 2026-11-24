@@ -70,6 +70,14 @@ export const posService = {
 		return response.data;
 	},
 
+	// Detalle de una venta por su número de comprobante (lo usa el kardex, que no trae el id)
+	async getVentaPorComprobante(numero: string): Promise<VentaResponse> {
+		const response = await apiMilenium.get<ApiResponse<VentaResponse>>(
+			`/ventas/comprobante/${encodeURIComponent(numero)}`
+		);
+		return response.data;
+	},
+
 	async listarVentas(params: Record<string, string | number> = {}): Promise<VentasResponse> {
 		const query = new URLSearchParams(params as any);
 		const response = await apiMilenium.get<ApiResponse<VentasResponse>>(`/ventas?${query}`);
