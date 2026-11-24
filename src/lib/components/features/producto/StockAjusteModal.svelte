@@ -52,7 +52,7 @@
 		class="flex flex-col gap-4"
 	>
 		<div class="flex flex-col gap-2">
-			<label class="text-[0.65rem] font-black tracking-widest text-[#9a8060] uppercase" for="cantidad">
+			<label class="text-[0.65rem] font-semibold text-acero-500" for="cantidad">
 				Cantidad a {tipoAjuste === 'sumar' ? 'aumentar' : 'restar'} *
 			</label>
 			<input
@@ -62,12 +62,12 @@
 				step="1"
 				bind:value={cantidad}
 				required
-				class="w-full rounded-xl border-[1.5px] border-[#e8e0d8] bg-[#fdfcfb] px-4 py-2.5 text-sm font-bold text-[#1a1a2e] outline-none focus:border-[#b09475] focus:ring-4 focus:ring-[#b09475]/10"
+				class="w-full rounded-xl border-[1.5px] border-acero-200 bg-white px-4 py-2.5 text-sm font-bold text-acero-950 outline-none focus:border-acero-400 focus:ring-4 focus:ring-acero-400/10"
 			/>
 		</div>
 
 		<div class="flex flex-col gap-2">
-			<label class="text-[0.65rem] font-black tracking-widest text-[#9a8060] uppercase" for="observacion">
+			<label class="text-[0.65rem] font-semibold text-acero-500" for="observacion">
 				Observación *
 			</label>
 			<textarea
@@ -75,11 +75,11 @@
 				bind:value={observacion}
 				required
 				rows="3"
-				class="w-full rounded-xl border-[1.5px] border-[#e8e0d8] bg-[#fdfcfb] px-4 py-2.5 text-sm font-bold text-[#1a1a2e] outline-none focus:border-[#b09475] focus:ring-4 focus:ring-[#b09475]/10"
+				class="w-full rounded-xl border-[1.5px] border-acero-200 bg-white px-4 py-2.5 text-sm font-bold text-acero-950 outline-none focus:border-acero-400 focus:ring-4 focus:ring-acero-400/10"
 			></textarea>
 		</div>
 
-		<div class="mt-4 flex items-center justify-end gap-3 border-t border-[#e8e0d8] pt-4">
+		<div class="mt-4 flex items-center justify-end gap-3 border-t border-acero-200 pt-4">
 			<Button variant="ghost" onclick={() => { resetForm(); onClose(); }} disabled={loading}>
 				{#snippet leftIcon()}
 					<XMarkIcon class="size-4" />

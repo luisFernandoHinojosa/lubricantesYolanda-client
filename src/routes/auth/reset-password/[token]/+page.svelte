@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import backgroundImg from '$lib/assets/images/background1.png';
-	import { Button, Heading, Image } from '$lib/components/ui';
-	import { LockIcon, EyeIcon, EyeOffIcon } from '$lib/icons/outline';
+	import { AuthShell } from '$lib/components/layout';
+	import { Button } from '$lib/components/ui';
+	import { EyeIcon, EyeOffIcon, CheckCircleIcon } from '$lib/icons/outline';
 	import { authService } from '$lib/services';
 	import { alert, redirect } from '$lib/utils';
 	import { resolve } from '$app/paths';
@@ -15,134 +15,119 @@
 
 	const token = page.params.token || '';
 
-	async function handleSubmit(e: Event) {
+	const muyCorta = $derived(password.length > 0 && password.length < 8);
+	const noCoinciden = $derived(confirmPassword.length > 0 && password !== confirmPassword);
+
+	async function handleSubmit(e: SubmitEvent) {
 		e.preventDefault();
-		if (!password || !confirmPassword || !token) return;
-
-		if (password !== confirmPassword) {
-			alert('error', 'Las contraseñas no coinciden.');
-			return;
-		}
-
-		if (password.length < 8) {
-			alert('error', 'La contraseña debe tener al menos 8 caracteres.');
-			return;
-		}
+		if (!token || password.length < 8 || password !== confirmPassword) return;
 
 		try {
 			isLoading = true;
 			await authService.resetPassword(token, password);
 			success = true;
-			alert('success', 'Contraseña actualizada exitosamente.');
-
-			setTimeout(() => {
-				redirect('/auth/sign-in');
-			}, 3000);
+			setTimeout(() => redirect('/auth/sign-in'), 3000);
 		} catch (error: unknown) {
 			console.error('Error in reset password:', error);
 			const message =
-				(error as any)?.message ||
-				'Error al restablecer la contraseña. El enlace puede haber expirado.';
+				(error as { message?: string })?.message ||
+				'No se pudo cambiar la contraseña. Es posible que el enlace haya vencido: pida uno nuevo.';
 			alert('error', message);
 		} finally {
 			isLoading = false;
 		}
 	}
+
+	const CAMPO =
+		'block h-12 w-full rounded-lg border bg-white px-3.5 text-base outline-none placeholder:text-acero-400 focus:ring-[3px]';
+	const OK = 'border-acero-200 focus:border-acero-600 focus:ring-acero-200';
+	const MAL = 'border-marca focus:ring-marca-tinte';
 </script>
 
-<main class="relative flex min-h-screen items-center justify-center overflow-hidden">
-	<div class="absolute inset-0 z-0">
-		<Image src={backgroundImg} alt="Background" class="h-full w-full object-cover" />
-	</div>
+<svelte:head><title>Nueva contraseña · Lubricantes Yolanda</title></svelte:head>
 
-	<div class="absolute top-6 left-6 z-20">
-		<div class="flex h-24 w-64 items-center justify-center rounded bg-light-one/60 p-2">
-			<Image objectFit="contain" src="/images/logo1.webp" alt="" />
-		</div>
-	</div>
+<AuthShell>
+	{#if !success}
+		<h1 class="font-display text-4xl font-semibold text-acero-950">Crear contraseña nueva</h1>
+		<p class="mt-2 text-acero-600">Elija una contraseña que no use en otros sitios.</p>
 
-	<div
-		class="z-10 w-full max-w-md rounded-lg border-8 border-light-one_d bg-light-one p-8 shadow-lg"
-	>
-		<div class="mb-8 text-center">
-			<Heading level="h3">Reset Password</Heading>
-		</div>
-
-		{#if !success}
-			<p class="mb-8 text-center text-sm text-light-three">
-				Ingresa tu nueva contraseña para recuperar el acceso a tu cuenta.
-			</p>
-
-			<form onsubmit={handleSubmit} class="space-y-6">
-				<div class="space-y-1">
-					<label for="password" class="text-sm font-medium text-light-three">Contraseña</label>
-					<div class="relative">
-						<span class="absolute top-3 left-0 text-light-four"><LockIcon /></span>
-						<input
-							id="password"
-							type={showPassword ? 'text' : 'password'}
-							bind:value={password}
-							placeholder="Mínimo 8 caracteres"
-							class="w-full border-t-0 border-r-0 border-b border-l-0 border-light-four bg-transparent py-3 pr-12 pl-8 text-light-three placeholder-light-four transition-colors duration-200 outline-none focus:border-b-light-four_d focus:ring-0 focus:outline-0"
-							disabled={isLoading}
-							required
-						/>
-						<button
-							type="button"
-							onclick={() => (showPassword = !showPassword)}
-							class="absolute top-3 right-0 text-gray-400 transition-colors hover:text-gray-600"
-							disabled={isLoading}
-						>
-							{#if showPassword}
-								<EyeIcon />
-							{:else}
-								<EyeOffIcon />
-							{/if}
-						</button>
-					</div>
-				</div>
-
-				<div class="space-y-1">
-					<label for="confirmPassword" class="text-sm font-medium text-light-three"
-						>Confirmar Contraseña</label
-					>
-					<div class="relative">
-						<span class="absolute top-3 left-0 text-light-four"><LockIcon /></span>
-						<input
-							id="confirmPassword"
-							type={showPassword ? 'text' : 'password'}
-							bind:value={confirmPassword}
-							placeholder="Repite tu contraseña"
-							class="w-full border-t-0 border-r-0 border-b border-l-0 border-light-four bg-transparent py-3 pr-12 pl-8 text-light-three placeholder-light-four transition-colors duration-200 outline-none focus:border-b-light-four_d focus:ring-0 focus:outline-0"
-							disabled={isLoading}
-							required
-						/>
-					</div>
-				</div>
-
-				<div class="pt-4">
-					<Button type="submit" variant="primary" fullWidth size="md" loading={isLoading}>
-						ACTUALIZAR CONTRASEÑA
-					</Button>
-				</div>
-			</form>
-		{:else}
-			<div class="space-y-6 py-6 text-center">
-				<div
-					class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl font-bold text-green-600"
+		<form onsubmit={handleSubmit} class="mt-8 space-y-5">
+			<div>
+				<label for="password" class="mb-1.5 block text-sm font-medium text-acero-800"
+					>Contraseña nueva</label
 				>
-					✓
+				<div class="relative">
+					<!-- svelte-ignore a11y_autofocus -->
+					<input
+						id="password"
+						type={showPassword ? 'text' : 'password'}
+						autocomplete="new-password"
+						autofocus
+						bind:value={password}
+						aria-invalid={muyCorta ? 'true' : undefined}
+						aria-describedby="pw-ayuda"
+						class="{CAMPO} pr-12 {muyCorta ? MAL : OK}"
+						disabled={isLoading}
+						required
+					/>
+					<button
+						type="button"
+						onclick={() => (showPassword = !showPassword)}
+						class="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-acero-500 hover:text-acero-950"
+						aria-label={showPassword ? 'Ocultar contraseñas' : 'Mostrar contraseñas'}
+						aria-pressed={showPassword}
+					>
+						{#if showPassword}<EyeOffIcon />{:else}<EyeIcon />{/if}
+					</button>
 				</div>
-				<p class="font-bold text-light-three">¡Contraseña actualizada!</p>
-				<p class="text-sm text-light-four">
-					Tu contraseña ha sido cambiada exitosamente. Serás redirigido al login en unos segundos.
+				<p id="pw-ayuda" class="mt-1.5 text-sm {muyCorta ? 'text-marca' : 'text-acero-500'}">
+					{muyCorta ? `Faltan ${8 - password.length} caracteres.` : 'Mínimo 8 caracteres.'}
 				</p>
-				<div class="pt-4">
-					<a href={resolve('/auth/sign-in')}>
-						<Button variant="primary" fullWidth size="md">IR AL LOGIN AHORA</Button>
-					</a>
-				</div>
 			</div>
-		{/if}
-	</div>
-</main>
+
+			<div>
+				<label for="confirmPassword" class="mb-1.5 block text-sm font-medium text-acero-800"
+					>Repita la contraseña</label
+				>
+				<input
+					id="confirmPassword"
+					type={showPassword ? 'text' : 'password'}
+					autocomplete="new-password"
+					bind:value={confirmPassword}
+					aria-invalid={noCoinciden ? 'true' : undefined}
+					aria-describedby={noCoinciden ? 'pw-confirmar' : undefined}
+					class="{CAMPO} {noCoinciden ? MAL : OK}"
+					disabled={isLoading}
+					required
+				/>
+				{#if noCoinciden}
+					<p id="pw-confirmar" class="mt-1.5 text-sm text-marca">Las contraseñas no coinciden.</p>
+				{/if}
+			</div>
+
+			<Button
+				type="submit"
+				variant="primary"
+				fullWidth
+				size="lg"
+				loading={isLoading}
+				disabled={password.length < 8 || password !== confirmPassword}
+			>
+				Guardar contraseña
+			</Button>
+		</form>
+	{:else}
+		<div role="status">
+			<span class="mb-5 flex size-12 items-center justify-center rounded-full bg-ok-tinte text-ok">
+				<CheckCircleIcon class="size-6" />
+			</span>
+			<h1 class="font-display text-4xl font-semibold text-acero-950">Contraseña guardada</h1>
+			<p class="mt-2 text-acero-600">
+				Ya puede ingresar con su contraseña nueva. Lo llevamos al inicio de sesión…
+			</p>
+			<Button href={resolve('/auth/sign-in')} variant="primary" fullWidth size="lg" class="mt-8">
+				Iniciar sesión ahora
+			</Button>
+		</div>
+	{/if}
+</AuthShell>

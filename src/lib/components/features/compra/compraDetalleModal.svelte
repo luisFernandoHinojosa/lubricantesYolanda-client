@@ -55,7 +55,7 @@
 
 	const estadoBadge: Record<Compra['estado_pago'], string> = {
 		PAGADO: 'border-green-200 bg-green-50 text-green-700',
-		PENDIENTE: 'border-[#B91C1C]/20 bg-[#D19999]/20 text-[#8B1515]',
+		PENDIENTE: 'border-marca/20 bg-acero-100/20 text-marca-oscuro',
 		PAGADO_PARCIAL: 'border-orange-200 bg-orange-50 text-orange-700'
 	};
 
@@ -118,17 +118,17 @@
 	>
 		<!-- Panel -->
 		<div
-			class="relative flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+			class="relative flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl bg-white shadow-2xl"
 			transition:fly={{ y: 24, duration: 200 }}
 		>
 			<!-- ── Header ─────────────────────────────────────────────────────────── -->
-			<div class="flex items-center justify-between bg-[#B91C1C] px-6 py-4 text-white">
+			<div class="flex items-center justify-between bg-acero-900 px-6 py-4 text-white">
 				<div>
-					<p class="text-[10px] font-bold tracking-widest uppercase opacity-70">
+					<p class="text-xs font-bold opacity-70">
 						{#if view === 'edit'}Editando compra{:else if view === 'confirmDelete'}Confirmar
 							eliminación{:else}Detalle de Compra{/if}
 					</p>
-					<h2 class="text-xl font-extrabold tracking-tight">
+					<h2 class="text-xl font-semibold tracking-tight">
 						{compra.numero_comprobante ?? 'S/N'}
 					</h2>
 				</div>
@@ -158,7 +158,7 @@
 						<!-- Metadata grid -->
 						<div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
 							<div class="col-span-2 sm:col-span-1">
-								<p class="mb-0.5 text-[10px] font-bold text-gray-400 uppercase">Proveedor</p>
+								<p class="mb-0.5 text-xs font-bold text-gray-400">Proveedor</p>
 								{#if compra.proveedor}
 									<p class="font-bold text-gray-800">{compra.proveedor.nombre}</p>
 									<p class="text-xs text-gray-500">NIT: {compra.proveedor.nit_ci}</p>
@@ -168,7 +168,7 @@
 							</div>
 
 							<div>
-								<p class="mb-0.5 text-[10px] font-bold text-gray-400 uppercase">Responsable</p>
+								<p class="mb-0.5 text-xs font-bold text-gray-400">Responsable</p>
 								{#if compra.empleado}
 									<p class="font-medium text-gray-700">
 										{compra.empleado.nombre}
@@ -180,31 +180,29 @@
 							</div>
 
 							<div>
-								<p class="mb-0.5 text-[10px] font-bold text-gray-400 uppercase">Fecha</p>
+								<p class="mb-0.5 text-xs font-bold text-gray-400">Fecha</p>
 								<p class="font-medium text-gray-700">
 									{formatDate(compra.fecha_compra ?? compra.createdAt)}
 								</p>
 							</div>
 
 							<div>
-								<p class="mb-0.5 text-[10px] font-bold text-gray-400 uppercase">Estado de Pago</p>
+								<p class="mb-0.5 text-xs font-bold text-gray-400">Estado de Pago</p>
 								<span
-									class="inline-flex items-center rounded-full border px-3 py-1 text-[10px] font-bold uppercase {estadoBadge[
-										compra.estado_pago
-									]}"
+									class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-bold {estadoBadge[ compra.estado_pago ]}"
 								>
 									{compra.estado_pago}
 								</span>
 							</div>
 
 							<div>
-								<p class="mb-0.5 text-[10px] font-bold text-gray-400 uppercase">Total</p>
-								<p class="text-lg font-extrabold text-[#B91C1C]">{formatCurrency(compra.total)}</p>
+								<p class="mb-0.5 text-xs font-bold text-gray-400">Total</p>
+								<p class="text-lg font-semibold text-marca">{formatCurrency(compra.total)}</p>
 							</div>
 
 							{#if compra.notas}
 								<div class="col-span-2 sm:col-span-3">
-									<p class="mb-0.5 text-[10px] font-bold text-gray-400 uppercase">Notas</p>
+									<p class="mb-0.5 text-xs font-bold text-gray-400">Notas</p>
 									<p class="rounded-lg bg-gray-50 p-3 text-sm text-gray-600">{compra.notas}</p>
 								</div>
 							{/if}
@@ -213,14 +211,14 @@
 						<!-- Tabla de detalles -->
 						{#if compra.detalles && compra.detalles.length > 0}
 							<div>
-								<p class="mb-2 text-[10px] font-bold tracking-widest text-gray-400 uppercase">
+								<p class="mb-2 text-xs font-bold text-gray-400">
 									Productos ({compra.detalles.length})
 								</p>
 								<div class="overflow-hidden rounded-xl border border-gray-100">
 									<table class="w-full text-left text-xs">
 										<thead>
 											<tr
-												class="bg-[#D19999]/30 text-[10px] font-bold tracking-wider text-[#8B1515] uppercase"
+												class="bg-acero-100/30 text-xs font-bold text-marca-oscuro"
 											>
 												<th class="px-4 py-3">Producto</th>
 												<th class="px-4 py-3">Lote</th>
@@ -232,9 +230,7 @@
 										<tbody class="divide-y divide-gray-100">
 											{#each compra.detalles as det, i (det.id ?? i)}
 												<tr
-													class="{i % 2 === 0
-														? 'bg-white'
-														: 'bg-gray-50/50'} transition-colors hover:bg-red-50/30"
+													class="{i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'} transition-colors hover:bg-red-50/30"
 												>
 													<td class="px-4 py-3">
 														<p class="font-semibold text-gray-700">
@@ -242,14 +238,14 @@
 																`Producto ${det.id_producto.substring(0, 8)}`}
 														</p>
 														{#if det.fecha_vencimiento_lote}
-															<p class="mt-0.5 text-[10px] text-gray-400">
+															<p class="mt-0.5 text-xs text-gray-400">
 																Vence: {new Date(det.fecha_vencimiento_lote).toLocaleDateString(
 																	'es-BO'
 																)}
 															</p>
 														{/if}
 													</td>
-													<td class="px-4 py-3 font-mono text-gray-500">
+													<td class="px-4 py-3 tabular-nums text-gray-500">
 														{det.lote?.codigo_lote ?? '—'}
 													</td>
 													<td class="px-4 py-3 text-right font-bold text-gray-700"
@@ -258,20 +254,20 @@
 													<td class="px-4 py-3 text-right text-gray-600"
 														>{formatCurrency(det.costo_unitario)}</td
 													>
-													<td class="px-4 py-3 text-right font-bold text-[#B91C1C]"
+													<td class="px-4 py-3 text-right font-bold text-marca"
 														>{formatCurrency(det.subtotal)}</td
 													>
 												</tr>
 											{/each}
 										</tbody>
 										<tfoot>
-											<tr class="border-t-2 border-[#B91C1C]/20 bg-[#D19999]/10">
+											<tr class="border-t-2 border-marca/20 bg-acero-100/10">
 												<td
 													colspan="4"
-													class="px-4 py-3 text-right text-xs font-bold text-gray-500 uppercase"
+													class="px-4 py-3 text-right text-xs font-bold text-gray-500"
 													>Total</td
 												>
-												<td class="px-4 py-3 text-right text-base font-extrabold text-[#B91C1C]">
+												<td class="px-4 py-3 text-right text-base font-semibold text-marca">
 													{formatCurrency(compra.total)}
 												</td>
 											</tr>
@@ -300,14 +296,14 @@
 							<div>
 								<label
 									for="edit-estado"
-									class="mb-1.5 block text-xs font-bold tracking-wider text-gray-500 uppercase"
+									class="mb-1.5 block text-xs font-bold text-gray-500"
 								>
 									Estado de Pago
 								</label>
 								<select
 									id="edit-estado"
 									bind:value={editEstadoPago}
-									class="w-full cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 focus:border-[#B91C1C] focus:ring-2 focus:ring-[#B91C1C]/20 focus:outline-none"
+									class="w-full cursor-pointer appearance-none rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 focus:border-marca focus:ring-2 focus:ring-marca/20 focus:outline-none"
 								>
 									<option value="PENDIENTE">Pendiente</option>
 									<option value="PAGADO_PARCIAL">Pagado Parcial</option>
@@ -318,7 +314,7 @@
 							<div>
 								<label
 									for="edit-notas"
-									class="mb-1.5 block text-xs font-bold tracking-wider text-gray-500 uppercase"
+									class="mb-1.5 block text-xs font-bold text-gray-500"
 								>
 									Notas
 								</label>
@@ -327,14 +323,14 @@
 									bind:value={editNotas}
 									rows="4"
 									placeholder="Observaciones adicionales..."
-									class="w-full resize-none rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 focus:border-[#B91C1C] focus:ring-2 focus:ring-[#B91C1C]/20 focus:outline-none"
+									class="w-full resize-none rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 focus:border-marca focus:ring-2 focus:ring-marca/20 focus:outline-none"
 								></textarea>
 							</div>
 						</div>
 
 						{#if errorMsg}
 							<p
-								class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-[#B91C1C]"
+								class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-marca"
 							>
 								{errorMsg}
 							</p>
@@ -347,7 +343,7 @@
 						<div class="flex h-14 w-14 items-center justify-center rounded-full bg-red-100">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
-								class="h-7 w-7 text-[#B91C1C]"
+								class="h-7 w-7 text-marca"
 								viewBox="0 0 24 24"
 								fill="none"
 								stroke="currentColor"
@@ -371,7 +367,7 @@
 
 						{#if errorMsg}
 							<p
-								class="w-full rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-[#B91C1C]"
+								class="w-full rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-marca"
 							>
 								{errorMsg}
 							</p>
@@ -391,7 +387,7 @@
 							view = 'confirmDelete';
 							errorMsg = '';
 						}}
-						class="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-xs font-bold text-[#B91C1C] transition-colors hover:bg-red-100 focus:ring-2 focus:ring-[#B91C1C]/30 focus:outline-none"
+						class="inline-flex items-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-xs font-bold text-marca transition-colors hover:bg-red-100 focus:ring-2 focus:ring-marca/30 focus:outline-none"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -422,7 +418,7 @@
 								view = 'edit';
 								errorMsg = '';
 							}}
-							class="inline-flex items-center gap-1.5 rounded-lg bg-[#B91C1C] px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-[#991b1b] focus:ring-2 focus:ring-[#B91C1C]/40 focus:outline-none"
+							class="inline-flex items-center gap-1.5 rounded-lg bg-acero-900 px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-marca-oscuro focus:ring-2 focus:ring-marca/40 focus:outline-none"
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -455,7 +451,7 @@
 					<button
 						onclick={handleUpdate}
 						disabled={isSaving}
-						class="inline-flex items-center gap-2 rounded-lg bg-[#B91C1C] px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#991b1b] focus:ring-2 focus:ring-[#B91C1C]/40 focus:outline-none disabled:opacity-60"
+						class="inline-flex items-center gap-2 rounded-lg bg-acero-900 px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-marca-oscuro focus:ring-2 focus:ring-marca/40 focus:outline-none disabled:opacity-60"
 					>
 						{#if isSaving}
 							<svg
@@ -497,7 +493,7 @@
 					<button
 						onclick={handleDelete}
 						disabled={isDeleting}
-						class="inline-flex items-center gap-2 rounded-lg bg-[#B91C1C] px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#991b1b] focus:ring-2 focus:ring-[#B91C1C]/40 focus:outline-none disabled:opacity-60"
+						class="inline-flex items-center gap-2 rounded-lg bg-acero-900 px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-marca-oscuro focus:ring-2 focus:ring-marca/40 focus:outline-none disabled:opacity-60"
 					>
 						{#if isDeleting}
 							<svg

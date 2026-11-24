@@ -59,10 +59,10 @@
 	<td class="px-6 py-4 text-sm whitespace-nowrap">
 		{proveedor.telefono}
 	</td>
-	<!-- <td class="px-6 py-4 text-sm whitespace-nowrap text-light-two">
+	<!-- <td class="px-6 py-4 text-sm whitespace-nowrap text-acero-600">
 		{formatDate(cliente.fecha_nacimiento)}
 	</td> -->
-	<!-- <td class="px-6 py-4 text-sm whitespace-nowrap text-light-two">
+	<!-- <td class="px-6 py-4 text-sm whitespace-nowrap text-acero-600">
 		{proveedor.direccion}
 	</td> -->
 	<!-- <td class="px-6 py-4 text-sm whitespace-nowrap">

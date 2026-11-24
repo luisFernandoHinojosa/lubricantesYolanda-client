@@ -169,17 +169,17 @@
 		<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3" in:fade>
 			<!-- Total Ingresado -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-emerald-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-emerald-600 uppercase"
+					<span class="text-xs font-semibold text-emerald-600"
 						>Total Ingresado</span
 					>
-					<h4 class="text-3xl font-black tracking-tighter text-light-black">
+					<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 						{formatCurrency(data.flujo_caja.total_ingresado)}
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Ingresos de Caja
 					</div>
 				</div>
@@ -187,17 +187,17 @@
 
 			<!-- Total Egresado -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-red-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-red-600 uppercase"
+					<span class="text-xs font-semibold text-red-600"
 						>Total Egresado</span
 					>
-					<h4 class="text-3xl font-black tracking-tighter text-light-black">
+					<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 						{formatCurrency(data.flujo_caja.total_egresado)}
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Salidas de Caja
 					</div>
 				</div>
@@ -205,27 +205,21 @@
 
 			<!-- Flujo Neto -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div
-					class="absolute -top-4 -right-4 size-24 rounded-full {data.flujo_caja.flujo_neto >= 0
-						? 'bg-blue-500/5'
-						: 'bg-red-500/5'}"
+					class="absolute -top-4 -right-4 size-24 rounded-full {data.flujo_caja.flujo_neto >= 0 ? 'bg-blue-500/5' : 'bg-red-500/5'}"
 				></div>
 				<div class="flex flex-col gap-1">
 					<span
-						class="text-[10px] font-black tracking-widest {data.flujo_caja.flujo_neto >= 0
-							? 'text-blue-600'
-							: 'text-red-600'} uppercase">Flujo de Caja Neto</span
+						class="text-xs font-semibold {data.flujo_caja.flujo_neto >= 0 ? 'text-blue-600' : 'text-red-600'}">Flujo de Caja Neto</span
 					>
 					<h4
-						class="text-3xl font-black tracking-tighter {data.flujo_caja.flujo_neto >= 0
-							? 'text-light-black'
-							: 'text-red-600'}"
+						class="text-3xl font-semibold tracking-tighter {data.flujo_caja.flujo_neto >= 0 ? 'text-light-black' : 'text-red-600'}"
 					>
 						{formatCurrency(data.flujo_caja.flujo_neto)}
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Balance del Periodo
 					</div>
 				</div>
@@ -235,13 +229,13 @@
 		<div class="grid grid-cols-1 gap-8 lg:grid-cols-2" in:fade>
 			<!-- Estado de Resultados (P&L) -->
 			<div
-				class="flex flex-col gap-6 rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="flex flex-col gap-6 rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="flex items-center gap-3">
 					<div class="rounded-lg bg-blue-50 p-2 text-blue-600">
 						<ListIcon class="size-5" />
 					</div>
-					<h3 class="text-sm font-black tracking-tight text-light-black uppercase">
+					<h3 class="text-sm font-semibold tracking-tight text-light-black">
 						Estado de Resultados
 					</h3>
 				</div>
@@ -251,34 +245,34 @@
 						<tbody class="divide-y divide-light-four">
 							<tr class="group transition-all hover:bg-light-one_d">
 								<td class="px-4 py-4 text-xs font-bold text-light-black">Ventas Brutas</td>
-								<td class="px-4 py-4 text-right font-black text-emerald-600"
+								<td class="px-4 py-4 text-right font-semibold text-emerald-600"
 									>{formatCurrency(data.estado_resultados.ingresos.ventas_brutas)}</td
 								>
 							</tr>
 							<tr class="group text-red-500 transition-all hover:bg-light-one_d">
 								<td class="px-4 py-4 text-xs font-bold">Descuentos Otorgados</td>
-								<td class="px-4 py-4 text-right font-black"
+								<td class="px-4 py-4 text-right font-semibold"
 									>-{formatCurrency(data.estado_resultados.ingresos.descuentos_otorgados)}</td
 								>
 							</tr>
 							<tr class="group bg-light-four/20 transition-all hover:bg-light-one_d">
-								<td class="px-4 py-4 text-xs font-black text-light-black uppercase">Ventas Netas</td
+								<td class="px-4 py-4 text-xs font-semibold text-light-black">Ventas Netas</td
 								>
-								<td class="px-4 py-4 text-right font-black text-emerald-600"
+								<td class="px-4 py-4 text-right font-semibold text-emerald-600"
 									>{formatCurrency(data.estado_resultados.ingresos.ventas_netas)}</td
 								>
 							</tr>
 							<tr class="group transition-all hover:bg-light-one_d">
 								<td class="px-4 py-4 text-xs font-bold text-light-black">Otros Ingresos</td>
-								<td class="px-4 py-4 text-right font-black text-emerald-600"
+								<td class="px-4 py-4 text-right font-semibold text-emerald-600"
 									>{formatCurrency(data.estado_resultados.ingresos.otros_ingresos)}</td
 								>
 							</tr>
 							<tr class="group bg-light-four/40 transition-all hover:bg-light-one_d">
-								<td class="px-4 py-4 text-xs font-black text-light-black uppercase"
+								<td class="px-4 py-4 text-xs font-semibold text-light-black"
 									>Total Ingresos</td
 								>
-								<td class="px-4 py-4 text-right font-black text-emerald-600"
+								<td class="px-4 py-4 text-right font-semibold text-emerald-600"
 									>{formatCurrency(data.estado_resultados.ingresos.total_ingresos)}</td
 								>
 							</tr>
@@ -288,29 +282,27 @@
 
 							<tr class="group text-orange-600 transition-all hover:bg-light-one_d">
 								<td class="px-4 py-4 text-xs font-bold">Costo Mercadería Vendida (CMV)</td>
-								<td class="px-4 py-4 text-right font-black"
+								<td class="px-4 py-4 text-right font-semibold"
 									>-{formatCurrency(data.estado_resultados.costos.costo_mercaderia_vendida)}</td
 								>
 							</tr>
 							<tr
 								class="group bg-light-four/40 text-orange-600 transition-all hover:bg-light-one_d"
 							>
-								<td class="px-4 py-4 text-xs font-black uppercase">Total Costos</td>
-								<td class="px-4 py-4 text-right font-black"
+								<td class="px-4 py-4 text-xs font-semibold">Total Costos</td>
+								<td class="px-4 py-4 text-right font-semibold"
 									>-{formatCurrency(data.estado_resultados.costos.total_costos)}</td
 								>
 							</tr>
 							<tr class="group bg-light-four/20 transition-all hover:bg-light-one_d">
-								<td class="px-4 py-4 text-xs font-black text-light-black uppercase">
+								<td class="px-4 py-4 text-xs font-semibold text-light-black">
 									Utilidad Bruta
-									<span class="ml-2 text-[10px] text-light-black/50"
+									<span class="ml-2 text-xs text-light-black/50"
 										>({data.estado_resultados.margen_bruto_porcentaje}%)</span
 									>
 								</td>
 								<td
-									class="px-4 py-4 text-right font-black {data.estado_resultados.utilidad_bruta >= 0
-										? 'text-light-black'
-										: 'text-red-500'}"
+									class="px-4 py-4 text-right font-semibold {data.estado_resultados.utilidad_bruta >= 0 ? 'text-light-black' : 'text-red-500'}"
 								>
 									{formatCurrency(data.estado_resultados.utilidad_bruta)}
 								</td>
@@ -322,7 +314,7 @@
 							{#if data.estado_resultados.gastos_operativos.por_categoria.length > 0}
 								{#each data.estado_resultados.gastos_operativos.por_categoria as gasto, index (index)}
 									<tr class="group text-red-500/80 transition-all hover:bg-light-one_d">
-										<td class="px-4 py-4 pl-8 text-[11px] font-medium"
+										<td class="px-4 py-4 pl-8 text-xs font-medium"
 											>- Gasto: {gasto.categoria}</td
 										>
 										<td class="px-4 py-4 text-right font-bold">-{formatCurrency(gasto.monto)}</td>
@@ -331,7 +323,7 @@
 							{/if}
 							<tr class="group text-red-500 transition-all hover:bg-light-one_d">
 								<td class="px-4 py-4 text-xs font-bold">Total Gastos Operativos</td>
-								<td class="px-4 py-4 text-right font-black"
+								<td class="px-4 py-4 text-right font-semibold"
 									>-{formatCurrency(
 										data.estado_resultados.gastos_operativos.total_gastos_operativos
 									)}</td
@@ -339,22 +331,19 @@
 							</tr>
 							<tr class="group text-red-500 transition-all hover:bg-light-one_d">
 								<td class="px-4 py-4 text-xs font-bold">Costo de Nómina Mensual</td>
-								<td class="px-4 py-4 text-right font-black"
+								<td class="px-4 py-4 text-right font-semibold"
 									>-{formatCurrency(data.estado_resultados.costo_nomina_mensual)}</td
 								>
 							</tr>
 							<tr class="group bg-light-four/50 transition-all hover:bg-light-one_d">
-								<td class="px-4 py-4 text-xs font-black text-light-black uppercase">
+								<td class="px-4 py-4 text-xs font-semibold text-light-black">
 									Utilidad Operativa
-									<span class="ml-2 text-[10px] text-light-black/50"
+									<span class="ml-2 text-xs text-light-black/50"
 										>({data.estado_resultados.margen_operativo_porcentaje}%)</span
 									>
 								</td>
 								<td
-									class="px-4 py-4 text-right font-black {data.estado_resultados
-										.utilidad_operativa >= 0
-										? 'text-light-black'
-										: 'text-red-500'}"
+									class="px-4 py-4 text-right font-semibold {data.estado_resultados .utilidad_operativa >= 0 ? 'text-light-black' : 'text-red-500'}"
 								>
 									{formatCurrency(data.estado_resultados.utilidad_operativa)}
 								</td>
@@ -367,13 +356,13 @@
 			<div class="flex flex-col gap-8">
 				<!-- Flujo Caba por Método de Pago -->
 				<div
-					class="flex flex-col gap-6 rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+					class="flex flex-col gap-6 rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 				>
 					<div class="flex items-center gap-3">
 						<div class="rounded-lg bg-emerald-50 p-2 text-emerald-600">
 							<WalletIcon class="size-5" />
 						</div>
-						<h3 class="text-sm font-black tracking-tight text-light-black uppercase">
+						<h3 class="text-sm font-semibold tracking-tight text-light-black">
 							Flujos de Efectivo
 						</h3>
 					</div>
@@ -381,7 +370,7 @@
 					<div class="overflow-x-auto">
 						<table class="w-full text-left text-sm">
 							<thead
-								class="border-b border-light-four text-[10px] font-black tracking-widest text-light-black/40 uppercase"
+								class="border-b border-light-four text-xs font-semibold text-light-black/40"
 							>
 								<tr>
 									<th class="px-4 py-4">Método de Pago</th>
@@ -401,9 +390,7 @@
 											>-{formatCurrency(item.egresos)}</td
 										>
 										<td
-											class="px-4 py-4 text-right font-black {item.neto >= 0
-												? 'text-light-black'
-												: 'text-red-500'}">{formatCurrency(item.neto)}</td
+											class="px-4 py-4 text-right font-semibold {item.neto >= 0 ? 'text-light-black' : 'text-red-500'}">{formatCurrency(item.neto)}</td
 										>
 									</tr>
 								{/each}
@@ -414,14 +401,14 @@
 
 				<!-- Serie Temporal -->
 				<div
-					class="flex flex-col gap-6 rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+					class="flex flex-col gap-6 rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 				>
 					<div class="flex items-center justify-between">
 						<div class="flex items-center gap-3">
 							<div class="rounded-lg bg-blue-50 p-2 text-blue-600">
 								<TredingUpIcon class="size-5" />
 							</div>
-							<h3 class="text-sm font-black tracking-tight text-light-black uppercase">
+							<h3 class="text-sm font-semibold tracking-tight text-light-black">
 								Tendencia de Ingresos
 							</h3>
 						</div>
@@ -434,13 +421,13 @@
 		</div>
 	{:else if loading}
 		<div
-			class="flex h-96 flex-col items-center justify-center gap-4 rounded-3xl border border-light-four bg-light-one"
+			class="flex h-96 flex-col items-center justify-center gap-4 rounded-xl border border-light-four bg-light-one"
 		>
 			<div
 				class="h-12 w-12 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600"
 			></div>
 			<p
-				class="animate-pulse text-[10px] font-black tracking-widest text-light-black/40 uppercase italic"
+				class="animate-pulse text-xs font-semibold text-light-black/40 italic"
 			>
 				Cargando Reporte Financiero...
 			</p>

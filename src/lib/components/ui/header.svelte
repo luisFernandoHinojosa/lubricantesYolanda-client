@@ -1,5 +1,13 @@
 <script lang="ts">
-	import { BellIcon, SettingsIcon, TrashIcon, UserIcon } from '$lib/icons/outline';
+	import { page } from '$app/state';
+	import { getRouteTrail } from '$lib/config/menu.config';
+	import {
+		ChevronDownIcon,
+		ChevronRightIcon,
+		LogOutIcon,
+		Menu2Icon,
+		UserIcon
+	} from '$lib/icons/outline';
 	import type { DropdownOption } from '$lib/interfaces';
 	import { authStore, currentUserStore } from '$lib/stores';
 	import { redirect } from '$lib/utils';
@@ -7,98 +15,106 @@
 
 	interface Props {
 		onToggleSidebar: () => void;
+		sidebarOpen?: boolean;
 	}
-	let { onToggleSidebar }: Props = $props();
+	let { onToggleSidebar, sidebarOpen = false }: Props = $props();
 
 	let isDropdownOpen = $state(false);
-	let width: number = $state(150);
 	let trigger = $state<HTMLElement>();
 
+	const trail = $derived(getRouteTrail(page.url.pathname));
+
+	const user = $derived($currentUserStore);
+	const nombre = $derived(
+		user?.Empleado?.nombre
+			? `${user.Empleado.nombre} ${user.Empleado.apellido_paterno ?? ''}`.trim()
+			: (user?.name_user ?? '')
+	);
+	const iniciales = $derived(
+		nombre
+			.split(/\s+/)
+			.filter(Boolean)
+			.slice(0, 2)
+			.map((p) => p[0]?.toUpperCase())
+			.join('') || '?'
+	);
+
 	const options: DropdownOption[] = [
+		{ id: 'profile', label: 'Mi perfil', icon: UserIcon, action: () => redirect('/v1/profile') },
 		{
-			id: 'profile',
-			label: 'Perfil',
-			icon: UserIcon,
-			action: () => profile(),
-			divider: true,
-			disabled: false
-		},
-		{
-			id: 'delete',
-			label: 'Cerrar Sesión',
-			icon: TrashIcon,
-			action: () => logout(),
-			divider: true,
-			disabled: false
+			id: 'logout',
+			label: 'Cerrar sesión',
+			icon: LogOutIcon,
+			action: () => authStore.logout(),
+			divider: true
 		}
 	];
-
-	const logout = () => {
-		authStore.logout();
-	};
-
-	const profile = () => {
-		redirect('/v1/profile');
-	};
 </script>
 
-<header class="bg-light-two text-light-one shadow-lg">
-	<div class="flex items-center justify-between px-4 py-3">
+<header class="sticky top-0 z-30 border-b border-acero-200 bg-white">
+	<div class="flex h-14 items-center gap-3 px-3 md:px-6">
 		<button
-			class="rounded-md p-2 transition-colors md:hidden"
+			type="button"
+			class="-ml-1 rounded-md p-2 text-acero-700 hover:bg-acero-100 md:hidden"
 			onclick={onToggleSidebar}
-			aria-label="Toggle sidebar"
+			aria-label="Abrir menú"
+			aria-controls="menu-principal"
+			aria-expanded={sidebarOpen}
 		>
-			<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M4 6h16M4 12h16M4 18h16"
-				/>
-			</svg>
+			<Menu2Icon class="size-6" />
 		</button>
 
-		<div class="flex-1 md:flex-none">
-			<h1 class="text-lg font-semibold">
-				¡Hola <span class="text-primary font-extrabold">
-					{$currentUserStore?.Empleado?.nombre || $currentUserStore?.name_user}
-					{#if $currentUserStore?.Empleado?.apellido_paterno}
-						{$currentUserStore?.Empleado?.apellido_paterno}
+		<!-- Dónde estoy -->
+		<nav aria-label="Ubicación" class="min-w-0 flex-1">
+			{#if trail}
+				<ol class="flex min-w-0 items-center gap-1.5 text-sm">
+					<li class="hidden shrink-0 text-acero-500 sm:block">{trail.section}</li>
+					<li class="hidden shrink-0 text-acero-300 sm:block" aria-hidden="true">
+						<ChevronRightIcon class="size-4" />
+					</li>
+					{#if trail.isDetail}
+						<li class="min-w-0 truncate">
+							<a href={trail.parentHref} class="text-acero-500 hover:text-acero-950 hover:underline"
+								>{trail.label}</a
+							>
+						</li>
+						<li class="shrink-0 text-acero-300" aria-hidden="true">
+							<ChevronRightIcon class="size-4" />
+						</li>
+						<li class="truncate font-semibold text-acero-950" aria-current="page">Detalle</li>
+					{:else}
+						<li class="truncate font-semibold text-acero-950" aria-current="page">{trail.label}</li>
 					{/if}
-				</span>!
-			</h1>
-			{#if $currentUserStore?.Role?.nombre_rol}
-				<p class="hidden text-sm font-medium text-light-one/70 sm:block">
-					{$currentUserStore?.Role?.nombre_rol}
-				</p>
+				</ol>
 			{/if}
-		</div>
+		</nav>
 
-		<div class="flex items-center gap-2">
-			<!-- <button class="rounded-full p-2 transition-colors" aria-label="Notifications">
-				<BellIcon />
-			</button>
-
-			<button class="rounded-full p-2 transition-colors" aria-label="Settings">
-				<SettingsIcon />
-			</button> -->
-			<div class="relative">
-				<button
-					bind:this={trigger}
-					class="flex items-center rounded-full bg-light-accent p-2 transition-colors"
-					onclick={() => (isDropdownOpen = !isDropdownOpen)}
+		<!-- Usuario -->
+		<div class="relative shrink-0">
+			<button
+				bind:this={trigger}
+				type="button"
+				class="flex items-center gap-2.5 rounded-lg py-1 pr-2 pl-1 text-left transition-colors hover:bg-acero-100"
+				onclick={() => (isDropdownOpen = !isDropdownOpen)}
+				aria-haspopup="menu"
+				aria-expanded={isDropdownOpen}
+				aria-label="Menú de usuario: {nombre}"
+			>
+				<span
+					class="flex size-8 items-center justify-center rounded-full bg-acero-900 font-display text-sm font-semibold text-white"
+					aria-hidden="true">{iniciales}</span
 				>
-					<span><UserIcon class="h-5 w-5" /></span>
-				</button>
-				<DropdownMenu
-					{options}
-					{width}
-					bind:isOpen={isDropdownOpen}
-					triggerElement={trigger}
-					class="absolute top-full right-0"
-				/>
-			</div>
+				<span class="hidden leading-tight sm:block">
+					<span class="block max-w-44 truncate text-sm font-semibold text-acero-950">{nombre}</span>
+					{#if user?.Role?.nombre_rol}
+						<span class="block max-w-44 truncate text-xs text-acero-500"
+							>{user.Role.nombre_rol}</span
+						>
+					{/if}
+				</span>
+				<ChevronDownIcon class="hidden size-4 text-acero-400 sm:block" />
+			</button>
+			<DropdownMenu {options} width={200} bind:isOpen={isDropdownOpen} triggerElement={trigger} />
 		</div>
 	</div>
 </header>

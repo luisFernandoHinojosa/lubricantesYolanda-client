@@ -11,7 +11,10 @@
 </script>
 
 <th
-	class={cn('text-muted-foreground h-12 px-4 text-left align-middle font-medium', className)}
+	class={cn(
+		'h-11 px-4 text-left align-middle text-sm font-semibold whitespace-nowrap text-acero-600',
+		className
+	)}
 	{...restProps}
 >
 	{@render children()}

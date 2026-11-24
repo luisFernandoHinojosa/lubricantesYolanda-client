@@ -3,6 +3,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import type { Snippet } from 'svelte';
 	import type { HTMLSelectAttributes } from 'svelte/elements';
+	import { errorText, fieldBase, fieldError, fieldOk, labelBase } from './fieldStyles';
 
 	interface Props extends Omit<HTMLSelectAttributes, 'children'> {
 		children: Snippet;
@@ -22,36 +23,47 @@
 		value = $bindable(),
 		...restProps
 	}: Props = $props();
+
+	const uid = $props.id();
+	const selectId = $derived(restProps.id ?? `sel-${uid}`);
 </script>
 
 <div class={className}>
 	{#if label}
-		<label
-			class="relative mb-1 grid grid-cols-[auto,_1fr] items-center gap-0.5 text-sm leading-6 font-medium text-light-black sm:text-base"
-			for={restProps.id}
-			><span class="truncate"
-				>{label} <span class="text-red-500">{restProps.required && '*'} </span></span
-			>
+		<label class={labelBase} for={selectId}>
+			{label}{#if restProps.required}<span class="ml-0.5 text-marca" aria-hidden="true">*</span
+				>{/if}
 		</label>
 	{/if}
-	<div class={icon && 'grid grid-cols-1'}>
+	<div class="relative">
 		<select
 			{...restProps}
+			id={selectId}
 			bind:value
-			class="block w-full rounded-xl border border-light-four bg-light-one py-2 text-sm text-light-black ring-light-two transition-all placeholder:text-xs placeholder:text-light-five hover:ring-1 hover:ring-light-two_d focus:ring-2 focus:ring-light-three disabled:cursor-not-allowed sm:text-base sm:leading-6 placeholder:sm:text-sm {icon &&
-				'col-start-1 row-start-1 pl-10'}"
+			aria-invalid={error ? 'true' : undefined}
+			aria-describedby={error ? `${selectId}-error` : undefined}
+			class="{fieldBase} {error ? fieldError : fieldOk} h-[42px] py-0 pr-9 text-[0.9375rem] {icon
+				? 'pl-10'
+				: 'pl-3'}"
 		>
 			{@render children()}
 		</select>
 		{#if icon}
-			<p class="pointer-events-none col-start-1 row-start-1 ml-3 self-center text-light-two_d">
+			<span
+				class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-acero-400 [&_svg]:size-5"
+				aria-hidden="true"
+			>
 				{@render icon()}
-			</p>
-		{/if}
-		{#if error}
-			<p transition:slide={{ duration: 300, easing: cubicOut }} class="mt-1 text-sm text-red-500">
-				{error}
-			</p>
+			</span>
 		{/if}
 	</div>
+	{#if error}
+		<p
+			id="{selectId}-error"
+			transition:slide={{ duration: 200, easing: cubicOut }}
+			class={errorText}
+		>
+			{error}
+		</p>
+	{/if}
 </div>

@@ -222,7 +222,7 @@
 		<div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
 			<div class="space-y-6 lg:col-span-3">
 				<section
-					class="overflow-hidden rounded-2xl border border-light-four bg-light-one shadow-sm"
+					class="overflow-hidden rounded-xl border border-light-four bg-light-one shadow-sm"
 				>
 					<div
 						class="flex items-center justify-between border-b border-light-four bg-light-one_d p-3"
@@ -231,7 +231,7 @@
 							<div class="rounded-lg bg-red-100 p-2 text-red-600">
 								<ClipboardIcon class="size-5" />
 							</div>
-							<h3 class="text-sm font-bold tracking-wider text-light-black uppercase">
+							<h3 class="text-sm font-bold text-light-black">
 								Datos del Comprobante
 							</h3>
 						</div>
@@ -295,7 +295,7 @@
 				</section>
 
 				<section
-					class="overflow-hidden rounded-2xl border border-light-four bg-light-one shadow-sm"
+					class="overflow-hidden rounded-xl border border-light-four bg-light-one shadow-sm"
 				>
 					<div
 						class="flex items-center justify-between gap-4 border-b border-light-four bg-light-one_d px-4 py-4"
@@ -304,7 +304,7 @@
 							<div class="rounded-lg bg-red-100 p-2 text-red-600">
 								<ShoppingCartIcon class="size-5" />
 							</div>
-							<h3 class="text-sm font-bold tracking-wider text-light-black uppercase">
+							<h3 class="text-sm font-bold text-light-black">
 								Productos de la Compra
 							</h3>
 						</div>
@@ -362,7 +362,7 @@
 					<div class="max-h-[calc(100vh-20rem)] overflow-x-auto p-2">
 						<table class="w-full text-left text-xs">
 							<thead>
-								<tr class="border-b border-light-four font-bold text-light-two uppercase">
+								<tr class="border-b border-light-four font-bold text-acero-600">
 									<th class="px-4 py-3">Producto</th>
 									<th class="w-24 px-3 py-3 text-center">Cantidad</th>
 									<th class="w-32 px-3 py-3 text-right">Costo Unit.</th>
@@ -380,7 +380,7 @@
 												<span class="line-clamp-1 font-bold text-gray-800">
 													{item.producto?.nombre_comercial}
 												</span>
-												<span class="text-[10px] tracking-tighter text-gray-500 uppercase">
+												<span class="text-xs tracking-tighter text-gray-500">
 													{item.producto?.marca?.nombre}
 												</span>
 											</div>
@@ -396,18 +396,14 @@
 										</td>
 										<td class="px-2 py-3 text-right">
 											<div class="relative flex items-center">
-												<span class="absolute left-2 text-[10px] text-gray-400 italic">Bs</span>
+												<span class="absolute left-2 text-xs text-gray-400 italic">Bs</span>
 												<input
 													type="number"
 													min="0"
 													step="0.01"
 													bind:value={item.costo_unitario}
 													oninput={() => updateSubtotal(i)}
-													class="w-full rounded-lg border p-1.5 pl-7 text-right text-xs transition-colors outline-none
-                                                    {item.costo_unitario > 0 &&
-													item.costo_unitario >= (item.precio_venta_actual || 0)
-														? 'border-orange-400 bg-orange-50 text-orange-700 focus:border-orange-600'
-														: 'border-light-four bg-white focus:border-red-500'}"
+													class="w-full rounded-lg border p-1.5 pl-7 text-right text-xs transition-colors outline-none {item.costo_unitario > 0 && item.costo_unitario >= (item.precio_venta_actual || 0) ? 'border-orange-400 bg-orange-50 text-orange-700 focus:border-orange-600' : 'border-light-four bg-white focus:border-red-500'}"
 												/>
 											</div>
 										</td>
@@ -423,10 +419,10 @@
 												type="text"
 												bind:value={item.codigo_lote_provisto}
 												placeholder="OPCIONAL"
-												class="w-full rounded-lg border border-light-four bg-white p-1.5 text-center text-[10px] uppercase outline-none focus:border-red-500"
+												class="w-full rounded-lg border border-light-four bg-white p-1.5 text-center text-xs outline-none focus:border-red-500"
 											/>
 										</td>
-										<td class="px-4 py-3 text-right font-black text-gray-800">
+										<td class="px-4 py-3 text-right font-semibold text-gray-800">
 											{item.subtotal}
 										</td>
 										<td class="px-4 py-3 text-center">
@@ -434,11 +430,7 @@
 												<button
 													type="button"
 													onclick={() => toggleConfigPrecio(i)}
-													class="rounded-lg p-1.5 transition-colors
-                                                    {item.costo_unitario > 0 &&
-													item.costo_unitario >= (item.precio_venta_actual || 0)
-														? 'animate-pulse bg-orange-100 text-orange-600 hover:bg-orange-200'
-														: 'text-gray-400 hover:bg-blue-50 hover:text-blue-500'}"
+													class="rounded-lg p-1.5 transition-colors {item.costo_unitario > 0 && item.costo_unitario >= (item.precio_venta_actual || 0) ? 'animate-pulse bg-orange-100 text-orange-600 hover:bg-orange-200' : 'text-gray-400 hover:bg-blue-50 hover:text-blue-500'}"
 													title="Ajustar Precio de Venta"
 												>
 													<TagIcon class="size-4" />
@@ -462,7 +454,7 @@
 												>
 													<div>
 														<h4
-															class="mb-3 flex items-center gap-2 text-xs font-bold text-gray-500 uppercase"
+															class="mb-3 flex items-center gap-2 text-xs font-bold text-gray-500"
 														>
 															<ClipboardIcon class="size-4" />
 															Historial de Compras
@@ -481,11 +473,11 @@
 																			<span class="text-gray-600"
 																				>{new Date(hist.fecha_ingreso).toLocaleDateString()}</span
 																			>
-																			<span class="text-[9px] text-gray-400"
+																			<span class="text-xs text-gray-400"
 																				>{hist.codigo_lote}</span
 																			>
 																		</div>
-																		<span class="font-mono font-bold text-gray-800"
+																		<span class="tabular-nums font-bold text-gray-800"
 																			>Bs. {hist.costo_compra_unitario}</span
 																		>
 																	</li>
@@ -503,7 +495,7 @@
 													<div class="flex flex-col justify-between">
 														<div>
 															<h4
-																class="mb-3 flex items-center gap-2 text-xs font-bold text-gray-500 uppercase"
+																class="mb-3 flex items-center gap-2 text-xs font-bold text-gray-500"
 															>
 																<TagIcon class="size-4" />
 																Ajuste de Precio de Venta
@@ -514,10 +506,7 @@
 															>
 																<span class="text-xs text-gray-600">Precio de Venta Actual:</span>
 																<span
-																	class="font-bold {item.costo_unitario > 0 &&
-																	item.costo_unitario >= (item.precio_venta_actual || 0)
-																		? 'text-orange-600'
-																		: 'text-green-600'}"
+																	class="font-bold {item.costo_unitario > 0 && item.costo_unitario >= (item.precio_venta_actual || 0) ? 'text-orange-600' : 'text-green-600'}"
 																>
 																	Bs. {item.precio_venta_actual || 0}
 																</span>
@@ -525,7 +514,7 @@
 
 															<div class="mb-4">
 																<p
-																	class="mb-2 text-[10px] font-bold tracking-wider text-gray-500 uppercase"
+																	class="mb-2 text-xs font-bold text-gray-500"
 																>
 																	Cálculo Rápido
 																</p>
@@ -548,7 +537,7 @@
 																		type="button"
 																		onclick={() =>
 																			(item.nuevo_precio_venta = item.precio_venta_actual)}
-																		class="flex-1 rounded border border-gray-200 bg-gray-50 py-1.5 text-[10px] font-bold text-gray-600 transition-colors hover:bg-gray-100"
+																		class="flex-1 rounded border border-gray-200 bg-gray-50 py-1.5 text-xs font-bold text-gray-600 transition-colors hover:bg-gray-100"
 																	>
 																		MANTENER
 																	</button>
@@ -567,7 +556,7 @@
 																step="0.01"
 																min="0"
 																bind:value={item.nuevo_precio_venta}
-																class="w-1/2 rounded-lg border-2 border-blue-300 bg-white p-2 text-right font-black text-blue-900 outline-none focus:border-blue-500"
+																class="w-1/2 rounded-lg border-2 border-blue-300 bg-white p-2 text-right font-semibold text-blue-900 outline-none focus:border-blue-500"
 															/>
 														</div>
 													</div>
@@ -583,7 +572,7 @@
 											<div class="flex flex-col items-center justify-center text-light-black/40">
 												<ShoppingCartIcon class="mb-2 size-12 opacity-50" />
 												<p class="font-medium">Tu lista de productos está vacía</p>
-												<p class="mt-1 text-[10px] tracking-widest uppercase">
+												<p class="mt-1 text-xs">
 													Busca productos arriba para agregarlos
 												</p>
 											</div>
@@ -598,19 +587,19 @@
 
 			<div class="space-y-6">
 				<section
-					class="overflow-hidden rounded-2xl border border-light-four bg-light-one shadow-sm"
+					class="overflow-hidden rounded-xl border border-light-four bg-light-one shadow-sm"
 				>
 					<div class="border-b border-light-four bg-light-one_d px-4 py-5">
-						<h3 class="text-center text-sm font-bold tracking-wider text-light-black uppercase">
+						<h3 class="text-center text-sm font-bold text-light-black">
 							Resumen de Inversión
 						</h3>
 					</div>
 					<div class="p-4 text-center">
-						<div class="rounded-2xl border border-red-100 bg-red-50 p-2">
-							<p class="mb-1 text-xs font-bold tracking-widest text-red-400 uppercase">
+						<div class="rounded-xl border border-red-100 bg-red-50 p-2">
+							<p class="mb-1 text-xs font-bold text-red-400">
 								Total Compra
 							</p>
-							<p class="text-4xl font-black tracking-tighter text-red-600">
+							<p class="text-4xl font-semibold tracking-tighter text-red-600">
 								{granTotal}
 							</p>
 						</div>
@@ -630,7 +619,7 @@
 							<div class="flex justify-between text-xs">
 								<span class="font-medium text-light-black/60">Estado pago</span>
 								<span
-									class="rounded-full bg-light-four_d px-2 py-0.5 text-[9px] font-bold text-light-black uppercase"
+									class="rounded-full bg-light-four_d px-2 py-0.5 text-xs font-bold text-light-black"
 								>
 									{compraData.estado_pago?.replace('_', ' ') || ''}
 								</span>
@@ -644,13 +633,13 @@
 						{#snippet leftIcon()}
 							<CheckIcon class="size-6" />
 						{/snippet}
-						<span class="text-lg font-black tracking-widest uppercase">Registrar Compra</span>
+						<span class="text-lg font-semibold">Registrar Compra</span>
 					</Button>
 					<Button onclick={onCancel} disabled={loading} size="md" variant="secondary">
 						{#snippet leftIcon()}
 							<XIcon class="size-6" />
 						{/snippet}
-						<span class="text-sm font-bold tracking-widest uppercase">Cancelar</span>
+						<span class="text-sm font-bold">Cancelar</span>
 					</Button>
 				</div>
 			</div>

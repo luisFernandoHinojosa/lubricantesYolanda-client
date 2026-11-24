@@ -246,7 +246,7 @@
 	{#if resumen}
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
 			<div
-				class="relative flex items-start gap-4 overflow-hidden rounded-2xl border border-light-four bg-transparent p-5"
+				class="relative flex items-start gap-4 overflow-hidden rounded-xl border border-light-four bg-transparent p-5"
 			>
 				<div
 					class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-light-one text-2xl text-light-three"
@@ -254,7 +254,7 @@
 					<ShoppingCartIcon class="size-6" />
 				</div>
 				<div class="flex flex-col gap-2">
-					<span class=" font-medium tracking-wider text-light-black uppercase">Ventas del Día</span>
+					<span class="font-medium text-light-black">Ventas del Día</span>
 					<span class="text-2xl font-bold text-light-black">{fmtBs(resumen.ventasDelDia)}</span>
 					<span
 						class="mt-1 w-fit rounded-full bg-green-100 px-2 py-1.5 text-[0.68rem] font-semibold text-light-success"
@@ -263,7 +263,7 @@
 				</div>
 			</div>
 			<div
-				class="relative flex items-start gap-4 overflow-hidden rounded-2xl border border-light-four bg-transparent p-5"
+				class="relative flex items-start gap-4 overflow-hidden rounded-xl border border-light-four bg-transparent p-5"
 			>
 				<div
 					class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-light-one text-2xl text-light-three"
@@ -271,7 +271,7 @@
 					<BoxIcon class="size-6" />
 				</div>
 				<div class="flex flex-col gap-2">
-					<span class=" font-medium tracking-wider text-light-black uppercase"
+					<span class="font-medium text-light-black"
 						>Inventario Valorizado</span
 					>
 					<span class="text-2xl font-bold text-light-black"
@@ -284,7 +284,7 @@
 				</div>
 			</div>
 			<div
-				class="relative flex items-start gap-4 overflow-hidden rounded-2xl border border-light-four bg-transparent p-5"
+				class="relative flex items-start gap-4 overflow-hidden rounded-xl border border-light-four bg-transparent p-5"
 			>
 				<div
 					class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-light-one text-2xl text-light-three"
@@ -292,7 +292,7 @@
 					<FileDescriptionIcon class="size-6" />
 				</div>
 				<div class="flex flex-col gap-2">
-					<span class=" font-medium tracking-wider text-light-black uppercase"
+					<span class="font-medium text-light-black"
 						>Pedidos Pendientes</span
 					>
 					<span class="text-2xl font-bold text-light-black">{resumen.pedidosPendientes}</span>
@@ -303,7 +303,7 @@
 				</div>
 			</div>
 			<div
-				class="relative flex items-start gap-4 overflow-hidden rounded-2xl border border-light-four bg-transparent p-5"
+				class="relative flex items-start gap-4 overflow-hidden rounded-xl border border-light-four bg-transparent p-5"
 			>
 				<div
 					class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-light-one text-2xl text-light-three"
@@ -311,7 +311,7 @@
 					<UsersIcon class="size-6" />
 				</div>
 				<div class="flex flex-col gap-2">
-					<span class=" font-medium tracking-wider text-light-black uppercase"
+					<span class="font-medium text-light-black"
 						>Clientes Registrados</span
 					>
 					<span class="text-2xl font-bold text-light-black"
@@ -329,25 +329,23 @@
 	<!-- ── MAIN ROW ── -->
 	<div class="grid grid-cols-1 gap-5 xl:grid-cols-[1fr_320px]">
 		<!-- Chart Panel -->
-		<div class="flex flex-col gap-4 rounded-2xl border border-light-four bg-transparent p-6">
+		<div class="flex flex-col gap-4 rounded-xl border border-light-four bg-transparent p-6">
 			<div class="flex flex-wrap items-start justify-between gap-3">
 				<div class="flex flex-col">
-					<span class="text-xs font-semibold tracking-wide text-light-black uppercase"
+					<span class="text-xs font-semibold text-light-black"
 						>Rendimiento de ventas</span
 					>
-					<h2 class="mt-1 mb-2 text-2xl leading-none font-extrabold text-light-black">
+					<h2 class="mt-1 mb-2 text-2xl leading-none font-semibold text-light-black">
 						Análisis Financiero
 					</h2>
 					{#if chartData}
 						<div class="flex flex-wrap items-center gap-2">
 							<span class="text-sm text-light-black">Utilidad acumulada</span>
-							<span class=" text-2xl font-extrabold text-light-black"
+							<span class="text-2xl font-semibold text-light-black"
 								>{fmtBs(chartData.totales.saldo_acumulado)}</span
 							>
 							<span
-								class="rounded-full px-3 py-1.5 text-sm font-bold {saldoPositivo
-									? 'bg-green-100 text-light-success'
-									: 'bg-red-100 text-light-error'}"
+								class="rounded-full px-3 py-1.5 text-sm font-bold {saldoPositivo ? 'bg-green-100 text-light-success' : 'bg-red-100 text-light-error'}"
 							>
 								{saldoPositivo ? '▲' : '▼'}
 								{saldoPositivo ? 'positivo' : 'negativo'}
@@ -367,10 +365,7 @@
 					</select>
 					<div class="flex overflow-hidden rounded-xl border border-light-one_d bg-light-one_d">
 						<button
-							class="flex cursor-pointer items-center gap-2 border-none px-1.5 py-1.5 text-xs font-medium text-light-black transition-all duration-150 {tipoGrafico ===
-							'bar'
-								? 'bg-light-black text-light-one'
-								: ''}"
+							class="flex cursor-pointer items-center gap-2 border-none px-1.5 py-1.5 text-xs font-medium text-light-black transition-all duration-150 {tipoGrafico === 'bar' ? 'bg-light-black text-light-one' : ''}"
 							on:click={() => handleGraphTypeChange('bar')}
 						>
 							<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -381,10 +376,7 @@
 							Barras
 						</button>
 						<button
-							class="flex cursor-pointer items-center gap-2 border-none px-1.5 py-1.5 text-xs font-medium text-light-black transition-all duration-150 {tipoGrafico ===
-							'line'
-								? 'bg-light-black text-light-one'
-								: 'hover:text-light-black'}"
+							class="flex cursor-pointer items-center gap-2 border-none px-1.5 py-1.5 text-xs font-medium text-light-black transition-all duration-150 {tipoGrafico === 'line' ? 'bg-light-black text-light-one' : 'hover:text-light-black'}"
 							on:click={() => handleGraphTypeChange('line')}
 						>
 							<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -427,9 +419,7 @@
 						<span class="h-[10px] w-[10px] shrink-0 rounded-full bg-light-warning"></span>
 						<span class="text-[0.78rem] text-light-black">Utilidad neta</span>
 						<span
-							class="text-[0.82rem] font-bold {saldoPositivo
-								? 'text-light-success'
-								: 'text-light-error'}">{fmtBs(chartData.totales.saldo_acumulado)}</span
+							class="text-[0.82rem] font-bold {saldoPositivo ? 'text-light-success' : 'text-light-error'}">{fmtBs(chartData.totales.saldo_acumulado)}</span
 						>
 					</div>
 				</div>
@@ -437,13 +427,13 @@
 		</div>
 
 		<!-- Clientes Top -->
-		<div class="flex flex-col overflow-hidden rounded-2xl border border-light-four bg-transparent">
+		<div class="flex flex-col overflow-hidden rounded-xl border border-light-four bg-transparent">
 			<div class="flex items-end justify-between border-b border-light-one_d px-5 pt-5 pb-3">
 				<div>
-					<p class="m-0 mb-1 text-sm font-semibold tracking-wide text-light-black uppercase">
+					<p class="m-0 mb-1 text-sm font-semibold text-light-black">
 						Ranking
 					</p>
-					<h3 class="m-0 text-base font-extrabold text-light-black">Mejores Clientes</h3>
+					<h3 class="m-0 text-base font-semibold text-light-black">Mejores Clientes</h3>
 				</div>
 				<button
 					class="cursor-pointer border-none bg-none p-0 text-xs font-semibold text-blue-500 hover:underline"
@@ -456,15 +446,7 @@
 						class="flex items-center gap-3 rounded-xl px-3 py-2 transition-colors duration-100 hover:bg-light-one_d"
 					>
 						<div
-							class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full text-[0.72rem] font-extrabold {i +
-								1 ===
-							1
-								? 'bg-[#fef3c7] text-[#d97706]'
-								: i + 1 === 2
-									? 'bg-[#f1f5f9] text-[#64748b]'
-									: i + 1 === 3
-										? 'bg-[#fce7f3] text-[#db2777]'
-										: 'bg-light-one_d text-gray-400'}"
+							class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full text-[0.72rem] font-semibold {i + 1 === 1 ? 'bg-[#fef3c7] text-[#d97706]' : i + 1 === 2 ? 'bg-[#f1f5f9] text-[#64748b]' : i + 1 === 3 ? 'bg-[#fce7f3] text-[#db2777]' : 'bg-light-one_d text-gray-400'}"
 						>
 							{i + 1}
 						</div>
@@ -489,13 +471,13 @@
 	<!-- ── BOTTOM GRID ── -->
 	<div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-[1fr_1fr_360px]">
 		<!-- Últimos movimientos -->
-		<div class="flex flex-col overflow-hidden rounded-2xl border border-light-four bg-transparent">
+		<div class="flex flex-col overflow-hidden rounded-xl border border-light-four bg-transparent">
 			<div class="flex items-end justify-between border-b border-light-one_d px-5 pt-5 pb-3">
 				<div>
-					<p class="m-0 mb-1 text-sm font-semibold tracking-wide text-light-black uppercase">
+					<p class="m-0 mb-1 text-sm font-semibold text-light-black">
 						Kardex
 					</p>
-					<h3 class="m-0 text-base font-extrabold text-light-black">Últimos Movimientos</h3>
+					<h3 class="m-0 text-base font-semibold text-light-black">Últimos Movimientos</h3>
 				</div>
 				<button
 					class="cursor-pointer border-none bg-none p-0 text-xs font-semibold text-blue-500 hover:underline"
@@ -533,13 +515,13 @@
 		</div>
 
 		<!-- Stock de Productos -->
-		<div class="flex flex-col overflow-hidden rounded-2xl border border-light-four bg-transparent">
+		<div class="flex flex-col overflow-hidden rounded-xl border border-light-four bg-transparent">
 			<div class="flex items-end justify-between border-b border-light-one_d px-5 pt-5 pb-3">
 				<div>
-					<p class="m-0 mb-1 text-sm font-semibold tracking-wide text-light-black uppercase">
+					<p class="m-0 mb-1 text-sm font-semibold text-light-black">
 						Almacén
 					</p>
-					<h3 class="m-0 text-base font-extrabold text-light-black">Stock de Productos</h3>
+					<h3 class="m-0 text-base font-semibold text-light-black">Stock de Productos</h3>
 				</div>
 				<button
 					class="cursor-pointer border-none bg-none p-0 text-xs font-semibold text-blue-500 hover:underline"
@@ -569,9 +551,7 @@
 						<div class="flex flex-col items-end gap-2">
 							<span class="text-base font-bold text-light-black">{pr.cantidad_actual}</span>
 							<span
-								class="rounded-full px-2 py-1 text-xs font-bold {pr.estado === 'Crítico'
-									? 'bg-red-100 text-light-error'
-									: 'bg-blue-100 text-blue-600'}">{pr.estado}</span
+								class="rounded-full px-2 py-1 text-xs font-bold {pr.estado === 'Crítico' ? 'bg-red-100 text-light-error' : 'bg-blue-100 text-blue-600'}">{pr.estado}</span
 							>
 						</div>
 					</div>
@@ -585,14 +565,14 @@
 		<!-- Top Vendidos + Por Vencer -->
 		<div class="flex flex-col gap-5">
 			<div
-				class="flex flex-1 flex-col overflow-hidden rounded-2xl border border-light-four bg-transparent"
+				class="flex flex-1 flex-col overflow-hidden rounded-xl border border-light-four bg-transparent"
 			>
 				<div class="flex items-end justify-between border-b border-light-one_d px-5 pt-5 pb-3">
 					<div>
-						<p class="m-0 mb-1 text-sm font-semibold tracking-wide text-light-black uppercase">
+						<p class="m-0 mb-1 text-sm font-semibold text-light-black">
 							Análisis
 						</p>
-						<h3 class="m-0 text-base font-extrabold text-light-black">Mas Vendidos</h3>
+						<h3 class="m-0 text-base font-semibold text-light-black">Mas Vendidos</h3>
 					</div>
 				</div>
 				<div class="p-2">
@@ -613,14 +593,14 @@
 				</div>
 			</div>
 			<div
-				class="flex flex-1 flex-col overflow-hidden rounded-2xl border border-light-four bg-transparent"
+				class="flex flex-1 flex-col overflow-hidden rounded-xl border border-light-four bg-transparent"
 			>
 				<div class="flex items-end justify-between border-b border-light-one_d px-5 pt-5 pb-3">
 					<div>
-						<p class="m-0 mb-1 text-sm font-semibold tracking-wide text-light-black uppercase">
+						<p class="m-0 mb-1 text-sm font-semibold text-light-black">
 							Alertas
 						</p>
-						<h3 class="m-0 text-base font-extrabold text-light-black">Por Vencer</h3>
+						<h3 class="m-0 text-base font-semibold text-light-black">Por Vencer</h3>
 					</div>
 				</div>
 				<div class="p-2">

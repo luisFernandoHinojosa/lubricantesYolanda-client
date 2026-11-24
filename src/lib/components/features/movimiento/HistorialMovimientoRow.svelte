@@ -27,10 +27,7 @@
 <tr class="group transition-colors hover:bg-slate-50/50">
 	<td class="px-6 py-4 whitespace-nowrap">
 		<span
-			class="inline-flex items-center gap-2 rounded-xl px-3 py-1.5 text-sm font-bold tracking-tight shadow-sm {movimiento.tipo ===
-			'INGRESO'
-				? 'bg-green-100/50 text-green-700'
-				: 'bg-red-100/50 text-red-700'}"
+			class="inline-flex items-center gap-2 rounded-xl px-3 py-1.5 text-sm font-bold tracking-tight shadow-sm {movimiento.tipo === 'INGRESO' ? 'bg-green-100/50 text-green-700' : 'bg-red-100/50 text-red-700'}"
 		>
 			{#if movimiento.tipo === 'INGRESO'}
 				<TredingUpIcon class="size-4" />
@@ -44,7 +41,7 @@
 	<td class="px-6 py-4 whitespace-nowrap">
 		<div class="flex flex-col">
 			<span class="text-sm font-bold text-light-black">{formatDateDisplay(movimiento.fecha)}</span>
-			<span class="text-sm font-medium text-light-two uppercase"
+			<span class="text-sm font-medium text-acero-600"
 				>{new Date(movimiento.fecha).toLocaleTimeString('es-BO', {
 					hour: '2-digit',
 					minute: '2-digit'
@@ -53,32 +50,30 @@
 		</div>
 	</td>
 	<td class="px-6 py-4 whitespace-nowrap">
-		<span class=" px-2.5 py-1 text-sm font-bold text-light-black uppercase">
+		<span class="px-2.5 py-1 text-sm font-bold text-light-black">
 			{movimiento.categoria_movimiento?.nombre || 'General'}
 		</span>
 	</td>
 	<td class="px-6 py-4">
 		<div class="flex max-w-xs flex-col md:max-w-md">
 			<span class="line-clamp-1 text-sm font-bold text-light-black">{movimiento.nombre}</span>
-			<span class="line-clamp-1 text-sm text-light-two italic">{movimiento.descripcion}</span>
+			<span class="line-clamp-1 text-sm text-acero-600 italic">{movimiento.descripcion}</span>
 		</div>
 	</td>
 	<td class="px-6 py-4 whitespace-nowrap">
 		<div class="flex flex-col">
 			<span class="text-sm font-bold text-light-black">{movimiento.tipoPago}</span>
-			<span class="text-sm font-medium tracking-tight text-light-two uppercase"
+			<span class="text-sm font-medium tracking-tight text-acero-600"
 				>{movimiento.sucursal?.nombre || 'Matriz'}</span
 			>
 		</div>
 	</td>
 	<td class="px-6 py-4 text-right whitespace-nowrap">
 		<span
-			class="text-base font-black {movimiento.tipo === 'INGRESO'
-				? 'text-emerald-600'
-				: 'text-rose-600'}"
+			class="text-base font-semibold {movimiento.tipo === 'INGRESO' ? 'text-emerald-600' : 'text-rose-600'}"
 		>
 			{movimiento.tipo === 'INGRESO' ? '+' : '-'}{fmt(movimiento.monto)}
 		</span>
-		<div class="text-sm font-bold text-light-two">{movimiento.divisa}</div>
+		<div class="text-sm font-bold text-acero-600">{movimiento.divisa}</div>
 	</td>
 </tr>

@@ -10,7 +10,13 @@
 	let { class: className, children, ...restProps }: Props = $props();
 </script>
 
-<thead class={cn('[&_tr]:border-b', className)} {...restProps}>
+<thead
+	class={cn(
+		'bg-acero-50 [&_tr]:border-b [&_tr]:border-acero-200 [&_tr:hover]:bg-transparent',
+		className
+	)}
+	{...restProps}
+>
 	{@render children()}
 </thead>
 

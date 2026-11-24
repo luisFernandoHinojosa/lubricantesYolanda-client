@@ -29,13 +29,13 @@
 	}: CardProps = $props();
 
 	// Clases base estáticas
-	const baseClasses = 'rounded-lg transition-all duration-200 ease-in-out';
+	const baseClasses = 'rounded-xl transition-colors duration-150';
 
 	// Diccionarios de estilos (estos pueden ser const porque no cambian)
 	const variantStyles = {
-		default: 'bg-white border border-gray-200 shadow-sm dark:bg-gray-900 dark:border-gray-800',
-		bordered: 'bg-white border-2 border-gray-300 dark:bg-gray-900 dark:border-gray-700',
-		elevated: 'bg-white shadow-lg border-0 dark:bg-gray-900',
+		default: 'bg-white border border-acero-200',
+		bordered: 'bg-white border border-acero-300',
+		elevated: 'bg-white border border-acero-200 shadow-[0_8px_24px_-16px_rgb(23_26_31/0.35)]',
 		ghost: 'bg-transparent border-0 shadow-none'
 	};
 
@@ -55,9 +55,7 @@
 	// --- CÁLCULOS REACTIVOS CON $derived ---
 
 	const interactiveClasses = $derived(
-		interactive && !disabled
-			? 'hover:shadow-md hover:scale-[1.02] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900'
-			: ''
+		interactive && !disabled ? 'hover:border-acero-300 cursor-pointer' : ''
 	);
 
 	const disabledClasses = $derived(
@@ -89,7 +87,7 @@
 <div
 	class={cardClasses}
 	role={interactive ? 'button' : undefined}
-	tabindex={interactive && !disabled ? 0 : -1}
+	tabindex={interactive && !disabled ? 0 : undefined}
 	onclick={handleClick}
 	onkeydown={(e) => {
 		if (interactive && !disabled && (e.key === 'Enter' || e.key === ' ')) {
@@ -100,7 +98,7 @@
 	{...restProps}
 >
 	{#if header}
-		<div class="card-header mb-4 border-b border-gray-200 pb-4 dark:border-gray-700">
+		<div class="card-header mb-4 border-b border-acero-100 pb-4">
 			{@render header()}
 		</div>
 	{/if}
@@ -110,7 +108,7 @@
 	</div>
 
 	{#if footer}
-		<div class="card-footer mt-4 border-t border-gray-200 pt-4 dark:border-gray-700">
+		<div class="card-footer mt-4 border-t border-acero-100 pt-4">
 			{@render footer()}
 		</div>
 	{/if}

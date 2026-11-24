@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
-	import { CheckCircleIcon, PrinterIcon, FileDescriptionIcon, ArrowUpRightIcon } from '$lib/icons/outline';
+	import {
+		CheckCircleIcon,
+		PrinterIcon,
+		FileDescriptionIcon,
+		ArrowUpRightIcon
+	} from '$lib/icons/outline';
 	import { Button } from '$lib/components/ui';
 	import type { VentaResponse } from '$lib/interfaces/venta.interface';
 
@@ -117,7 +122,8 @@
 		{/if}
 		{#if facturaEmitida && ultimaVenta.factura}
 			<p style="font-size:9px; word-break:break-all; line-height:1.2; margin-top:2px;">
-				<strong>CUF:</strong> {ultimaVenta.factura.cuf}
+				<strong>CUF:</strong>
+				{ultimaVenta.factura.cuf}
 			</p>
 		{/if}
 	</div>
@@ -174,9 +180,7 @@
 		<tbody>
 			<tr>
 				<td>Subtotal:</td>
-				<td style="text-align:right; white-space:nowrap;"
-					>{fmt(ultimaVenta.subtotal)}</td
-				>
+				<td style="text-align:right; white-space:nowrap;">{fmt(ultimaVenta.subtotal)}</td>
 			</tr>
 
 			{#if ultimaVenta.monto_descuento_global > 0}
@@ -242,86 +246,93 @@
 {/snippet}
 
 <div
-	class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-md print:hidden"
-	transition:fade
+	class="fixed inset-0 z-50 flex items-end justify-center bg-acero-950/55 backdrop-blur-[2px] sm:items-center sm:p-4 print:hidden"
+	transition:fade={{ duration: 150 }}
 >
 	<div
-		class="flex max-h-[95vh] w-full max-w-sm flex-col overflow-hidden rounded-3xl bg-light-one shadow-2xl"
-		transition:scale={{ duration: 200 }}
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="recibo-titulo"
+		class="flex max-h-[95dvh] w-full max-w-md flex-col overflow-hidden rounded-t-2xl bg-white shadow-[0_24px_60px_-20px_rgb(23_26_31/0.5)] sm:rounded-xl"
+		transition:scale={{ duration: 180, start: 0.97 }}
 	>
-		<div
-			class="flex shrink-0 items-center justify-between border-b border-light-four bg-light-one_d px-6 py-4"
-		>
-			<div class="flex items-center gap-2.5">
-				<div class="flex h-8 w-8 items-center justify-center rounded-full">
-					<CheckCircleIcon class="h-6 w-6 text-light-success" />
-				</div>
-				<h3 class="font-bold text-light-black">{titulo}</h3>
+		<div class="flex shrink-0 items-center gap-3 border-b border-acero-100 px-5 py-4">
+			<span
+				class="flex size-9 items-center justify-center rounded-full bg-ok-tinte text-ok"
+				aria-hidden="true"
+			>
+				<CheckCircleIcon class="size-5" />
+			</span>
+			<div class="min-w-0">
+				<h2 id="recibo-titulo" class="font-display text-xl font-semibold text-acero-950">
+					{titulo}
+				</h2>
+				<p class="text-sm text-acero-500">
+					Comprobante <span class="tabular-nums">{ultimaVenta.numero_comprobante}</span>
+				</p>
 			</div>
 		</div>
 
-		<div class="overflow-y-auto p-6 font-mono">
+		<div class="overflow-y-auto px-5 py-5">
 			{#if facturaEmitida && ultimaVenta.factura}
-				<div class="mb-4 rounded-2xl border border-emerald-300 bg-emerald-50 p-4 font-sans text-xs">
-					<div class="flex items-center justify-between mb-1.5">
-						<div class="flex items-center gap-1.5">
-							<FileDescriptionIcon class="h-4 w-4 text-emerald-600" />
-							<span class="font-bold text-emerald-950 text-sm">
-								Factura N° {ultimaVenta.factura.numero_factura}
-							</span>
-						</div>
-						<span class="rounded-full bg-emerald-600 px-2 py-0.5 font-bold text-[10px] text-white">
-							{ultimaVenta.factura.estado}
+				<div class="mb-4 rounded-lg border border-ok/25 bg-ok-tinte p-4 text-sm">
+					<div class="mb-1 flex items-center justify-between gap-2">
+						<span class="flex items-center gap-1.5 font-semibold text-acero-950">
+							<FileDescriptionIcon class="size-4 text-ok" />
+							Factura N.º {ultimaVenta.factura.numero_factura}
 						</span>
+						<span class="rounded-md bg-ok px-2 py-0.5 text-xs font-semibold text-white"
+							>Emitida</span
+						>
 					</div>
-					<p class="text-[10px] text-emerald-800 font-mono truncate mb-3" title={ultimaVenta.factura.cuf}>
-						CUF: {ultimaVenta.factura.cuf}
+					<p class="mb-3 truncate text-xs text-acero-600" title={ultimaVenta.factura.cuf}>
+						CUF {ultimaVenta.factura.cuf}
 					</p>
 					{#if urlFacturaPdf}
 						<a
 							href={urlFacturaPdf}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="inline-flex items-center justify-center gap-1.5 w-full rounded-xl bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition"
+							class="inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-ok px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-ok/90"
 						>
-							<ArrowUpRightIcon class="h-4 w-4" />
-							Ver / Imprimir Factura Oficial SIAT (PDF)
+							<ArrowUpRightIcon class="size-4" />
+							Abrir factura del SIAT (PDF)
 						</a>
 					{/if}
 				</div>
 			{:else if facturaConError}
-				<div class="mb-4 rounded-2xl border border-red-300 bg-red-50 p-4 font-sans text-xs">
-					<div class="flex items-center justify-between mb-1.5">
-						<div class="flex items-center gap-1.5">
-							<FileDescriptionIcon class="h-4 w-4 text-red-600" />
-							<span class="font-bold text-red-950 text-sm">Factura no emitida</span>
-						</div>
-						<span class="rounded-full bg-red-600 px-2 py-0.5 font-bold text-[10px] text-white">
-							ERROR
-						</span>
-					</div>
+				<div class="mb-4 rounded-lg border border-marca/30 bg-marca-tinte p-4 text-sm" role="alert">
+					<p class="flex items-center gap-1.5 font-semibold text-marca-oscuro">
+						<FileDescriptionIcon class="size-4" />
+						La factura no se emitió
+					</p>
 					{#if ultimaVenta.factura?.error || ultimaVenta.resultado_facturacion?.error}
-						<p class="mb-1.5 text-[11px] font-semibold text-red-900">
+						<p class="mt-1 text-acero-800">
 							{ultimaVenta.factura?.error || ultimaVenta.resultado_facturacion?.error}
 						</p>
 					{/if}
-					<p class="text-[11px] text-red-800">
-						La venta se registró correctamente. Puede volver a facturarla desde Historial de ventas.
+					<p class="mt-1 text-acero-600">
+						La venta quedó registrada. Puede volver a facturarla desde Historial de ventas.
 					</p>
 				</div>
 			{/if}
 
-			{@render contenidoTicket()}
-
-			<div class="mt-6 flex gap-3 font-sans">
-				<Button onclick={onImprimir} variant="secondary" fullWidth>
-					{#snippet leftIcon()}
-						<PrinterIcon class="h-5 w-5" />
-					{/snippet}
-					Imprimir Ticket
-				</Button>
-				<Button onclick={onCerrar} variant="primary" fullWidth>{textoBotonCerrar}</Button>
+			<div
+				class="rounded-lg border border-dashed border-acero-300 bg-acero-50 px-4 py-4 font-mono text-[12px] leading-snug text-acero-900"
+			>
+				{@render contenidoTicket()}
 			</div>
+		</div>
+
+		<div class="flex shrink-0 gap-2 border-t border-acero-100 bg-acero-50 px-5 py-3.5">
+			<Button onclick={onImprimir} variant="secondary" fullWidth>
+				{#snippet leftIcon()}
+					<PrinterIcon class="size-5" />
+				{/snippet}
+				Imprimir ticket
+			</Button>
+			<!-- svelte-ignore a11y_autofocus -->
+			<Button onclick={onCerrar} variant="primary" fullWidth autofocus>{textoBotonCerrar}</Button>
 		</div>
 	</div>
 </div>

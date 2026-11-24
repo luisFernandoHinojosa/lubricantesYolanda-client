@@ -59,10 +59,10 @@
 		{#if empleado.Usuario}
 			<div class="flex flex-col">
 				<span class="font-medium text-light-black">{empleado.Usuario.name_user}</span>
-				<span class="text-xs text-light-two">{empleado.Usuario.email}</span>
+				<span class="text-xs text-acero-600">{empleado.Usuario.email}</span>
 			</div>
 		{:else}
-			<span class="text-light-two italic">Sin usuario</span>
+			<span class="text-acero-600 italic">Sin usuario</span>
 		{/if}
 	</td>
 	<td class="px-6 py-4 text-sm whitespace-nowrap">
@@ -88,15 +88,13 @@
 	</td>
 	<td class="px-6 py-4 text-center text-sm whitespace-nowrap">
 		<span
-			class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 {empleado.esta_activo
-				? 'bg-green-100 text-green-800'
-				: 'bg-red-100 text-red-800'}"
+			class="inline-flex rounded-full px-2 text-xs font-semibold leading-5 {empleado.esta_activo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"
 		>
 			{empleado.esta_activo ? 'Activo' : 'Inactivo'}
 		</span>
 	</td>
 	<td class="px-6 py-4 text-sm whitespace-nowrap">
-		<div class="flex flex-col text-xs text-light-two">
+		<div class="flex flex-col text-xs text-acero-600">
 			<span>C: {formatDate(empleado.createdAt)}</span>
 			<span>A: {formatDate(empleado.updatedAt)}</span>
 		</div>

@@ -49,7 +49,7 @@
 	<td class="px-6 py-4 text-sm whitespace-nowrap text-light-two_d">
 		{zona.nombre}
 	</td>
-	<td class="px-6 py-4 text-sm whitespace-nowrap text-light-two">
+	<td class="px-6 py-4 text-sm whitespace-nowrap text-acero-600">
 		{zona.provincia}
 	</td>
 	<td class="px-6 py-4 text-right text-sm whitespace-nowrap">

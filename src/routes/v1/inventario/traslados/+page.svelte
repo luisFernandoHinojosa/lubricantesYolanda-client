@@ -282,7 +282,7 @@
 	<!-- Header -->
 	<div class="flex items-center justify-between">
 		<div>
-			<Heading level="h4">Traspaso de Inventario</Heading>
+			<h1 class="titulo-pagina">Traspaso de Inventario</h1>
 			<p class="mt-1 text-sm text-gray-500">
 				Busca un producto y transfiere stock disponible entre sucursales, áreas o estantes.
 			</p>

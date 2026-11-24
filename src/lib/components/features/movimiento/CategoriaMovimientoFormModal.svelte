@@ -87,7 +87,7 @@
 	>
 		<div
 			use:clickOutside={handleClose}
-			class="w-full max-w-lg overflow-y-auto rounded-2xl bg-light-one shadow-2xl"
+			class="w-full max-w-lg overflow-y-auto rounded-xl bg-light-one shadow-2xl"
 			transition:scale={{ duration: 200, start: 0.95 }}
 		>
 			<div class="relative border-b border-light-four px-8 py-6">
@@ -120,24 +120,16 @@
 					<div class="space-y-3">
 						<label
 							for="tipo-modal"
-							class="block text-sm font-bold tracking-wider uppercase {formData.tipo === 'INGRESO'
-								? 'text-light-success'
-								: 'text-light-error'}">Tipo de Categoría</label
+							class="block text-sm font-bold {formData.tipo === 'INGRESO' ? 'text-light-success' : 'text-light-error'}">Tipo de Categoría</label
 						>
 
 						{#if !categoria}
 							<!-- Visual Informative Badge for Context-Aware UX -->
 							<div
-								class="flex items-center gap-4 rounded-2xl border-2 p-4 transition-all {formData.tipo ===
-								'INGRESO'
-									? 'border-green-100 bg-green-50/50'
-									: 'border-red-100 bg-red-50/50'}"
+								class="flex items-center gap-4 rounded-xl border-2 p-4 transition-all {formData.tipo === 'INGRESO' ? 'border-green-100 bg-green-50/50' : 'border-red-100 bg-red-50/50'}"
 							>
 								<div
-									class="flex size-12 items-center justify-center rounded-full shadow-sm {formData.tipo ===
-									'INGRESO'
-										? 'bg-green-100 text-green-600'
-										: 'bg-red-100 text-red-600'}"
+									class="flex size-12 items-center justify-center rounded-full shadow-sm {formData.tipo === 'INGRESO' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}"
 								>
 									{#if formData.tipo === 'INGRESO'}
 										<TredingUpIcon class="size-6" />
@@ -147,16 +139,12 @@
 								</div>
 								<div class="flex-1">
 									<p
-										class="text-base font-bold {formData.tipo === 'INGRESO'
-											? 'text-light-success'
-											: 'text-light-error'}"
+										class="text-base font-bold {formData.tipo === 'INGRESO' ? 'text-light-success' : 'text-light-error'}"
 									>
 										{formData.tipo === 'INGRESO' ? 'INGRESO' : 'EGRESO'}
 									</p>
 									<p
-										class="text-xs leading-relaxed {formData.tipo === 'INGRESO'
-											? 'text-light-success'
-											: 'text-light-error'}"
+										class="text-xs leading-relaxed {formData.tipo === 'INGRESO' ? 'text-light-success' : 'text-light-error'}"
 									>
 										Esta categoría se registrará como un {formData.tipo === 'INGRESO'
 											? 'movimiento de entrada'

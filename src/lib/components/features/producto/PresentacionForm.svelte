@@ -100,13 +100,13 @@
 
 	<div class="flex flex-col gap-1.5">
 		<label
-			class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+			class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 			for="pres_nombre">Nombre de Presentación *</label
 		>
 		<input
 			id="pres_nombre"
 			type="text"
-			class="w-full rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] px-3 py-2 text-[0.85rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+			class="w-full rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 px-3 py-2 text-[0.85rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 			bind:value={form.nombre}
 			placeholder="Ej: Docena, Caja x 12"
 		/>
@@ -115,27 +115,27 @@
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 		<div class="flex flex-col gap-1.5">
 			<label
-				class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+				class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 				for="pres_sku">SKU (Opcional)</label
 			>
 			<input
 				id="pres_sku"
 				type="text"
-				class="w-full rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] px-3 py-2 text-[0.85rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+				class="w-full rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 px-3 py-2 text-[0.85rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 				bind:value={form.sku}
 				placeholder="Ej: BOX-001"
 			/>
 		</div>
 		<div class="flex flex-col gap-1.5">
 			<label
-				class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+				class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 				for="pres_barcode">Código de Barras</label
 			>
 			<div class="flex flex-col gap-2">
 				<input
 					id="pres_barcode"
 					type="text"
-					class="w-full rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] px-3 py-2 font-mono text-[0.8rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+					class="w-full rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 px-3 py-2 tabular-nums text-[0.8rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 					bind:value={form.codigo_barras}
 					placeholder="EAN-13, UPC, etc."
 				/>
@@ -159,9 +159,7 @@
 						<button
 							type="button"
 							onclick={copyBarcode}
-							class="flex items-center justify-center gap-1.5 rounded-lg border px-2 py-1.5 text-[10px] font-bold transition-all {copied
-								? 'border-green-200 bg-green-50 text-green-600'
-								: 'border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100'}"
+							class="flex items-center justify-center gap-1.5 rounded-lg border px-2 py-1.5 text-xs font-bold transition-all {copied ? 'border-green-200 bg-green-50 text-green-600' : 'border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100'}"
 							title="Copiar código"
 						>
 							{#if copied}
@@ -181,7 +179,7 @@
 	<div class="grid grid-cols-2 gap-3.5">
 		<div class="flex flex-col gap-1.5">
 			<label
-				class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+				class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 				for="pres_factor">Factor de Conversión *</label
 			>
 			<input
@@ -189,13 +187,13 @@
 				type="number"
 				min="1"
 				step="1"
-				class="w-full rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] px-3 py-2 text-[0.85rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+				class="w-full rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 px-3 py-2 text-[0.85rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 				bind:value={form.factor_conversion}
 			/>
 		</div>
 		<div class="flex flex-col gap-1.5">
 			<label
-				class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+				class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 				for="pres_precio">Precio Especial *</label
 			>
 			<input
@@ -203,7 +201,7 @@
 				type="number"
 				min="0"
 				step="0.01"
-				class="w-full rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] px-3 py-2 text-[0.85rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+				class="w-full rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 px-3 py-2 text-[0.85rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 				bind:value={form.precio_especial}
 			/>
 		</div>
@@ -211,12 +209,12 @@
 
 	<div class="flex flex-col gap-1.5">
 		<label
-			class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+			class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 			for="pres_unidad">Unidad de Medida</label
 		>
 		<select
 			id="pres_unidad"
-			class="w-full cursor-pointer appearance-none rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%239a8060%22%20stroke-width%3D%222%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:14px] bg-[right_0.6rem_center] bg-no-repeat px-3 py-2 pr-8 text-[0.85rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+			class="w-full cursor-pointer appearance-none rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%239a8060%22%20stroke-width%3D%222%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:14px] bg-[right_0.6rem_center] bg-no-repeat px-3 py-2 pr-8 text-[0.85rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 			bind:value={form.id_unidad_medida}
 		>
 			<option value="">Seleccionar...</option>
@@ -227,21 +225,21 @@
 	</div>
 
 	<div
-		class="flex items-center gap-3 rounded-xl border border-[#e8e0d8] bg-[#f8f5f0] p-4 transition-all hover:border-[#8b7355]/30"
+		class="flex items-center gap-3 rounded-xl border border-acero-200 bg-acero-50 p-4 transition-all hover:border-acero-700/30"
 	>
 		<input
 			id="pres_activo"
 			type="checkbox"
-			class="h-5 w-5 cursor-pointer rounded border-[#e0d8cf] text-[#8b7355] accent-[#8b7355] focus:ring-[#8b7355]"
+			class="h-5 w-5 cursor-pointer rounded border-acero-200 text-acero-700 accent-[#8b7355] focus:ring-acero-700"
 			bind:checked={form.esta_activo}
 		/>
 		<div class="flex flex-col">
 			<label
 				for="pres_activo"
-				class="cursor-pointer text-[0.75rem] font-bold text-[#1a1a2e] uppercase"
+				class="cursor-pointer text-[0.75rem] font-bold text-acero-950"
 				>Presentación Activa</label
 			>
-			<span class="text-[0.65rem] text-[#9a8060]"
+			<span class="text-[0.65rem] text-acero-500"
 				>Habilita o deshabilita esta presentación para ventas y stock.</span
 			>
 		</div>

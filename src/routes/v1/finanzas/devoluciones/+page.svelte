@@ -147,8 +147,8 @@
 			<!-- Header -->
 			<div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 				<div>
-					<Heading level="h4">Devoluciones y Cambios</Heading>
-					<p class="mt-1 text-sm text-light-two">
+					<h1 class="titulo-pagina">Devoluciones y Cambios</h1>
+					<p class="mt-1 text-sm text-acero-600">
 						Historial de devoluciones y cambios de productos
 					</p>
 				</div>
@@ -178,12 +178,12 @@
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
 				<!-- Total Devoluciones -->
 				<div
-					class="relative translate-y-0 overflow-hidden rounded-2xl border border-light-four bg-light-two p-6 text-light-black shadow-lg transition-transform duration-300 hover:-translate-y-1"
+					class="relative translate-y-0 overflow-hidden rounded-xl border border-acero-800 bg-acero-900 p-5 text-white transition-transform duration-300"
 				>
 					<div class="absolute -top-4 -right-4 size-24 rounded-full bg-red-500/5"></div>
 					<div class="relative z-10">
 						<div
-							class="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-light-one uppercase"
+							class="mb-2 flex items-center gap-2 text-xs font-bold text-light-one"
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -201,7 +201,7 @@
 							</svg>
 							Devoluciones
 						</div>
-						<div class="text-3xl font-black tracking-tight text-light-one">
+						<div class="text-3xl font-semibold tracking-tight text-light-one">
 							{total}
 						</div>
 						<p class="mt-1 text-xs text-light-one/60">Registros totales</p>
@@ -210,12 +210,12 @@
 
 				<!-- Total Cambios -->
 				<div
-					class="relative translate-y-0 overflow-hidden rounded-2xl border border-light-four bg-light-two p-6 text-light-black shadow-lg transition-transform duration-300 hover:-translate-y-1"
+					class="relative translate-y-0 overflow-hidden rounded-xl border border-acero-800 bg-acero-900 p-5 text-white transition-transform duration-300"
 				>
 					<div class="absolute -top-4 -right-4 size-24 rounded-full bg-blue-500/5"></div>
 					<div class="relative z-10">
 						<div
-							class="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-light-one uppercase"
+							class="mb-2 flex items-center gap-2 text-xs font-bold text-light-one"
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -233,7 +233,7 @@
 							</svg>
 							Cambios (en página)
 						</div>
-						<div class="text-3xl font-black tracking-tight text-light-one">
+						<div class="text-3xl font-semibold tracking-tight text-light-one">
 							{totalCambios}
 						</div>
 						<p class="mt-1 text-xs text-light-one/60">De {devoluciones.length} en vista</p>
@@ -242,12 +242,12 @@
 
 				<!-- Total Reembolsado -->
 				<div
-					class="relative translate-y-0 overflow-hidden rounded-2xl border border-light-four bg-light-two p-6 text-light-black shadow-lg transition-transform duration-300 hover:-translate-y-1"
+					class="relative translate-y-0 overflow-hidden rounded-xl border border-acero-800 bg-acero-900 p-5 text-white transition-transform duration-300"
 				>
 					<div class="absolute -top-4 -right-4 size-24 rounded-full bg-amber-500/5"></div>
 					<div class="relative z-10">
 						<div
-							class="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-light-one uppercase"
+							class="mb-2 flex items-center gap-2 text-xs font-bold text-light-one"
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -267,7 +267,7 @@
 							</svg>
 							Total Reembolsado (página)
 						</div>
-						<div class="text-3xl font-black tracking-tight text-light-one">
+						<div class="text-3xl font-semibold tracking-tight text-light-one">
 							{formatCurrency(totalReembolsado)}
 						</div>
 						<p class="mt-1 text-xs text-light-one/60">En efectivo</p>
@@ -319,13 +319,13 @@
 				<MovimientoTableSkeleton />
 			{:else if devoluciones.length === 0}
 				<div
-					class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-light-four bg-light-one p-16 text-center"
+					class="flex flex-col items-center justify-center rounded-xl border border-dashed border-light-four bg-light-one p-16 text-center"
 				>
 					<div class="mb-6 rounded-full bg-light-one_d p-6">
 						<FilePencilIcon class="size-16 text-light-three" />
 					</div>
 					<h3 class="text-xl font-bold text-light-black">No se encontraron devoluciones</h3>
-					<p class="mx-auto mt-2 max-w-xs text-light-two">
+					<p class="mx-auto mt-2 max-w-xs text-acero-600">
 						{filters.search
 							? 'No hay resultados para tu búsqueda. Prueba con otros términos.'
 							: 'Aún no se ha registrado ninguna devolución o cambio.'}
@@ -346,47 +346,47 @@
 						<thead class="bg-light-one_d font-bold">
 							<tr>
 								<th
-									class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 								>
 									Nº Devolución
 								</th>
 								<th
-									class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 								>
 									Fecha
 								</th>
 								<th
-									class="px-6 py-4 text-center text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-center text-xs font-bold text-acero-600"
 								>
 									Tipo
 								</th>
 								<th
-									class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 								>
 									Venta Original
 								</th>
 								<th
-									class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 								>
 									Cliente
 								</th>
 								<th
-									class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 								>
 									Responsable
 								</th>
 								<th
-									class="px-6 py-4 text-right text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-right text-xs font-bold text-acero-600"
 								>
 									Monto
 								</th>
 								<th
-									class="px-6 py-4 text-center text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-center text-xs font-bold text-acero-600"
 								>
 									Estado
 								</th>
 								<th
-									class="px-6 py-4 text-right text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-right text-xs font-bold text-acero-600"
 								>
 									Acciones
 								</th>
@@ -402,7 +402,7 @@
 										<div class="line-clamp-1 font-bold text-gray-700">
 											{dev.numero_devolucion}
 										</div>
-										<div class="mt-1 font-mono text-[10px] text-gray-400">
+										<div class="mt-1 tabular-nums text-xs text-gray-400">
 											ID: {dev.id?.substring(0, 8)}
 										</div>
 									</td>
@@ -415,10 +415,7 @@
 									<!-- Tipo -->
 									<td class="px-6 py-4 text-center">
 										<span
-											class="inline-flex items-center justify-center rounded-full border px-3 py-1 text-[10px] font-bold uppercase
-											{dev.tipo === 'DEVOLUCION'
-												? 'border-red-200 bg-red-50 text-red-700'
-												: 'border-blue-200 bg-blue-50 text-blue-700'}"
+											class="inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-bold {dev.tipo === 'DEVOLUCION' ? 'border-red-200 bg-red-50 text-red-700' : 'border-blue-200 bg-blue-50 text-blue-700'}"
 										>
 											{dev.tipo}
 										</span>
@@ -466,7 +463,7 @@
 											<span class="text-red-600">{formatCurrency(dev.monto_devuelto)}</span>
 										{:else}
 											<div class="flex flex-col items-end">
-												<span class="text-xs text-light-two" title="Diferencia">
+												<span class="text-xs text-acero-600" title="Diferencia">
 													Dif: {formatCurrency(dev.monto_diferencia)}
 												</span>
 												{#if parseFloat(dev.monto_devuelto) > 0}
@@ -481,10 +478,7 @@
 									<!-- Estado -->
 									<td class="px-6 py-4 text-center">
 										<span
-											class="inline-flex items-center justify-center rounded-full border px-3 py-1 text-[10px] font-bold uppercase
-											{dev.estado === 'COMPLETADA'
-												? 'border-green-200 bg-green-50 text-green-700'
-												: 'border-red-200 bg-red-50 text-red-700'}"
+											class="inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-bold {dev.estado === 'COMPLETADA' ? 'border-green-200 bg-green-50 text-green-700' : 'border-red-200 bg-red-50 text-red-700'}"
 										>
 											{dev.estado}
 										</span>

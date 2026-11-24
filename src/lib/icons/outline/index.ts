@@ -80,3 +80,6 @@ export { default as FileDescriptionIcon } from './fileDescriptionIcon.svelte';
 export { default as ArrowsLeftRightIcon } from './arrowsLeftRightIcon.svelte';
 export { default as HashIcon } from './hashIcon.svelte';
 export { default as XMarkIcon } from './xmarkIcon.svelte';
+export { default as LayoutDashboardIcon } from './layoutDashboardIcon.svelte';
+export { default as IdBadgeIcon } from './idBadgeIcon.svelte';
+export { default as Menu2Icon } from './menu2Icon.svelte';

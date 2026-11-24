@@ -15,22 +15,31 @@
 		fetchingProductId?: string | null;
 	}
 
-	let { productos, isLoading, onView, onEdit, onDelete, onTraslado, onManagePresentaciones, fetchingProductId }: Props = $props();
+	let {
+		productos,
+		isLoading,
+		onView,
+		onEdit,
+		onDelete,
+		onTraslado,
+		onManagePresentaciones,
+		fetchingProductId
+	}: Props = $props();
 </script>
 
 <div in:fade>
 	{#if isLoading}
-		<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
 			{#each Array.from({ length: 8 }, (_, i) => i) as i (i)}
 				<ProductoCardSkeleton />
 			{/each}
 		</div>
 	{:else if productos.length === 0}
-		<div class="rounded-xl border border-dashed border-gray-300 bg-white p-20 text-center">
-			<p class="text-gray-500">No se encontraron productos.</p>
+		<div class="rounded-xl border border-dashed border-acero-300 bg-white p-16 text-center">
+			<p class="text-acero-500">Ningún producto coincide con la búsqueda.</p>
 		</div>
 	{:else}
-		<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
 			{#each productos as product (product.id)}
 				<ProductoCard
 					producto={product}

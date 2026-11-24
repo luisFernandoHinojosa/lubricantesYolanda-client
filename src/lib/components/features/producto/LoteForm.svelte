@@ -129,23 +129,23 @@
 		<!-- Proveedor -->
 		<div class="col-span-full flex flex-col gap-2">
 			<label
-				class="text-[0.65rem] font-black tracking-widest text-[#9a8060] uppercase"
+				class="text-[0.65rem] font-semibold text-acero-500"
 				for="id_proveedor"
 			>
 				Proveedor *
 			</label>
 			<div class="relative">
-				<div class="absolute inset-y-0 left-0 flex items-center pl-3 text-[#b09475]">
+				<div class="absolute inset-y-0 left-0 flex items-center pl-3 text-acero-400">
 					<TruckIcon class="size-4" />
 				</div>
 				{#if isLoadingProveedores}
-					<div class="h-10 w-full animate-pulse rounded-xl bg-[#f5f0e8]"></div>
+					<div class="h-10 w-full animate-pulse rounded-xl bg-acero-100"></div>
 				{:else}
 					<select
 						id="id_proveedor"
 						bind:value={form.id_proveedor}
 						required
-						class="w-full cursor-pointer appearance-none rounded-xl border-[1.5px] border-[#e8e0d8] bg-[#fdfcfb] py-2.5 pr-10 pl-10 text-sm font-bold text-[#1a1a2e] transition-all outline-none focus:border-[#b09475] focus:ring-4 focus:ring-[#b09475]/10"
+						class="w-full cursor-pointer appearance-none rounded-xl border-[1.5px] border-acero-200 bg-white py-2.5 pr-10 pl-10 text-sm font-bold text-acero-950 transition-all outline-none focus:border-acero-400 focus:ring-4 focus:ring-acero-400/10"
 					>
 						<option value="" disabled>Seleccionar proveedor...</option>
 						{#each proveedores as prov, index (index)}
@@ -153,7 +153,7 @@
 						{/each}
 					</select>
 					<div
-						class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-[#b09475]"
+						class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-acero-400"
 					>
 						<svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">
 							<path
@@ -168,13 +168,13 @@
 		<!-- Costo Compra -->
 		<div class="flex flex-col gap-2">
 			<label
-				class="text-[0.65rem] font-black tracking-widest text-[#9a8060] uppercase"
+				class="text-[0.65rem] font-semibold text-acero-500"
 				for="costo_compra"
 			>
 				Costo Compra *
 			</label>
 			<div class="relative">
-				<div class="absolute inset-y-0 left-0 flex items-center pl-3 text-[#b09475]">
+				<div class="absolute inset-y-0 left-0 flex items-center pl-3 text-acero-400">
 					<CoinIcon class="size-4" />
 				</div>
 				<input
@@ -184,7 +184,7 @@
 					min="0"
 					bind:value={form.costo_compra_unitario}
 					required
-					class="w-full rounded-xl border-[1.5px] border-[#e8e0d8] bg-[#fdfcfb] py-2.5 pr-4 pl-10 text-sm font-bold text-[#1a1a2e] transition-all outline-none focus:border-[#b09475] focus:ring-4 focus:ring-[#b09475]/10"
+					class="w-full rounded-xl border-[1.5px] border-acero-200 bg-white py-2.5 pr-4 pl-10 text-sm font-bold text-acero-950 transition-all outline-none focus:border-acero-400 focus:ring-4 focus:ring-acero-400/10"
 				/>
 			</div>
 		</div>
@@ -192,13 +192,13 @@
 		<!-- Fecha Ingreso -->
 		<div class="flex flex-col gap-2">
 			<label
-				class="text-[0.65rem] font-black tracking-widest text-[#9a8060] uppercase"
+				class="text-[0.65rem] font-semibold text-acero-500"
 				for="fecha_ingreso"
 			>
 				Fecha de Ingreso *
 			</label>
 			<div class="relative">
-				<div class="absolute inset-y-0 left-0 flex items-center pl-3 text-[#b09475]">
+				<div class="absolute inset-y-0 left-0 flex items-center pl-3 text-acero-400">
 					<CalendarIcon class="size-4" />
 				</div>
 				<input
@@ -206,7 +206,7 @@
 					type="date"
 					bind:value={form.fecha_ingreso}
 					required
-					class="w-full rounded-xl border-[1.5px] border-[#e8e0d8] bg-[#fdfcfb] py-2.5 pr-4 pl-10 text-sm font-bold text-[#1a1a2e] transition-all outline-none focus:border-[#b09475] focus:ring-4 focus:ring-[#b09475]/10"
+					class="w-full rounded-xl border-[1.5px] border-acero-200 bg-white py-2.5 pr-4 pl-10 text-sm font-bold text-acero-950 transition-all outline-none focus:border-acero-400 focus:ring-4 focus:ring-acero-400/10"
 				/>
 			</div>
 		</div>
@@ -214,20 +214,20 @@
 		<!-- Fecha Vencimiento -->
 		<div class="col-span-full flex flex-col gap-2">
 			<label
-				class="text-[0.65rem] font-black tracking-widest text-[#9a8060] uppercase"
+				class="text-[0.65rem] font-semibold text-acero-500"
 				for="fecha_vencimiento"
 			>
 				Fecha de Vencimiento (Opcional)
 			</label>
 			<div class="relative">
-				<div class="absolute inset-y-0 left-0 flex items-center pl-3 text-[#b09475]">
+				<div class="absolute inset-y-0 left-0 flex items-center pl-3 text-acero-400">
 					<CalendarIcon class="size-4" />
 				</div>
 				<input
 					id="fecha_vencimiento"
 					type="date"
 					bind:value={form.fecha_vencimiento}
-					class="w-full rounded-xl border-[1.5px] border-[#e8e0d8] bg-[#fdfcfb] py-2.5 pr-4 pl-10 text-sm font-bold text-[#1a1a2e] transition-all outline-none focus:border-[#b09475] focus:ring-4 focus:ring-[#b09475]/10"
+					class="w-full rounded-xl border-[1.5px] border-acero-200 bg-white py-2.5 pr-4 pl-10 text-sm font-bold text-acero-950 transition-all outline-none focus:border-acero-400 focus:ring-4 focus:ring-acero-400/10"
 				/>
 			</div>
 			<p class="text-[0.65rem] text-gray-400 italic">
@@ -238,9 +238,9 @@
 
 	<!-- Distribuciones (Solo Creación) -->
 	{#if !isEdit}
-		<div class="mt-2 flex flex-col gap-4 border-t border-[#e8e0d8] pt-4">
+		<div class="mt-2 flex flex-col gap-4 border-t border-acero-200 pt-4">
 			<div class="flex items-center justify-between">
-				<h3 class="text-[0.75rem] font-black tracking-widest text-[#9a8060] uppercase">
+				<h3 class="text-[0.75rem] font-semibold text-acero-500">
 					Distribución Inicial de Stock
 				</h3>
 				<Button variant="ghost" size="sm" onclick={addDistribucion} type="button">
@@ -254,11 +254,11 @@
 			<div class="flex flex-col gap-3">
 				{#each distribuciones as dist, i}
 					<div
-						class="grid grid-cols-[1fr_1fr_100px_auto] items-end gap-3 rounded-xl border-[1.5px] border-[#e8e0d8] bg-[#fdfcfb] p-3"
+						class="grid grid-cols-[1fr_1fr_100px_auto] items-end gap-3 rounded-xl border-[1.5px] border-acero-200 bg-white p-3"
 					>
 						<div class="flex flex-col gap-1.5">
 							<label
-								class="text-[0.6rem] font-bold text-[#b09475] uppercase"
+								class="text-xs font-bold text-acero-400"
 								for={`ubicacion-${i}`}
 							>
 								Ubicación *
@@ -268,7 +268,7 @@
 								bind:value={dist.id_ubicacion}
 								onchange={() => handleUbicacionChange(i)}
 								required
-								class="w-full cursor-pointer rounded-lg border-[1.5px] border-[#e8e0d8] bg-white px-3 py-2 text-sm font-medium text-[#1a1a2e] outline-none focus:border-[#b09475]"
+								class="w-full cursor-pointer rounded-lg border-[1.5px] border-acero-200 bg-white px-3 py-2 text-sm font-medium text-acero-950 outline-none focus:border-acero-400"
 							>
 								<option value="" disabled>Seleccionar...</option>
 								{#each ubicaciones as ubic}
@@ -278,14 +278,14 @@
 						</div>
 
 						<div class="flex flex-col gap-1.5">
-							<label class="text-[0.6rem] font-bold text-[#b09475] uppercase" for={`fisica-${i}`}>
+							<label class="text-xs font-bold text-acero-400" for={`fisica-${i}`}>
 								Ubicación Física (Opc)
 							</label>
 							<select
 								id={`fisica-${i}`}
 								bind:value={dist.id_ubicacion_fisica}
 								disabled={!dist.id_ubicacion || !ubicacionesFisicas[dist.id_ubicacion]}
-								class="w-full cursor-pointer rounded-lg border-[1.5px] border-[#e8e0d8] bg-white px-3 py-2 text-sm font-medium text-[#1a1a2e] outline-none focus:border-[#b09475] disabled:cursor-not-allowed disabled:bg-gray-50"
+								class="w-full cursor-pointer rounded-lg border-[1.5px] border-acero-200 bg-white px-3 py-2 text-sm font-medium text-acero-950 outline-none focus:border-acero-400 disabled:cursor-not-allowed disabled:bg-gray-50"
 							>
 								<option value="">Ninguna</option>
 								{#if dist.id_ubicacion && ubicacionesFisicas[dist.id_ubicacion]}
@@ -297,7 +297,7 @@
 						</div>
 
 						<div class="flex flex-col gap-1.5">
-							<label class="text-[0.6rem] font-bold text-[#b09475] uppercase" for={`cantidad-${i}`}>
+							<label class="text-xs font-bold text-acero-400" for={`cantidad-${i}`}>
 								Cantidad *
 							</label>
 							<input
@@ -307,7 +307,7 @@
 								step="1"
 								bind:value={dist.cantidad}
 								required
-								class="w-full rounded-lg border-[1.5px] border-[#e8e0d8] bg-white px-3 py-2 text-sm font-medium text-[#1a1a2e] outline-none focus:border-[#b09475]"
+								class="w-full rounded-lg border-[1.5px] border-acero-200 bg-white px-3 py-2 text-sm font-medium text-acero-950 outline-none focus:border-acero-400"
 							/>
 						</div>
 
@@ -326,7 +326,7 @@
 	{/if}
 
 	<!-- Acciones -->
-	<div class="mt-4 flex items-center justify-end gap-3 border-t border-[#e8e0d8] pt-6">
+	<div class="mt-4 flex items-center justify-end gap-3 border-t border-acero-200 pt-6">
 		<Button variant="ghost" onclick={onCancel} disabled={loading}>
 			{#snippet leftIcon()}
 				<XMarkIcon class="size-4" />

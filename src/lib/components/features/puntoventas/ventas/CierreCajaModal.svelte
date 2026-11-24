@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { fade, scale } from 'svelte/transition';
-	import { LockIcon, XIcon } from '$lib/icons/outline';
-	import { CoinIcon } from '$lib/icons/solid';
-	import { Button, Input } from '$lib/components/ui';
+	import { LoaderIcon, LockIcon } from '$lib/icons/outline';
+	import { Button, Modal } from '$lib/components/ui';
 	import type {
 		SesionCaja,
 		ResumenVentasSesion,
@@ -41,156 +39,172 @@
 		{ key: 'OTROS', label: 'Otros' }
 	];
 
-	const apertura = $derived(sesionActiva ? parseFloat(sesionActiva.monto_apertura) : 0);
+	const apertura = $derived(sesionActiva ? parseFloat(sesionActiva.monto_apertura) || 0 : 0);
+	const esperado = $derived(apertura + (resumenCierrePrevio?.total_efectivo ?? 0));
+	const conteo = $derived(montoCierre === '' || montoCierre === null ? null : Number(montoCierre));
+	// Diferencia del arqueo: positivo = sobra efectivo, negativo = falta
+	const diferencia = $derived(conteo === null || Number.isNaN(conteo) ? null : conteo - esperado);
 </script>
 
-<div
-	class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-md"
-	transition:fade
+<Modal
+	isOpen={true}
+	title="Cerrar caja"
+	description="Revise el resumen del turno y cuente el efectivo."
+	onClose={onCerrar}
+	maxWidth="sm:max-w-lg"
 >
-	<div
-		class="flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl border border-light-four bg-light-one shadow-2xl"
-		transition:scale={{ duration: 200 }}
-	>
-		<div class="flex items-center justify-between border-b border-light-four p-4">
-			<div class="flex items-center gap-3">
-				<div class="= flex h-9 w-9 items-center justify-center">
-					<LockIcon class="h-6 w-6 text-light-three" />
-				</div>
-				<h3 class="font-bold text-light-black">Cierre de Caja — Arqueo</h3>
-			</div>
-			<Button onclick={onCerrar} variant="ghost"><XIcon class="h-5 w-5" /></Button>
+	{#if cargandoCierre}
+		<div class="flex items-center justify-center gap-2 py-10 text-acero-500" role="status">
+			<LoaderIcon class="size-5 animate-spin" /> Calculando totales del turno
 		</div>
-
-		<div class="space-y-5 overflow-y-auto p-6">
-			{#if sesionActiva}
-				{#if cargandoCierre}
-					<div
-						class="rounded-2xl border border-light-one_d bg-light-one_d/10 p-5 py-8 text-center text-sm text-light-five"
-					>
-						Calculando totales...
-					</div>
-				{:else if resumenCierrePrevio}
-					{@const r = resumenCierrePrevio}
-					<div class="space-y-4 text-sm">
-						<!-- KPIs -->
-						<div class="grid grid-cols-2 gap-3">
-							<div class="rounded-2xl border border-light-one_d bg-light-one_d/10 p-4">
-								<p class="text-xs text-light-five">Ventas realizadas</p>
-								<p class="text-2xl font-bold text-light-black">{r.cantidad_ventas}</p>
-							</div>
-							<div class="rounded-2xl border border-light-one_d bg-light-one_d/10 p-4">
-								<p class="text-xs text-light-five">Gran total</p>
-								<p class="text-2xl font-bold text-light-black">{fmt(r.gran_total)}</p>
-							</div>
-						</div>
-
-						<!-- Totales por método de pago -->
-						<div class="rounded-2xl border border-light-one_d bg-light-one_d/10 p-4">
-							<p class="mb-2 text-xs font-semibold tracking-wide text-light-five uppercase">
-								Por método de pago
-							</p>
-							<div class="space-y-1.5 font-mono">
-								{#each METODOS as m (m.key)}
-									{@const monto = r.totales_por_metodo?.[m.key] ?? 0}
-									<div
-										class="flex justify-between {monto > 0
-											? 'text-light-black'
-											: 'text-light-five'}"
-									>
-										<span>{m.label}</span><span class={monto > 0 ? 'font-semibold' : ''}
-											>{fmt(monto)}</span
-										>
-									</div>
-								{/each}
-							</div>
-						</div>
-
-						<!-- Ajustes y movimientos -->
-						<div class="grid grid-cols-3 gap-3 text-center">
-							<div class="rounded-2xl border border-light-one_d bg-light-one_d p-3">
-								<p class="text-xs text-light-five">Anuladas</p>
-								<p class="text-lg font-bold text-light-black">{r.cantidad_anuladas}</p>
-							</div>
-							<div class="rounded-2xl border border-light-one_d bg-light-one_d/10 p-3">
-								<p class="text-xs text-light-five">Devoluciones</p>
-								<p class="text-lg font-bold text-light-black">{r.cantidad_devoluciones}</p>
-							</div>
-							<div class="rounded-2xl border border-light-one_d bg-light-one_d/10 p-3">
-								<p class="text-xs text-light-five">Cambios</p>
-								<p class="text-lg font-bold text-light-black">{r.cantidad_cambios}</p>
-							</div>
-						</div>
-
-						<div
-							class="space-y-1.5 rounded-2xl border border-light-one_d bg-light-one_d/10 p-4 font-mono"
-						>
-							<div class="flex justify-between text-light-five">
-								<span>Descuentos aplicados</span><span class="text-light-black"
-									>{fmt(r.total_descuentos)}</span
-								>
-							</div>
-							<div class="flex justify-between text-light-five">
-								<span>Total reembolsado</span><span class="text-light-black"
-									>{fmt(r.total_reembolsado)}</span
-								>
-							</div>
-							<div class="flex justify-between text-light-five">
-								<span>Diferencias cobradas</span><span class="text-light-black"
-									>{fmt(r.total_diferencias_cobradas)}</span
-								>
-							</div>
-						</div>
-
-						<!-- Arqueo de efectivo -->
-						<div
-							class="space-y-2.5 rounded-2xl border border-light-one_d bg-light-one_d/10 p-4 font-mono"
-						>
-							<div class="flex justify-between text-light-five">
-								<span>Apertura:</span><span class="text-light-black">{fmt(apertura)}</span>
-							</div>
-							<div class="flex justify-between text-light-success">
-								<span class="font-medium">Ventas efectivo (+):</span><span class="font-bold"
-									>{fmt(r.total_efectivo)}</span
-								>
-							</div>
-							<div
-								class="flex justify-between border-t border-light-one_d pt-3 font-bold text-light-black"
-							>
-								<span>TOTAL ESPERADO:</span><span class="text-lg"
-									>{fmt(apertura + r.total_efectivo)}</span
-								>
-							</div>
-						</div>
-					</div>
-				{/if}
-			{/if}
+	{:else if resumenCierrePrevio}
+		{@const r = resumenCierrePrevio}
+		<div class="space-y-5 text-[0.9375rem]">
+			<div class="grid grid-cols-2 gap-3">
+				<div class="rounded-lg bg-acero-50 px-4 py-3">
+					<p class="text-sm text-acero-500">Ventas del turno</p>
+					<p class="font-display text-3xl font-semibold text-acero-950 tabular-nums">
+						{r.cantidad_ventas}
+					</p>
+				</div>
+				<div class="rounded-lg bg-acero-50 px-4 py-3">
+					<p class="text-sm text-acero-500">Total vendido</p>
+					<p class="font-display text-3xl font-semibold text-acero-950 tabular-nums">
+						{fmt(r.gran_total)}
+					</p>
+				</div>
+			</div>
 
 			<div>
-				<div class="relative">
-					<Input
-						label="Conteo físico — ¿Cuánto hay en caja?"
-						type="number"
-						bind:value={montoCierre}
-						placeholder="0.00"
-						icon={CoinIcon}
-						size="xl"
-					/>
-				</div>
+				<h3 class="mb-1.5 text-sm font-semibold text-acero-900">Cobrado por método de pago</h3>
+				<dl class="divide-y divide-acero-100 rounded-lg border border-acero-200">
+					{#each METODOS as m (m.key)}
+						{@const monto = r.totales_por_metodo?.[m.key] ?? 0}
+						{#if monto > 0 || m.key === 'EFECTIVO'}
+							<div class="flex justify-between px-3 py-2">
+								<dt class="text-acero-700">{m.label}</dt>
+								<dd class="font-semibold text-acero-950 tabular-nums">{fmt(monto)}</dd>
+							</div>
+						{/if}
+					{/each}
+				</dl>
 			</div>
 
+			<dl class="grid grid-cols-3 gap-2 text-center text-sm">
+				<div class="rounded-lg border border-acero-200 px-2 py-2">
+					<dt class="text-acero-500">Anuladas</dt>
+					<dd class="font-display text-xl font-semibold text-acero-950 tabular-nums">
+						{r.cantidad_anuladas}
+					</dd>
+				</div>
+				<div class="rounded-lg border border-acero-200 px-2 py-2">
+					<dt class="text-acero-500">Devoluciones</dt>
+					<dd class="font-display text-xl font-semibold text-acero-950 tabular-nums">
+						{r.cantidad_devoluciones}
+					</dd>
+				</div>
+				<div class="rounded-lg border border-acero-200 px-2 py-2">
+					<dt class="text-acero-500">Cambios</dt>
+					<dd class="font-display text-xl font-semibold text-acero-950 tabular-nums">
+						{r.cantidad_cambios}
+					</dd>
+				</div>
+			</dl>
+
+			<dl class="space-y-1 text-sm">
+				<div class="flex justify-between text-acero-600">
+					<dt>Descuentos aplicados</dt>
+					<dd class="text-acero-900 tabular-nums">{fmt(r.total_descuentos)}</dd>
+				</div>
+				<div class="flex justify-between text-acero-600">
+					<dt>Total reembolsado</dt>
+					<dd class="text-acero-900 tabular-nums">{fmt(r.total_reembolsado)}</dd>
+				</div>
+				<div class="flex justify-between text-acero-600">
+					<dt>Diferencias cobradas</dt>
+					<dd class="text-acero-900 tabular-nums">{fmt(r.total_diferencias_cobradas)}</dd>
+				</div>
+			</dl>
+
+			<!-- Arqueo de efectivo -->
+			<div class="rounded-lg bg-acero-900 p-4 text-acero-300">
+				<h3 class="mb-2 text-sm font-semibold text-white">Arqueo de efectivo</h3>
+				<dl class="space-y-1 text-sm">
+					<div class="flex justify-between">
+						<dt>Fondo inicial</dt>
+						<dd class="tabular-nums">{fmt(apertura)}</dd>
+					</div>
+					<div class="flex justify-between">
+						<dt>Ventas en efectivo</dt>
+						<dd class="tabular-nums">+{fmt(r.total_efectivo)}</dd>
+					</div>
+					<div
+						class="mt-1.5 flex items-baseline justify-between border-t border-acero-700 pt-2 text-white"
+					>
+						<dt class="font-semibold">Debería haber</dt>
+						<dd class="font-display text-2xl font-semibold tabular-nums">{fmt(esperado)}</dd>
+					</div>
+				</dl>
+			</div>
+		</div>
+	{/if}
+
+	<form
+		class="mt-5"
+		onsubmit={(e) => {
+			e.preventDefault();
+			if (montoCierre !== '' && !guardandoCaja) onCerrarCaja();
+		}}
+	>
+		<label for="monto-cierre" class="mb-1.5 block text-sm font-medium text-acero-800">
+			Efectivo contado en caja
+		</label>
+		<div class="relative">
+			<span
+				class="pointer-events-none absolute inset-y-0 left-4 flex items-center font-display text-xl font-medium text-acero-400"
+				aria-hidden="true">Bs</span
+			>
+			<input
+				id="monto-cierre"
+				type="number"
+				min="0"
+				step="0.01"
+				inputmode="decimal"
+				bind:value={montoCierre}
+				placeholder="0,00"
+				aria-describedby="arqueo-diferencia"
+				class="h-14 w-full rounded-lg border border-acero-200 pr-4 pl-14 text-right font-display text-3xl font-semibold text-acero-950 tabular-nums outline-none placeholder:text-acero-300 focus:border-acero-600 focus:ring-[3px] focus:ring-acero-200"
+			/>
+		</div>
+		<p id="arqueo-diferencia" class="mt-2 min-h-5 text-sm" aria-live="polite">
+			{#if diferencia !== null && resumenCierrePrevio}
+				{#if Math.abs(diferencia) < 0.005}
+					<span class="font-semibold text-ok">La caja cuadra.</span>
+				{:else if diferencia > 0}
+					<span class="font-semibold text-aceite-oscuro">Sobran {fmt(diferencia)}</span>
+					<span class="text-acero-500"> respecto a lo esperado.</span>
+				{:else}
+					<span class="font-semibold text-marca">Faltan {fmt(-diferencia)}</span>
+					<span class="text-acero-500"> respecto a lo esperado.</span>
+				{/if}
+			{/if}
+		</p>
+
+		<div class="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+			<Button type="button" variant="secondary" onclick={onCerrar} disabled={guardandoCaja}
+				>Seguir vendiendo</Button
+			>
 			<Button
-				onclick={onCerrarCaja}
-				disabled={guardandoCaja || montoCierre === ''}
+				type="submit"
 				variant="primary"
-				fullWidth
+				disabled={guardandoCaja || montoCierre === ''}
 				loading={guardandoCaja}
 			>
 				{#snippet leftIcon()}
-					<LockIcon class="h-5 w-5" />
+					<LockIcon class="size-4" />
 				{/snippet}
-				Cerrar Turno
+				Cerrar caja
 			</Button>
 		</div>
-	</div>
-</div>
+	</form>
+</Modal>

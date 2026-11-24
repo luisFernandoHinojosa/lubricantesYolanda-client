@@ -279,13 +279,13 @@
 	<div class="flex items-center gap-4">
 		<button
 			onclick={onCancel}
-			class="flex items-center justify-center rounded-xl bg-light-one_d p-2.5 text-light-two transition-colors hover:bg-light-four hover:text-light-black"
+			class="flex items-center justify-center rounded-xl bg-light-one_d p-2.5 text-acero-600 transition-colors hover:bg-light-four hover:text-light-black"
 		>
 			<ArrowLeftIcon class="size-5" />
 		</button>
 		<div>
 			<Heading level="h4">Nueva Devolución / Cambio</Heading>
-			<p class="mt-1 text-sm text-light-two">
+			<p class="mt-1 text-sm text-acero-600">
 				Procesa devoluciones o cambios de productos vendidos
 			</p>
 		</div>
@@ -302,10 +302,7 @@
 			] as step}
 				<div class="flex flex-1 flex-col items-center gap-2">
 					<div
-						class="flex size-10 items-center justify-center rounded-full border-2 text-sm font-bold transition-all duration-300
-						{currentStep >= step.n
-							? 'border-amber-500 bg-amber-500 text-white shadow-lg shadow-amber-500/30'
-							: 'border-light-four bg-light-one text-light-two'}"
+						class="flex size-10 items-center justify-center rounded-full border-2 text-sm font-bold transition-all duration-300 {currentStep >= step.n ? 'border-amber-500 bg-amber-500 text-white shadow-lg shadow-amber-500/30' : 'border-light-four bg-light-one text-acero-600'}"
 					>
 						{#if currentStep > step.n}
 							<CheckIcon class="size-5" />
@@ -314,17 +311,14 @@
 						{/if}
 					</div>
 					<span
-						class="text-xs font-semibold transition-colors {currentStep >= step.n
-							? 'text-amber-600'
-							: 'text-light-two'}"
+						class="text-xs font-semibold transition-colors {currentStep >= step.n ? 'text-amber-600' : 'text-acero-600'}"
 					>
 						{step.label}
 					</span>
 				</div>
 				{#if step.n < 4}
 					<div
-						class="hidden h-0.5 flex-1 rounded-full transition-all duration-500 sm:block
-						{currentStep > step.n ? 'bg-amber-500' : 'bg-light-four'}"
+						class="hidden h-0.5 flex-1 rounded-full transition-all duration-500 sm:block {currentStep > step.n ? 'bg-amber-500' : 'bg-light-four'}"
 					></div>
 				{/if}
 			{/each}
@@ -333,14 +327,14 @@
 
 	<!-- Step Content -->
 	<div
-		class="rounded-2xl border border-light-four bg-light-one p-6 shadow-sm transition-all duration-300"
+		class="rounded-xl border border-light-four bg-light-one p-6 shadow-sm transition-all duration-300"
 	>
 		<!-- ═══ STEP 1: Search Sale ═══ -->
 		{#if currentStep === 1}
 			<div in:fade class="space-y-6">
 				<div>
 					<h3 class="text-lg font-bold text-light-black">Buscar Venta Original</h3>
-					<p class="mt-1 text-sm text-light-two">
+					<p class="mt-1 text-sm text-acero-600">
 						Ingresa el número de comprobante de la venta para buscarla
 					</p>
 				</div>
@@ -392,7 +386,7 @@
 						</div>
 						<div class="grid grid-cols-2 gap-4 md:grid-cols-4">
 							<div>
-								<span class="text-[10px] font-bold tracking-wider text-green-600/70 uppercase"
+								<span class="text-xs font-bold text-green-600/70"
 									>Comprobante</span
 								>
 								<p class="mt-0.5 text-sm font-bold text-green-900">
@@ -400,7 +394,7 @@
 								</p>
 							</div>
 							<div>
-								<span class="text-[10px] font-bold tracking-wider text-green-600/70 uppercase"
+								<span class="text-xs font-bold text-green-600/70"
 									>Total</span
 								>
 								<p class="mt-0.5 text-sm font-bold text-green-900">
@@ -408,7 +402,7 @@
 								</p>
 							</div>
 							<div>
-								<span class="text-[10px] font-bold tracking-wider text-green-600/70 uppercase"
+								<span class="text-xs font-bold text-green-600/70"
 									>Cliente</span
 								>
 								<p class="mt-0.5 text-sm font-bold text-green-900">
@@ -418,7 +412,7 @@
 								</p>
 							</div>
 							<div>
-								<span class="text-[10px] font-bold tracking-wider text-green-600/70 uppercase"
+								<span class="text-xs font-bold text-green-600/70"
 									>Items</span
 								>
 								<p class="mt-0.5 text-sm font-bold text-green-900">
@@ -435,7 +429,7 @@
 			<div in:fade class="space-y-6">
 				<div>
 					<h3 class="text-lg font-bold text-light-black">Seleccionar Productos</h3>
-					<p class="mt-1 text-sm text-light-two">
+					<p class="mt-1 text-sm text-acero-600">
 						Marca los productos que se van a devolver y ajusta las cantidades
 					</p>
 				</div>
@@ -443,18 +437,12 @@
 				<div class="space-y-3">
 					{#each itemSelections as item, index (item.detalle.id)}
 						<div
-							class="group flex flex-col gap-4 rounded-xl border p-4 transition-all duration-200 sm:flex-row sm:items-center
-							{item.selected
-								? 'border-amber-300 bg-amber-50/50 shadow-sm'
-								: 'border-light-four bg-light-one hover:border-light-three hover:bg-light-one_d'}"
+							class="group flex flex-col gap-4 rounded-xl border p-4 transition-all duration-200 sm:flex-row sm:items-center {item.selected ? 'border-amber-300 bg-amber-50/50 shadow-sm' : 'border-light-four bg-light-one hover:border-light-three hover:bg-light-one_d'}"
 						>
 							<!-- Checkbox -->
 							<button
 								onclick={() => toggleItem(index)}
-								class="flex size-6 shrink-0 items-center justify-center rounded-lg border-2 transition-all
-								{item.selected
-									? 'border-amber-500 bg-amber-500 text-white'
-									: 'border-light-three bg-light-one'}"
+								class="flex size-6 shrink-0 items-center justify-center rounded-lg border-2 transition-all {item.selected ? 'border-amber-500 bg-amber-500 text-white' : 'border-light-three bg-light-one'}"
 							>
 								{#if item.selected}
 									<CheckIcon class="size-4" />
@@ -469,19 +457,19 @@
 								<div class="mt-1 flex flex-wrap gap-2">
 									{#if item.detalle.presentacion}
 										<span
-											class="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-semibold text-blue-700"
+											class="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700"
 										>
 											{item.detalle.presentacion.nombre}
 										</span>
 									{/if}
 									<span
-										class="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold text-gray-600"
+										class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-600"
 									>
 										Precio: {formatCurrency(item.detalle.precio_unitario)}
 									</span>
 									{#if item.detalle.numero_serie}
 										<span
-											class="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-semibold text-purple-700"
+											class="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-semibold text-purple-700"
 										>
 											Serie: {item.detalle.numero_serie}
 										</span>
@@ -492,7 +480,7 @@
 							<!-- Quantity -->
 							<div class="flex items-center gap-3">
 								<div class="text-right">
-									<span class="text-[10px] font-bold tracking-wider text-light-two uppercase"
+									<span class="text-xs font-bold text-acero-600"
 										>Cantidad</span
 									>
 									<div class="flex items-center gap-2">
@@ -505,12 +493,12 @@
 											bind:value={item.cantidad_devuelta}
 											disabled={!item.selected}
 										/>
-										<span class="text-xs text-light-two">/ {item.max_devolvible}</span>
+										<span class="text-xs text-acero-600">/ {item.max_devolvible}</span>
 									</div>
 								</div>
 								{#if item.selected}
 									<div class="text-right" in:fade>
-										<span class="text-[10px] font-bold tracking-wider text-amber-600 uppercase"
+										<span class="text-xs font-bold text-amber-600"
 											>Subtotal</span
 										>
 										<p class="text-sm font-bold text-amber-700">
@@ -531,7 +519,7 @@
 						<span class="text-sm font-bold text-amber-800">
 							{getSelectedItems().length} producto(s) seleccionado(s)
 						</span>
-						<span class="text-lg font-black text-amber-700">
+						<span class="text-lg font-semibold text-amber-700">
 							{formatCurrency(totalDevuelto)}
 						</span>
 					</div>
@@ -543,7 +531,7 @@
 			<div in:fade class="space-y-6">
 				<div>
 					<h3 class="text-lg font-bold text-light-black">Tipo de Operación</h3>
-					<p class="mt-1 text-sm text-light-two">
+					<p class="mt-1 text-sm text-acero-600">
 						Selecciona si es una devolución o un cambio de producto
 					</p>
 				</div>
@@ -552,14 +540,10 @@
 				<div class="flex gap-3">
 					<button
 						onclick={() => { tipo = 'DEVOLUCION'; prepareStep3(); }}
-						class="flex flex-1 flex-col items-center gap-3 rounded-xl border-2 p-6 transition-all duration-200
-						{tipo === 'DEVOLUCION'
-							? 'border-red-400 bg-red-50 shadow-lg shadow-red-500/10'
-							: 'border-light-four bg-light-one hover:border-light-three'}"
+						class="flex flex-1 flex-col items-center gap-3 rounded-xl border-2 p-6 transition-all duration-200 {tipo === 'DEVOLUCION' ? 'border-red-400 bg-red-50 shadow-lg shadow-red-500/10' : 'border-light-four bg-light-one hover:border-light-three'}"
 					>
 						<div
-							class="flex size-14 items-center justify-center rounded-2xl
-							{tipo === 'DEVOLUCION' ? 'bg-red-100 text-red-600' : 'bg-light-one_d text-light-two'}"
+							class="flex size-14 items-center justify-center rounded-xl {tipo === 'DEVOLUCION' ? 'bg-red-100 text-red-600' : 'bg-light-one_d text-acero-600'}"
 						>
 							<svg xmlns="http://www.w3.org/2000/svg" class="size-7" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 								<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -571,7 +555,7 @@
 							<p class="font-bold {tipo === 'DEVOLUCION' ? 'text-red-700' : 'text-light-black'}">
 								Devolución
 							</p>
-							<p class="mt-1 text-xs text-light-two">
+							<p class="mt-1 text-xs text-acero-600">
 								Reembolso en efectivo
 							</p>
 						</div>
@@ -579,14 +563,10 @@
 
 					<button
 						onclick={() => { tipo = 'CAMBIO'; prepareStep3(); }}
-						class="flex flex-1 flex-col items-center gap-3 rounded-xl border-2 p-6 transition-all duration-200
-						{tipo === 'CAMBIO'
-							? 'border-blue-400 bg-blue-50 shadow-lg shadow-blue-500/10'
-							: 'border-light-four bg-light-one hover:border-light-three'}"
+						class="flex flex-1 flex-col items-center gap-3 rounded-xl border-2 p-6 transition-all duration-200 {tipo === 'CAMBIO' ? 'border-blue-400 bg-blue-50 shadow-lg shadow-blue-500/10' : 'border-light-four bg-light-one hover:border-light-three'}"
 					>
 						<div
-							class="flex size-14 items-center justify-center rounded-2xl
-							{tipo === 'CAMBIO' ? 'bg-blue-100 text-blue-600' : 'bg-light-one_d text-light-two'}"
+							class="flex size-14 items-center justify-center rounded-xl {tipo === 'CAMBIO' ? 'bg-blue-100 text-blue-600' : 'bg-light-one_d text-acero-600'}"
 						>
 							<svg xmlns="http://www.w3.org/2000/svg" class="size-7" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 								<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -598,7 +578,7 @@
 							<p class="font-bold {tipo === 'CAMBIO' ? 'text-blue-700' : 'text-light-black'}">
 								Cambio
 							</p>
-							<p class="mt-1 text-xs text-light-two">
+							<p class="mt-1 text-xs text-acero-600">
 								Cambiar por otro producto
 							</p>
 						</div>
@@ -608,7 +588,7 @@
 				<!-- CAMBIO: New Product Selection -->
 				{#if tipo === 'CAMBIO'}
 					<div class="space-y-4" in:slide>
-						<h4 class="text-sm font-bold text-light-black uppercase">
+						<h4 class="text-sm font-bold text-light-black">
 							Seleccionar nuevos productos
 						</h4>
 
@@ -619,13 +599,13 @@
 								<!-- Original product summary -->
 								<div class="mb-3 flex items-center justify-between">
 									<div>
-										<span class="text-[10px] font-bold tracking-wider text-red-500 uppercase"
+										<span class="text-xs font-bold text-red-500"
 											>Devuelve:</span
 										>
 										<span class="ml-2 text-sm font-bold text-light-black">
 											{item.producto_original_nombre}
 										</span>
-										<span class="ml-1 text-xs text-light-two">
+										<span class="ml-1 text-xs text-acero-600">
 											× {item.cantidad_devuelta}
 										</span>
 									</div>
@@ -635,7 +615,7 @@
 								</div>
 
 								<div class="border-t border-blue-200 pt-3">
-									<span class="text-[10px] font-bold tracking-wider text-blue-600 uppercase"
+									<span class="text-xs font-bold text-blue-600"
 										>Recibe:</span
 									>
 
@@ -665,7 +645,7 @@
 																	<p class="text-sm font-bold text-light-black">
 																		{prod.nombre_comercial}
 																	</p>
-																	<p class="text-xs text-light-two">
+																	<p class="text-xs text-acero-600">
 																		{formatCurrency(prod.precio_venta || 0)} — Stock: {prod.stock_disponible}
 																	</p>
 																</div>
@@ -730,22 +710,18 @@
 						<!-- Totals -->
 						<div class="space-y-2 rounded-xl border border-blue-200 bg-blue-50 p-4">
 							<div class="flex justify-between text-sm">
-								<span class="text-light-two">Total productos devueltos</span>
+								<span class="text-acero-600">Total productos devueltos</span>
 								<span class="font-bold text-red-600">-{formatCurrency(totalDevuelto)}</span>
 							</div>
 							<div class="flex justify-between text-sm">
-								<span class="text-light-two">Total productos nuevos</span>
+								<span class="text-acero-600">Total productos nuevos</span>
 								<span class="font-bold text-blue-600">+{formatCurrency(totalNuevo)}</span>
 							</div>
 							<div class="border-t border-blue-200 pt-2">
 								<div class="flex justify-between">
 									<span class="font-bold text-light-black">Diferencia</span>
 									<span
-										class="text-lg font-black {diferencia > 0
-											? 'text-amber-600'
-											: diferencia < 0
-												? 'text-green-600'
-												: 'text-light-two'}"
+										class="text-lg font-semibold {diferencia > 0 ? 'text-amber-600' : diferencia < 0 ? 'text-green-600' : 'text-acero-600'}"
 									>
 										{diferencia > 0
 											? `Cliente paga ${formatCurrency(diferencia)}`
@@ -767,7 +743,7 @@
 									Se devolverá el dinero al cliente en efectivo
 								</p>
 							</div>
-							<span class="text-2xl font-black text-red-700">
+							<span class="text-2xl font-semibold text-red-700">
 								{formatCurrency(totalDevuelto)}
 							</span>
 						</div>
@@ -780,32 +756,28 @@
 			<div in:fade class="space-y-6">
 				<div>
 					<h3 class="text-lg font-bold text-light-black">Confirmar Operación</h3>
-					<p class="mt-1 text-sm text-light-two">Revisa los datos y confirma la operación</p>
+					<p class="mt-1 text-sm text-acero-600">Revisa los datos y confirma la operación</p>
 				</div>
 
 				<!-- Summary card -->
 				<div
-					class="rounded-xl border p-5 {tipo === 'DEVOLUCION'
-						? 'border-red-200 bg-gradient-to-br from-red-50 to-rose-50'
-						: 'border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50'}"
+					class="rounded-xl border p-5 {tipo === 'DEVOLUCION' ? 'border-red-200 bg-gradient-to-br from-red-50 to-rose-50' : 'border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50'}"
 				>
 					<div class="grid gap-4 md:grid-cols-2">
 						<div>
-							<span class="text-[10px] font-bold tracking-wider text-light-two uppercase"
+							<span class="text-xs font-bold text-acero-600"
 								>Tipo</span
 							>
 							<p class="mt-0.5 text-sm font-bold">
 								<span
-									class="rounded-full px-3 py-1 text-xs font-bold {tipo === 'DEVOLUCION'
-										? 'bg-red-100 text-red-700'
-										: 'bg-blue-100 text-blue-700'}"
+									class="rounded-full px-3 py-1 text-xs font-bold {tipo === 'DEVOLUCION' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}"
 								>
 									{tipo}
 								</span>
 							</p>
 						</div>
 						<div>
-							<span class="text-[10px] font-bold tracking-wider text-light-two uppercase"
+							<span class="text-xs font-bold text-acero-600"
 								>Venta Original</span
 							>
 							<p class="mt-0.5 text-sm font-bold text-light-black">
@@ -813,7 +785,7 @@
 							</p>
 						</div>
 						<div>
-							<span class="text-[10px] font-bold tracking-wider text-light-two uppercase"
+							<span class="text-xs font-bold text-acero-600"
 								>Productos a devolver</span
 							>
 							<p class="mt-0.5 text-sm font-bold text-light-black">
@@ -821,10 +793,10 @@
 							</p>
 						</div>
 						<div>
-							<span class="text-[10px] font-bold tracking-wider text-light-two uppercase">
+							<span class="text-xs font-bold text-acero-600">
 								{tipo === 'DEVOLUCION' ? 'Monto a reembolsar' : 'Diferencia'}
 							</span>
-							<p class="mt-0.5 text-lg font-black {tipo === 'DEVOLUCION' ? 'text-red-700' : 'text-blue-700'}">
+							<p class="mt-0.5 text-lg font-semibold {tipo === 'DEVOLUCION' ? 'text-red-700' : 'text-blue-700'}">
 								{tipo === 'DEVOLUCION'
 									? formatCurrency(totalDevuelto)
 									: diferencia > 0
@@ -839,7 +811,7 @@
 
 				<!-- Items detail -->
 				<div class="rounded-xl border border-light-four bg-light-one_d p-4">
-					<h4 class="mb-3 text-xs font-bold tracking-wider text-light-two uppercase">
+					<h4 class="mb-3 text-xs font-bold text-acero-600">
 						Detalle de productos
 					</h4>
 					{#each getSelectedItems() as item (item.detalle.id)}
@@ -850,14 +822,14 @@
 								</span>
 								{#if item.detalle.presentacion}
 									<span
-										class="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-semibold text-blue-700"
+										class="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700"
 									>
 										{item.detalle.presentacion.nombre}
 									</span>
 								{/if}
 							</div>
 							<div class="text-right">
-								<span class="text-xs text-light-two">× {item.cantidad_devuelta}</span>
+								<span class="text-xs text-acero-600">× {item.cantidad_devuelta}</span>
 								<span class="ml-2 text-sm font-bold text-light-black">
 									{formatCurrency(reembolsoEstimado(item.detalle, item.cantidad_devuelta))}
 								</span>
@@ -867,7 +839,7 @@
 
 					{#if tipo === 'CAMBIO'}
 						<div class="mt-3 border-t-2 border-blue-200 pt-3">
-							<h5 class="mb-2 text-[10px] font-bold tracking-wider text-blue-600 uppercase">
+							<h5 class="mb-2 text-xs font-bold text-blue-600">
 								Productos nuevos
 							</h5>
 							{#each itemsCambio as item (item.id_detalle_venta)}
@@ -879,7 +851,7 @@
 										{/if}
 									</span>
 									<div class="text-right">
-										<span class="text-xs text-light-two">× {item.cantidad_nueva}</span>
+										<span class="text-xs text-acero-600">× {item.cantidad_nueva}</span>
 										<span class="ml-2 text-sm font-bold text-blue-700">
 											{formatCurrency(item.subtotal_nuevo)}
 										</span>

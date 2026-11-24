@@ -1,217 +1,254 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui';
-	import { redirect } from '$lib/utils';
-	import { onMount } from 'svelte';
+	import { currentUserStore } from '$lib/stores';
+	import { getDefaultRedirect } from '$lib/utils/rbac.utils';
 
-	let visible: boolean = $state(false);
-	let featuresVisible: boolean = $state(false);
-	let contactVisible: boolean = $state(false);
+	const TELEFONO = '72123855';
+	const WHATSAPP = `https://wa.me/591${TELEFONO}?text=${encodeURIComponent('Hola, quisiera consultar por un producto.')}`;
 
-	onMount(() => {
-		visible = true;
+	// Grados de viscosidad: la "etiqueta" que todo cliente reconoce en un bidón de aceite
+	const GRADOS = ['0W-20', '5W-30', '10W-40', '15W-40', '20W-50', '25W-60', 'SAE 90', 'ATF'];
 
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						if (entry.target.id === 'features') featuresVisible = true;
-						if (entry.target.id === 'contact') contactVisible = true;
-					}
-				});
-			},
-			{ threshold: 0.1 }
-		);
-
-		const featuresEl = document.getElementById('features');
-		const contactEl = document.getElementById('contact');
-		if (featuresEl) observer.observe(featuresEl);
-		if (contactEl) observer.observe(contactEl);
-
-		return () => observer.disconnect();
-	});
-
-	const features = [
+	const CATEGORIAS = [
 		{
-			icon: '🔩',
-			title: 'Inventario Inteligente',
-			desc: 'Control total de stock de pernos, herramientas, pinturas y miles de SKUs con alertas automáticas de reorden.'
+			nombre: 'Aceites de motor',
+			detalle: 'Sintéticos, semisintéticos y minerales para gasolina y diésel.'
+		},
+		{ nombre: 'Filtros', detalle: 'De aceite, aire y combustible para autos, camionetas y motos.' },
+		{
+			nombre: 'Refrigerantes',
+			detalle: 'Listos para usar o concentrados, para cada tipo de radiador.'
+		},
+		{ nombre: 'Grasas', detalle: 'Multiuso y de alta temperatura para rodamientos y chasis.' },
+		{
+			nombre: 'Transmisión y frenos',
+			detalle: 'Aceites de caja, diferencial, ATF y líquido de frenos.'
 		},
 		{
-			icon: '🧾',
-			title: 'Punto de Venta Rápido',
-			desc: 'Cobros ágiles con lector de códigos de barra, múltiples métodos de pago y emisión de facturas al instante.'
-		},
-		{
-			icon: '📊',
-			title: 'Reportes en Tiempo Real',
-			desc: 'Dashboards de ventas diarias, semanales y mensuales. Conoce tus productos más rentables.'
-		},
-		{
-			icon: '👥',
-			title: 'Gestión de Clientes',
-			desc: 'Historial de compras, crédito a clientes frecuentes y seguimiento de cuentas por cobrar.'
-		},
-		{
-			icon: '🏷️',
-			title: 'Control de Precios',
-			desc: 'Actualización masiva de precios, descuentos por categoría y listas de precios por cliente.'
-		},
-		{
-			icon: '🔐',
-			title: 'Acceso Controlado',
-			desc: 'Los usuarios son creados y administrados por el administrador del sistema. Seguridad total sobre quién accede.'
+			nombre: 'Aditivos y limpieza',
+			detalle: 'Limpiadores de inyectores, tratamientos y desengrasantes.'
 		}
 	];
+
+	const HORARIO = [
+		{ dias: 'Lunes a viernes', horas: '7:30 – 19:30' },
+		{ dias: 'Sábado', horas: '7:30 – 17:00' },
+		{ dias: 'Domingo', horas: 'Cerrado' }
+	];
+
+	// Si ya hay sesión, el botón lleva directo a su pantalla de trabajo
+	const destinoSistema = $derived(
+		$currentUserStore ? getDefaultRedirect($currentUserStore.Role?.code_rol) : '/auth/sign-in'
+	);
 </script>
 
-<div class="min-h-dvh overflow-x-hidden bg-light-one font-sans text-zinc-100">
-	<nav
-		class="fixed top-0 right-0 left-0 z-50 flex items-center justify-between border-b border-light-four bg-light-one_d px-8 py-4 backdrop-blur-md"
-	>
-		<div class="flex items-center">
-			<img src="/images/logo2.webp" alt="" class="h-16 w-52" />
-		</div>
-		<div class="hidden items-center gap-8 text-sm text-light-black md:flex">
-			<a href="#features" class="transition-colors hover:text-light-black/30">Características</a>
-			<a href="#how" class="transition-colors hover:text-light-black/30">¿Cómo funciona?</a>
-			<a href="#contact" class="transition-colors hover:text-light-black/30">Contacto</a>
-		</div>
-		<Button onclick={() => redirect('/auth/sign-in')} variant="primary">Iniciar sesion</Button>
-	</nav>
+<svelte:head>
+	<title>Lubricantes Yolanda · Aceites, filtros y lubricantes</title>
+	<meta
+		name="description"
+		content="Lubricantes Yolanda: aceites de motor, filtros, refrigerantes y grasas. Consulte por WhatsApp al 72123855."
+	/>
+</svelte:head>
 
-	<section class="relative flex min-h-screen items-center justify-center overflow-hidden pt-20">
-		<div
-			class="absolute inset-0 opacity-5"
-			style="background-image: radial-gradient(circle, #d97706 1px, transparent 1px); background-size: 32px 32px;"
-		></div>
-		<div
-			class="pointer-events-none absolute top-1/3 left-1/2 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-500/10 blur-3xl"
-		></div>
-
-		<div
-			class="relative z-10 mx-auto max-w-5xl px-6 text-center transition-all duration-1000 {visible
-				? 'translate-y-0 opacity-100'
-				: 'translate-y-10 opacity-0'}"
-		>
-			<h1
-				class="my-6 text-6xl leading-none tracking-tight text-light-two md:text-8xl lg:text-9xl"
-				style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.02em;"
+<div class="min-h-dvh bg-white text-acero-950">
+	<!-- Barra superior -->
+	<header class="sticky top-0 z-40 border-b border-acero-200 bg-white/95 backdrop-blur">
+		<div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+			<a
+				href="/"
+				class="block h-12 w-36 overflow-hidden sm:w-44"
+				aria-label="Lubricantes Yolanda, inicio"
 			>
-				VENDE MÁS.<br />
-				<span class="text-light-accent">CONTROLA</span><br />
-				TODO.
-			</h1>
-
-			<p class="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-light-black md:text-xl">
-				El sistema POS diseñado específicamente para ferreterías. Inventario, ventas, clientes y
-				reportes en una sola plataforma. Acceso gestionado por tu administrador.
-			</p>
-
-			<div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-				<Button href="#" variant="secondary">Solicitar una Demo</Button>
-				<Button href="#features" variant="outline">Ver características</Button>
-			</div>
+				<img src="/images/logo2.webp" alt="" class="h-full w-full scale-[1.04] object-cover" />
+			</a>
+			<nav
+				aria-label="Secciones"
+				class="hidden items-center gap-7 text-[0.9375rem] font-medium text-acero-700 md:flex"
+			>
+				<a href="#productos" class="hover:text-acero-950">Productos</a>
+				<a href="#visitanos" class="hover:text-acero-950">Horario y contacto</a>
+			</nav>
+			<a
+				href={destinoSistema}
+				class="inline-flex h-10 items-center rounded-lg border border-acero-300 px-3.5 text-sm font-semibold text-acero-800 transition-colors hover:border-acero-400 hover:bg-acero-50"
+			>
+				{$currentUserStore ? 'Ir al sistema' : 'Acceso del personal'}
+			</a>
 		</div>
-	</section>
+	</header>
 
-	<section id="features" class="relative px-6 py-28">
-		<div
-			class="absolute top-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-amber-500/30 to-transparent"
-		></div>
-
-		<div class="mx-auto max-w-6xl">
+	<main>
+		<!-- Portada -->
+		<section class="relative overflow-hidden bg-acero-900 text-white">
 			<div
-				class="mb-16 text-center transition-all duration-700 {featuresVisible
-					? 'translate-y-0 opacity-100'
-					: 'translate-y-8 opacity-0'}"
+				class="mx-auto grid max-w-6xl gap-10 px-4 pt-14 pb-10 sm:px-6 md:pt-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:pb-16"
 			>
-				<p class="mb-3 text-sm font-semibold tracking-widest text-light-two uppercase">
-					Funcionalidades
-				</p>
-				<h2
-					class="text-4xl font-bold text-light-three md:text-5xl"
-					style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.03em;"
-				>
-					TODO LO QUE TU FERRETERÍA NECESITA
-				</h2>
-			</div>
-
-			<div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-				{#each features as feature, i (i)}
-					<div
-						class="group rounded-xl p-6 transition-all duration-300 hover:-translate-y-1
-            {featuresVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}"
-						style="transition-delay: {i *
-							80}ms; transition-property: opacity, transform, border-color, background-color;"
-					>
-						<div
-							class="mb-4 inline-block rounded bg-light-three p-1 text-3xl transition-transform group-hover:scale-110"
+				<div>
+					<p class="mb-4 font-display text-lg font-medium text-aceite">
+						Calidad que protege, rendimiento que mueve.
+					</p>
+					<h1 class="font-display text-5xl leading-[1.08] font-semibold tracking-tight sm:text-6xl">
+						Aceite, filtros y todo lo que tu motor necesita.
+					</h1>
+					<p class="mt-5 max-w-xl text-lg leading-relaxed text-acero-300">
+						Dinos la marca y el modelo de tu vehículo y te ayudamos a elegir el lubricante y el
+						filtro correctos.
+					</p>
+					<div class="mt-8 flex flex-col gap-3 sm:flex-row">
+						<a
+							href={WHATSAPP}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-marca px-5 font-semibold text-white shadow-[inset_0_-2px_0_rgb(0_0_0/0.2)] transition-colors hover:bg-marca-oscuro"
 						>
-							{feature.icon}
-						</div>
-						<h3 class="mb-2 text-lg font-semibold text-light-black">{feature.title}</h3>
-						<p class="text-sm leading-relaxed text-light-black/80">{feature.desc}</p>
-					</div>
-				{/each}
-			</div>
-		</div>
-	</section>
-
-	<section id="how" class="relative px-6 py-28">
-		<div
-			class="absolute top-0 left-0 h-px w-full bg-linear-to-r from-transparent via-zinc-700 to-transparent"
-		></div>
-		<div
-			class="absolute bottom-0 left-0 h-px w-full bg-linear-to-r from-transparent via-zinc-700 to-transparent"
-		></div>
-
-		<div class="mx-auto max-w-4xl">
-			<div class="mb-16 text-center">
-				<p class="mb-3 text-sm font-semibold tracking-widest text-light-three uppercase">Proceso</p>
-				<h2
-					class="text-4xl font-bold text-light-two md:text-5xl"
-					style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.03em;"
-				>
-					¿CÓMO EMPEZAR?
-				</h2>
-				<p class="mx-auto mt-4 max-w-xl text-black">
-					El acceso al sistema es gestionado por el administrador. No existe el autoregistro — así
-					garantizamos la seguridad de tu negocio.
-				</p>
-			</div>
-
-			<div class="relative">
-				<div
-					class="absolute top-10 right-[calc(16.67%+1.5rem)] left-[calc(16.67%+1.5rem)] hidden h-px bg-linear-to-r from-light-three/50 via-light-three/30 to-light-three/50 md:block"
-				></div>
-
-				<div class="grid grid-cols-1 gap-8 md:grid-cols-3">
-					{#each [{ num: '01', title: 'Contáctanos', desc: 'Llena el formulario de contacto o escríbenos. Evaluamos tu negocio y preparamos tu instancia.' }, { num: '02', title: 'Configuración', desc: 'Configuramos el sistema con tus categorías, productos y precios iniciales. Listo para usar.' }, { num: '03', title: 'Tú creas usuarios', desc: 'El administrador crea y gestiona las cuentas de sus cajeros y empleados. Control total.' }] as step, index (index)}
-						<div class="flex flex-col items-center text-center">
-							<div
-								class="relative z-10 mb-4 flex h-20 w-20 items-center justify-center rounded-full border-2 border-light-four bg-light-three"
+							<svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"
+								><path
+									d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.1c-.24.68-1.42 1.3-1.95 1.34-.5.05-.97.23-3.27-.68-2.77-1.09-4.53-3.93-4.67-4.11-.13-.18-1.11-1.48-1.11-2.83 0-1.34.7-2 .96-2.28.25-.27.55-.34.73-.34l.53.01c.17.01.4-.06.62.48.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46l-.41.48c-.14.13-.28.28-.12.55.16.27.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.21 1.37.27.13.43.11.59-.07.16-.18.68-.8.86-1.07.18-.27.36-.23.61-.14.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"
+								/></svg
 							>
-								<span
-									class="text-2xl font-black text-light-one"
-									style="font-family: 'Bebas Neue', sans-serif;">{step.num}</span
-								>
-							</div>
-							<h3 class="mb-2 text-lg font-semibold text-black">{step.title}</h3>
-							<p class="text-sm leading-relaxed text-black/60">{step.desc}</p>
-						</div>
-					{/each}
+							Consultar por WhatsApp
+						</a>
+						<a
+							href="#visitanos"
+							class="inline-flex h-12 items-center justify-center rounded-lg border border-acero-600 px-5 font-semibold text-white transition-colors hover:border-acero-400 hover:bg-acero-800"
+						>
+							Ver horario de atención
+						</a>
+					</div>
+				</div>
+
+				<div class="hidden justify-end lg:flex">
+					<img
+						src="/images/logo1.webp"
+						alt="Lubricantes Yolanda"
+						class="w-full max-w-sm rounded-2xl bg-white p-6"
+						width="500"
+						height="500"
+					/>
 				</div>
 			</div>
-		</div>
-	</section>
 
-	<footer class="border-t border-light-three px-6 py-8">
-		<div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
-			<div class="flex items-center">
-				<img src="/images/logo1.webp" alt="" class="h-10 w-52" />
+			<!-- Banda de grados de viscosidad -->
+			<div class="border-t border-acero-700" aria-label="Grados de viscosidad disponibles">
+				<ul class="grados mx-auto flex max-w-6xl flex-wrap gap-x-6 gap-y-1 px-4 py-5 sm:px-6">
+					{#each GRADOS as g, i (g)}
+						<li
+							class="font-display text-2xl font-semibold tabular-nums sm:text-3xl {g === '20W-50'
+								? 'text-aceite'
+								: 'text-transparent [-webkit-text-stroke:1px_var(--color-acero-400)]'}"
+							style="--i: {i}"
+						>
+							{g}
+						</li>
+					{/each}
+				</ul>
 			</div>
+		</section>
 
-			<p class="text-xs text-light-two">© {new Date().getFullYear()} Lubricantes Yolanda</p>
+		<!-- Productos -->
+		<section id="productos" class="scroll-mt-20 border-b border-acero-200">
+			<div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-20">
+				<div class="max-w-2xl">
+					<h2 class="font-display text-4xl font-semibold">Lo que vas a encontrar</h2>
+					<p class="mt-3 text-lg text-acero-600">
+						Lubricantes y repuestos de mantenimiento para autos, camionetas, motos y maquinaria.
+					</p>
+				</div>
+				<dl class="mt-10 grid border-t border-acero-200 sm:grid-cols-2 lg:grid-cols-3">
+					{#each CATEGORIAS as c (c.nombre)}
+						<div class="border-b border-acero-200 py-6 sm:pr-8">
+							<dt class="flex items-center gap-2.5 text-lg font-semibold">
+								<span class="h-5 w-1 rounded-full bg-marca" aria-hidden="true"></span>
+								{c.nombre}
+							</dt>
+							<dd class="mt-1.5 pl-3.5 text-acero-600">{c.detalle}</dd>
+						</div>
+					{/each}
+				</dl>
+			</div>
+		</section>
+
+		<!-- Horario y contacto -->
+		<section id="visitanos" class="scroll-mt-20 bg-acero-50">
+			<div class="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 md:py-20">
+				<div>
+					<h2 class="font-display text-4xl font-semibold">Horario de atención</h2>
+					<table class="mt-6 w-full max-w-md text-lg">
+						<caption class="sr-only">Horario de atención</caption>
+						<tbody>
+							{#each HORARIO as h (h.dias)}
+								<tr class="border-b border-acero-200">
+									<th scope="row" class="py-3 text-left font-medium text-acero-700">{h.dias}</th>
+									<td
+										class="py-3 text-right font-display text-xl font-semibold tabular-nums {h.horas ===
+										'Cerrado'
+											? 'text-acero-400'
+											: 'text-acero-950'}">{h.horas}</td
+									>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+				<div>
+					<h2 class="font-display text-4xl font-semibold">Contacto</h2>
+					<p class="mt-3 text-lg text-acero-600">
+						Escríbenos para consultar precios, disponibilidad o el producto que necesita tu
+						vehículo.
+					</p>
+					<dl class="mt-6 space-y-4 text-lg">
+						<div>
+							<dt class="text-sm text-acero-500">Teléfono y WhatsApp</dt>
+							<dd>
+								<a
+									href="tel:+591{TELEFONO}"
+									class="font-display text-3xl font-semibold tabular-nums hover:text-marca"
+									>{TELEFONO.slice(0, 4)} {TELEFONO.slice(4)}</a
+								>
+							</dd>
+						</div>
+					</dl>
+					<a
+						href={WHATSAPP}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="mt-6 inline-flex h-12 items-center rounded-lg bg-acero-900 px-5 font-semibold text-white transition-colors hover:bg-acero-800"
+					>
+						Escribir por WhatsApp
+					</a>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="border-t border-acero-200">
+		<div
+			class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-6 text-sm text-acero-500 sm:flex-row sm:px-6"
+		>
+			<p>© {new Date().getFullYear()} Lubricantes Yolanda</p>
+			<a
+				href={destinoSistema}
+				class="font-medium text-acero-700 hover:text-acero-950 hover:underline"
+			>
+				Acceso del personal
+			</a>
 		</div>
 	</footer>
 </div>
+
+<style>
+	/* Un único momento de movimiento: los grados entran en secuencia al cargar */
+	.grados li {
+		animation: entrar 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+		animation-delay: calc(var(--i) * 60ms + 150ms);
+	}
+	@keyframes entrar {
+		from {
+			opacity: 0;
+			transform: translateY(8px);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+</style>

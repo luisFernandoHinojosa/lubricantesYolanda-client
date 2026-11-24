@@ -40,7 +40,7 @@
 		<div class="flex items-center">
 			<div class="h-10 w-10 shrink-0">
 				<div class="flex h-10 w-10 items-center justify-center rounded-full bg-light-four">
-					<span class="text-sm font-medium text-light-two">
+					<span class="text-sm font-medium text-acero-600">
 						{usuario.name_user.substring(0, 2).toUpperCase()}
 					</span>
 				</div>
@@ -55,7 +55,7 @@
 	</td>
 	<td class="px-6 py-4 whitespace-nowrap">
 		<span
-			class="inline-flex rounded-full bg-light-accent px-2 text-xs leading-5 font-semibold text-light-two"
+			class="inline-flex rounded-full bg-light-accent px-2 text-xs leading-5 font-semibold text-acero-600"
 		>
 			{getRolCode(usuario)}
 		</span>
@@ -67,9 +67,7 @@
 			class="relative inline-flex items-center"
 		>
 			<span
-				class="inline-flex rounded-full px-2 text-xs leading-5 font-semibold {usuario.esta_activo
-					? 'bg-green-100 text-green-800'
-					: 'bg-red-100 text-red-800'}"
+				class="inline-flex rounded-full px-2 text-xs leading-5 font-semibold {usuario.esta_activo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"
 			>
 				{usuario.esta_activo ? 'Activo' : 'Inactivo'}
 			</span>

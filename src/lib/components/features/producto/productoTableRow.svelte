@@ -7,9 +7,10 @@
 		PencilIcon,
 		TrashIcon,
 		ArrowsLeftRightIcon,
-		BoxIcon
+		BoxIcon,
+		LoaderIcon
 	} from '$lib/icons/outline';
-	import { Button, DropdownMenu } from '$lib/components/ui';
+	import { DropdownMenu } from '$lib/components/ui';
 	import type { DropdownOption } from '$lib/interfaces';
 
 	interface Props {
@@ -40,27 +41,11 @@
 	let triggerElement = $state<HTMLElement>();
 
 	const dropdownOptions: DropdownOption[] = [
-		{
-			id: 'view',
-			label: 'Ver detalles',
-			icon: EyeIcon,
-			action: () => onView?.(producto)
-		},
-		{
-			id: 'edit',
-			label: 'Editar',
-			icon: PencilIcon,
-			action: () => onEdit?.(producto.id)
-		},
-		{
-			id: 'delete',
-			label: 'Eliminar',
-			icon: TrashIcon,
-			action: () => onDelete?.(producto)
-		},
+		{ id: 'view', label: 'Ver detalle', icon: EyeIcon, action: () => onView?.(producto) },
+		{ id: 'edit', label: 'Editar', icon: PencilIcon, action: () => onEdit?.(producto.id) },
 		{
 			id: 'traslado',
-			label: 'Trasladar',
+			label: 'Trasladar stock',
 			icon: ArrowsLeftRightIcon,
 			action: () => onTraslado?.(producto)
 		},
@@ -69,176 +54,179 @@
 			label: 'Presentaciones',
 			icon: BoxIcon,
 			action: () => onManagePresentaciones?.(producto)
+		},
+		{
+			id: 'delete',
+			label: 'Eliminar',
+			icon: TrashIcon,
+			action: () => onDelete?.(producto),
+			divider: true
 		}
 	];
 
-	function openPopover(e: MouseEvent) {
-		const target = e.currentTarget as HTMLElement;
-		const rect = target.getBoundingClientRect();
+	const nivel = $derived(
+		producto.stock_actual <= 0
+			? 'agotado'
+			: producto.stock_actual <= producto.stock_minimo
+				? 'bajo'
+				: 'ok'
+	);
+	const presentaciones = $derived(producto.presentaciones ?? []);
+
+	function openPopover(e: Event) {
+		const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
 		popoverTop = rect.top - 8;
 		popoverLeft = rect.left + rect.width / 2;
 		showPresentaciones = true;
 	}
 </script>
 
-<tr class="bg-light-one hover:bg-light-one_d">
-	<td class=" px-4 py-2 text-center">
-		{#if producto.imagen_url}
-			<img
-				src={producto.imagen_url}
-				alt={producto.nombre_comercial}
-				class="mx-auto h-10 w-10 rounded-lg object-cover shadow-sm"
-			/>
-		{:else}
-			<div
-				class="mx-auto flex h-10 w-10 items-center justify-center rounded-lg bg-light-three text-light-one"
-			>
-				<PhotoIcon class="h-5 w-5" />
-			</div>
-		{/if}
-	</td>
-	<td class="px-4 py-5 font-medium text-light-black">
-		<div class="">
-			{producto.nombre_comercial}
-		</div>
-		<!-- {#if producto.descripcion}
-			<div class="mt-1 line-clamp-2 text-xs text-light-two">
-				{producto.descripcion}
-			</div>
-		{/if} -->
-	</td>
-	<td class="max-w-[200px] px-4 py-5 font-bold text-light-black">
-		<span class="font-semibold text-light-black"
-			>{producto.codigo_barras}
-			<span class="text-sm"
-				><span class="mr-2 text-light-two">Venc:</span>{producto.maneja_vencimiento
-					? 'SI'
-					: 'NO'}</span
-			>
-		</span>
-	</td>
-
-	<td class="px-4 py-5 text-light-black">{producto.marca?.nombre || '--'}</td>
-	<td class="px-4 py-5 text-light-black">{producto.categoria?.nombre || '--'}</td>
-	<td class="px-4 py-5 text-light-black">{producto.proveedor?.nombre || '--'}</td>
-	<td class="px-4 py-5 text-center text-light-black">
-		{#if producto.ubicacion}
-			<span class="block font-bold text-light-black">{producto.ubicacion.tipo_area}</span>
-			<span class="block text-sm">{producto.ubicacion.nombre}</span>
-		{:else}
-			--
-		{/if}
-	</td>
-	<td class="px-4 py-5 text-center">
-		<div class="flex flex-col items-center justify-center gap-1">
-			<span
-				class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-black {producto.stock_actual <=
-				producto.stock_minimo
-					? 'bg-red-100 text-red-800'
-					: 'bg-green-100 text-green-800'}"
-			>
-				Actual: {producto.stock_actual}
-			</span>
-			<span class="text-sm font-bold text-light-black">Mín: {producto.stock_minimo}</span>
-		</div>
-	</td>
-	<td class="px-4 py-5 text-center">
-		{#if producto.presentaciones && producto.presentaciones.length > 0}
-			<div
-				class="flex justify-center"
-				onmouseenter={openPopover}
-				onmouseleave={() => (showPresentaciones = false)}
-				role="button"
-				tabindex="0"
-			>
+<tr class="group transition-colors hover:bg-acero-50/70">
+	<td class="px-4 py-3">
+		<div class="flex min-w-[14rem] items-center gap-3">
+			{#if producto.imagen_url}
+				<img
+					src={producto.imagen_url}
+					alt=""
+					class="size-10 shrink-0 rounded-md border border-acero-100 object-cover"
+					loading="lazy"
+				/>
+			{:else}
+				<div
+					class="flex size-10 shrink-0 items-center justify-center rounded-md bg-acero-100 text-acero-400"
+					aria-hidden="true"
+				>
+					<PhotoIcon class="size-5" />
+				</div>
+			{/if}
+			<div class="min-w-0">
 				<button
-					class="inline-flex cursor-help items-center rounded-xl border border-light-four bg-light-one px-3 py-1 text-xs font-bold text-light-black transition-colors hover:bg-light-one_d"
+					type="button"
+					onclick={() => onView?.(producto)}
+					class="text-left leading-snug font-semibold text-acero-950 decoration-acero-300 underline-offset-2 hover:underline"
 				>
-					{producto.presentaciones.length} Presentaciones
+					{producto.nombre_comercial}
 				</button>
-
-				{#if showPresentaciones}
-					<div
-						class="pointer-events-none fixed z-50 mb-2 w-max -translate-x-1/2 -translate-y-full rounded-2xl border border-light-four bg-white p-4 shadow-xl transition-all duration-100"
-						style="top: {popoverTop}px; left: {popoverLeft}px;"
-					>
-						<div class="flex flex-col gap-3 text-left">
-							<div class="text-sm font-black tracking-tight text-light-black uppercase">
-								Detalles de Presentaciones
-							</div>
-							<div class="flex flex-col gap-2">
-								{#each producto.presentaciones as pres (pres.id)}
-									<div
-										class="flex items-center justify-between gap-6 rounded-lg border border-light-four bg-light-one p-2"
-									>
-										<div class="flex flex-col">
-											<span class="text-xs font-black text-light-black uppercase"
-												>{pres.nombre}</span
-											>
-											<span class="text-sm font-bold text-light-two">
-												SKU: <span class="text-light-black">{pres.sku || 'N/A'}</span> <br />
-												Cod. Barras:
-												<span class="text-light-black">{pres.codigo_barras || 'N/A'}</span>
-											</span>
-										</div>
-										<div class="flex flex-col items-end text-right">
-											<span
-												class="rounded-lg bg-emerald-50 px-2 py-1 text-sm font-black text-emerald-600"
-												>Bs. {pres.precio_especial}</span
-											>
-											<span class="mt-2 text-sm font-bold text-light-two uppercase">
-												Factor {pres.factor_conversion} X
-											</span>
-											<span class="mt-2 text-sm font-bold text-light-black uppercase">
-												Estado: <span
-													class={pres.esta_activo ? 'text-light-success' : 'text-light-error'}
-												>
-													{pres.esta_activo ? 'Activo' : 'Inactivo'}
-												</span>
-											</span>
-										</div>
-									</div>
-								{/each}
-							</div>
-						</div>
-						<!-- Arrow -->
-						<div
-							class="absolute top-full left-1/2 -mt-1 h-3 w-3 -translate-x-1/2 rotate-45 border-r border-b border-light-four bg-white"
-						></div>
-					</div>
-				{/if}
+				<p class="flex flex-wrap items-center gap-x-2 text-sm text-acero-500">
+					{#if producto.codigo_barras}<span class="tabular-nums">{producto.codigo_barras}</span
+						>{/if}
+					{#if producto.unidad_medida?.nombre}<span>{producto.unidad_medida.nombre}</span>{/if}
+					{#if producto.maneja_vencimiento}
+						<span class="rounded bg-aceite-tinte px-1.5 text-xs font-semibold text-aceite-oscuro"
+							>Con vencimiento</span
+						>
+					{/if}
+				</p>
 			</div>
+		</div>
+	</td>
+	<td class="px-4 py-3">
+		<p class="text-acero-900">{producto.marca?.nombre || '—'}</p>
+		<p class="text-sm text-acero-500">{producto.categoria?.nombre || 'Sin categoría'}</p>
+	</td>
+	<td class="hidden min-w-[10rem] px-4 py-3 text-acero-700 xl:table-cell"
+		>{producto.proveedor?.nombre || '—'}</td
+	>
+	<td class="hidden px-4 py-3 lg:table-cell">
+		{#if producto.ubicacion}
+			<p class="whitespace-nowrap text-acero-900">{producto.ubicacion.nombre}</p>
+			<p class="text-sm text-acero-500">{producto.ubicacion.tipo_area}</p>
 		{:else}
-			<span
-				class="inline-flex rounded-xl border border-light-four bg-light-one px-3 py-1 text-sm font-bold text-light-black/40"
-				>Única Pres.</span
-			>
+			<span class="text-acero-400">—</span>
 		{/if}
 	</td>
-	<td class="px-4 py-5 text-center text-light-black"
-		>{producto.unidad_medida?.abreviatura || '--'}</td
-	>
-	<td class="px-4 py-5 text-center">
-		<div class="relative flex items-center justify-center">
-			<div bind:this={triggerElement} class="inline-block">
-				<Button
-					variant="ghost"
-					class="size-8 p-0! text-light-two hover:bg-light-one_d hover:text-light-black"
-					onclick={() => (isDropdownOpen = !isDropdownOpen)}
-					loading={isFetching}
-				>
-					{#snippet leftIcon()}
-						<DotsVerticalIcon class="size-5" />
-					{/snippet}
-				</Button>
-			</div>
+	<td class="px-4 py-3 text-right whitespace-nowrap">
+		<p
+			class="inline-flex items-center gap-1.5 font-display text-xl font-semibold tabular-nums {nivel ===
+			'agotado'
+				? 'text-marca'
+				: nivel === 'bajo'
+					? 'text-aceite-oscuro'
+					: 'text-acero-950'}"
+		>
+			{#if nivel !== 'ok'}
+				<span
+					class="size-2 rounded-full {nivel === 'agotado' ? 'bg-marca' : 'bg-aceite'}"
+					aria-hidden="true"
+				></span>
+			{/if}
+			{producto.stock_actual}
+		</p>
+		<p class="text-xs text-acero-500 tabular-nums">
+			{#if nivel === 'agotado'}Agotado ·
+			{:else if nivel === 'bajo'}Stock bajo ·
+			{/if}mín. {producto.stock_minimo}
+		</p>
+	</td>
+	<td class="hidden px-4 py-3 md:table-cell">
+		{#if presentaciones.length > 0}
+			<button
+				type="button"
+				class="inline-flex items-center gap-1.5 rounded-md border border-acero-200 bg-white px-2.5 py-1 text-sm font-semibold whitespace-nowrap text-acero-800 transition-colors hover:border-acero-300 hover:bg-acero-50"
+				onmouseenter={openPopover}
+				onfocus={openPopover}
+				onmouseleave={() => (showPresentaciones = false)}
+				onblur={() => (showPresentaciones = false)}
+				onclick={() => onManagePresentaciones?.(producto)}
+				aria-label="{presentaciones.length} presentaciones de {producto.nombre_comercial}. Abrir para administrarlas"
+			>
+				<BoxIcon class="size-4 text-acero-400" />
+				{presentaciones.length}
+				{presentaciones.length === 1 ? 'presentación' : 'presentaciones'}
+			</button>
 
-			<DropdownMenu
-				bind:isOpen={isDropdownOpen}
-				{triggerElement}
-				options={dropdownOptions}
-				width={180}
-			/>
-		</div>
+			{#if showPresentaciones}
+				<div
+					class="pointer-events-none fixed z-50 w-72 -translate-x-1/2 -translate-y-full rounded-lg border border-acero-200 bg-white p-3 text-left shadow-[0_16px_40px_-16px_rgb(23_26_31/0.4)]"
+					style="top: {popoverTop}px; left: {popoverLeft}px;"
+					role="tooltip"
+				>
+					<ul class="divide-y divide-acero-100">
+						{#each presentaciones as pres (pres.id)}
+							<li class="flex items-start justify-between gap-3 py-2 first:pt-0 last:pb-0">
+								<div class="min-w-0">
+									<p class="truncate font-semibold text-acero-950">{pres.nombre}</p>
+									<p class="text-xs text-acero-500">
+										×{pres.factor_conversion}
+										{#if pres.codigo_barras}· <span class="tabular-nums">{pres.codigo_barras}</span
+											>{/if}
+										{#if !pres.esta_activo}· <span class="text-marca">Inactiva</span>{/if}
+									</p>
+								</div>
+								<span class="shrink-0 font-semibold text-acero-950 tabular-nums"
+									>Bs {pres.precio_especial}</span
+								>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+		{:else}
+			<span class="text-sm text-acero-400">Solo unidad</span>
+		{/if}
+	</td>
+	<td class="px-2 py-3 text-center">
+		<button
+			bind:this={triggerElement}
+			type="button"
+			class="inline-flex size-9 items-center justify-center rounded-md text-acero-500 transition-colors hover:bg-acero-100 hover:text-acero-950"
+			onclick={() => (isDropdownOpen = !isDropdownOpen)}
+			aria-label="Acciones para {producto.nombre_comercial}"
+			aria-haspopup="menu"
+			aria-expanded={isDropdownOpen}
+			disabled={isFetching}
+		>
+			{#if isFetching}
+				<LoaderIcon class="size-5 animate-spin" />
+			{:else}
+				<DotsVerticalIcon class="size-5" />
+			{/if}
+		</button>
+		<DropdownMenu
+			bind:isOpen={isDropdownOpen}
+			{triggerElement}
+			options={dropdownOptions}
+			width={200}
+		/>
 	</td>
 </tr>

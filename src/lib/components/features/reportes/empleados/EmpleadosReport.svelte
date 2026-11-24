@@ -102,17 +102,17 @@
 		<div class="grid grid-cols-1 gap-6 sm:grid-cols-3" in:fade>
 			<!-- Empleados Activos -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-blue-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-blue-600 uppercase"
+					<span class="text-xs font-semibold text-blue-600"
 						>Empleados Activos</span
 					>
-					<h4 class="text-3xl font-black tracking-tighter text-light-black">
+					<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 						{data.resumen.total_empleados_activos}
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Plantilla actual
 					</div>
 				</div>
@@ -120,17 +120,17 @@
 
 			<!-- Costo Nómina Mensual -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-orange-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-orange-600 uppercase"
+					<span class="text-xs font-semibold text-orange-600"
 						>Costo de Nómina</span
 					>
-					<h4 class="text-3xl font-black tracking-tighter text-light-black">
+					<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 						{formatCurrency(data.resumen.costo_nomina_mensual)}
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Gasto total en salarios
 					</div>
 				</div>
@@ -138,17 +138,17 @@
 
 			<!-- Promedio Salario -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-emerald-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-emerald-600 uppercase"
+					<span class="text-xs font-semibold text-emerald-600"
 						>Salario Promedio</span
 					>
-					<h4 class="text-3xl font-black tracking-tighter text-light-black">
+					<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 						{formatCurrency(data.resumen.promedio_salario)}
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Promedio por empleado
 					</div>
 				</div>
@@ -159,13 +159,13 @@
 		<div class="flex flex-col gap-8 lg:flex-row">
 			<!-- Rendimiento de Ventas -->
 			<div
-				class="flex w-full flex-col gap-6 rounded-3xl border border-light-four bg-light-one p-6 shadow-sm lg:w-1/2"
+				class="flex w-full flex-col gap-6 rounded-xl border border-light-four bg-light-one p-6 shadow-sm lg:w-1/2"
 			>
 				<div class="flex items-center gap-3">
 					<div class="rounded-lg bg-emerald-50 p-2 text-emerald-600">
 						<CoinIcon class="size-5" />
 					</div>
-					<h3 class="text-sm font-black tracking-tight text-light-black uppercase">
+					<h3 class="text-sm font-semibold tracking-tight text-light-black">
 						Rendimiento en Ventas
 					</h3>
 				</div>
@@ -173,7 +173,7 @@
 				<div class="min-h-[400px] overflow-x-auto">
 					<table class="w-full text-left text-sm">
 						<thead
-							class="border-b border-light-four text-[10px] font-black tracking-widest text-light-black/40 uppercase"
+							class="border-b border-light-four text-xs font-semibold text-light-black/40"
 						>
 							<tr>
 								<th class="px-2 py-4">Empleado</th>
@@ -189,21 +189,21 @@
 										<td class="px-2 py-4">
 											<div class="flex flex-col gap-0.5">
 												<span class="text-xs font-bold text-light-black">{item.empleado}</span>
-												<span class="text-[9px] font-black text-light-black/40 uppercase"
+												<span class="text-xs font-semibold text-light-black/40"
 													>{item.cargo}</span
 												>
 											</div>
 										</td>
-										<td class="px-2 py-4 text-center text-xs font-black text-emerald-600">
+										<td class="px-2 py-4 text-center text-xs font-semibold text-emerald-600">
 											{item.cantidad_ventas}
 										</td>
 										<td class="px-2 py-4 text-right">
-											<span class="text-xs font-black text-light-black/50"
+											<span class="text-xs font-semibold text-light-black/50"
 												>{formatCurrency(item.ticket_promedio)}</span
 											>
 										</td>
 										<td class="px-2 py-4 text-right">
-											<span class="text-xs font-black text-emerald-600"
+											<span class="text-xs font-semibold text-emerald-600"
 												>{formatCurrency(item.ventas_total)}</span
 											>
 										</td>
@@ -226,7 +226,7 @@
 				<!-- Pagination Ventas -->
 				{#if totalVentasPages > 1}
 					<div class="flex items-center justify-between border-t border-light-four pt-4">
-						<span class="text-[10px] font-bold text-light-black/40 uppercase">
+						<span class="text-xs font-bold text-light-black/40">
 							Pág {currentVentasPage} / {totalVentasPages}
 						</span>
 						<div class="flex gap-2">
@@ -253,13 +253,13 @@
 
 			<!-- Productividad -->
 			<div
-				class="flex w-full flex-col gap-6 rounded-3xl border border-light-four bg-light-one p-6 shadow-sm lg:w-1/2"
+				class="flex w-full flex-col gap-6 rounded-xl border border-light-four bg-light-one p-6 shadow-sm lg:w-1/2"
 			>
 				<div class="flex items-center gap-3">
 					<div class="rounded-lg bg-purple-50 p-2 text-purple-600">
 						<BoltIcon class="size-5" />
 					</div>
-					<h3 class="text-sm font-black tracking-tight text-light-black uppercase">
+					<h3 class="text-sm font-semibold tracking-tight text-light-black">
 						Productividad Operativa
 					</h3>
 				</div>
@@ -267,7 +267,7 @@
 				<div class="min-h-[400px] overflow-x-auto">
 					<table class="w-full text-left text-sm">
 						<thead
-							class="border-b border-light-four text-[10px] font-black tracking-widest text-light-black/40 uppercase"
+							class="border-b border-light-four text-xs font-semibold text-light-black/40"
 						>
 							<tr>
 								<th class="px-2 py-4">Empleado</th>
@@ -284,16 +284,16 @@
 										<td class="px-2 py-4 text-xs font-bold text-light-black">
 											{item.empleado}
 										</td>
-										<td class="px-2 py-4 text-center text-xs font-black text-purple-600">
+										<td class="px-2 py-4 text-center text-xs font-semibold text-purple-600">
 											{item.sesiones_trabajadas}
 										</td>
-										<td class="px-2 py-4 text-center text-xs font-black text-light-black/50">
+										<td class="px-2 py-4 text-center text-xs font-semibold text-light-black/50">
 											{item.horas_trabajadas.toFixed(2)} hrs
 										</td>
-										<td class="px-2 py-4 text-right text-xs font-black text-light-black">
+										<td class="px-2 py-4 text-right text-xs font-semibold text-light-black">
 											{formatCurrency(item.ventas_por_hora)}
 										</td>
-										<td class="px-2 py-4 text-right text-xs font-black text-emerald-600">
+										<td class="px-2 py-4 text-right text-xs font-semibold text-emerald-600">
 											{formatCurrency(item.ventas_por_sesion)}
 										</td>
 									</tr>
@@ -315,7 +315,7 @@
 				<!-- Pagination Productividad -->
 				{#if totalProdPages > 1}
 					<div class="flex items-center justify-between border-t border-light-four pt-4">
-						<span class="text-[10px] font-bold text-light-black/40 uppercase">
+						<span class="text-xs font-bold text-light-black/40">
 							Pág {currentProdPage} / {totalProdPages}
 						</span>
 						<div class="flex gap-2">
@@ -342,13 +342,13 @@
 		</div>
 	{:else if loading}
 		<div
-			class="flex h-96 flex-col items-center justify-center gap-4 rounded-3xl border border-light-four bg-light-one"
+			class="flex h-96 flex-col items-center justify-center gap-4 rounded-xl border border-light-four bg-light-one"
 		>
 			<div
 				class="h-12 w-12 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600"
 			></div>
 			<p
-				class="animate-pulse text-[10px] font-black tracking-widest text-light-black/40 uppercase italic"
+				class="animate-pulse text-xs font-semibold text-light-black/40 italic"
 			>
 				Cargando Reporte de Empleados...
 			</p>

@@ -10,7 +10,7 @@
 	let { class: className, children, ...restProps }: Props = $props();
 </script>
 
-<table class={cn('w-full caption-bottom text-base', className)} {...restProps}>
+<table class={cn('w-full caption-bottom text-[0.9375rem]', className)} {...restProps}>
 	{@render children()}
 </table>
 

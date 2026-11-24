@@ -10,7 +10,7 @@
 	let { class: className, children, ...restProps }: Props = $props();
 </script>
 
-<td class={cn('p-4 align-middle', className)} {...restProps}>
+<td class={cn('px-4 py-3 align-middle', className)} {...restProps}>
 	{@render children()}
 </td>
 

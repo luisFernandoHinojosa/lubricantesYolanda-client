@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cn } from '$lib/utils';
 	import type { Snippet } from 'svelte';
 
 	type HeadingLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -27,18 +28,18 @@
 
 	// Estilos base para cada nivel con jerarquía visual correcta
 	const levelStyles: Record<HeadingLevel, string> = {
-		h1: 'text-3xl/tight sm:text-4xl/tight lg:text-5xl/tight xl:text-6xl/tight',
-		h2: 'text-2xl/tight sm:text-3xl/tight lg:text-4xl/tight xl:text-5xl/tight',
-		h3: 'text-xl/tight sm:text-2xl/tight lg:text-3xl/tight xl:text-4xl/tight',
-		h4: 'text-lg/tight sm:text-xl/tight lg:text-2xl/tight',
-		h5: 'text-base/tight sm:text-lg/tight lg:text-xl/tight',
-		h6: 'text-sm/tight sm:text-base/tight lg:text-lg/tight'
+		h1: 'font-display text-3xl/tight sm:text-4xl/tight text-acero-950',
+		h2: 'font-display text-2xl/tight sm:text-[1.75rem]/tight text-acero-950',
+		h3: 'font-display text-xl/tight sm:text-2xl/tight text-acero-950',
+		h4: 'text-lg/snug text-acero-950',
+		h5: 'text-base/snug text-acero-950',
+		h6: 'text-sm/snug text-acero-950'
 	};
 
 	// Pesos de fuente por defecto para cada nivel
 	const defaultWeights: Record<HeadingLevel, HeadingWeight> = {
-		h1: 'bold',
-		h2: 'bold',
+		h1: 'semibold',
+		h2: 'semibold',
 		h3: 'semibold',
 		h4: 'semibold',
 		h5: 'medium',
@@ -68,16 +69,13 @@
 	// Construir clases finales
 	const finalWeight = $derived(weight || defaultWeights[level]);
 	const computedClasses = $derived(
-		[
+		cn(
 			levelStyles[level],
 			weightStyles[finalWeight],
-			// colorStyles[color],
 			truncate && 'truncate',
 			noWrap && 'whitespace-nowrap',
 			className
-		]
-			.filter(Boolean)
-			.join(' ')
+		)
 	);
 </script>
 
@@ -105,18 +103,18 @@
 
 	// Estilos base para cada nivel con jerarquía visual correcta
 	const levelStyles: Record<HeadingLevel, string> = {
-		h1: 'text-3xl/tight sm:text-4xl/tight lg:text-5xl/tight xl:text-6xl/tight',
-		h2: 'text-2xl/tight sm:text-3xl/tight lg:text-4xl/tight xl:text-5xl/tight',
-		h3: 'text-xl/tight sm:text-2xl/tight lg:text-3xl/tight xl:text-4xl/tight',
-		h4: 'text-lg/tight sm:text-xl/tight lg:text-2xl/tight',
-		h5: 'text-base/tight sm:text-lg/tight lg:text-xl/tight',
-		h6: 'text-sm/tight sm:text-base/tight lg:text-lg/tight'
+		h1: 'font-display text-3xl/tight sm:text-4xl/tight text-acero-950',
+		h2: 'font-display text-2xl/tight sm:text-[1.75rem]/tight text-acero-950',
+		h3: 'font-display text-xl/tight sm:text-2xl/tight text-acero-950',
+		h4: 'text-lg/snug text-acero-950',
+		h5: 'text-base/snug text-acero-950',
+		h6: 'text-sm/snug text-acero-950'
 	};
 
 	// Pesos de fuente por defecto para cada nivel
 	const defaultWeights: Record<HeadingLevel, HeadingWeight> = {
-		h1: 'bold',
-		h2: 'bold',
+		h1: 'semibold',
+		h2: 'semibold',
 		h3: 'semibold',
 		h4: 'semibold',
 		h5: 'medium',

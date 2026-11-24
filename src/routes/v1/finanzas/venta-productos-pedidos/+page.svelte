@@ -12,10 +12,20 @@
 		CantidadManualModal,
 		VentasState
 	} from '$lib/components/features/puntoventas/ventas';
+	import { LoaderIcon } from '$lib/icons/outline';
 
 	const pos = new VentasState();
-	//console.log('pos', pos.carrito);
 </script>
+
+<!-- F2 cobra la venta; Escape cierra búsquedas y modales del POS -->
+<svelte:window onkeydown={(e) => pos.handleGlobalKeydown(e)} />
+
+{#if pos.cargandoSesion}
+	<div class="flex h-full items-center justify-center gap-3 text-acero-500" role="status">
+		<LoaderIcon class="size-5 animate-spin" />
+		<span>Revisando el estado de la caja</span>
+	</div>
+{/if}
 
 {#if pos.modalApertura && !pos.cargandoSesion}
 	<AperturaCajaModal
@@ -27,9 +37,9 @@
 
 {#if !pos.cargandoSesion && pos.sesionActiva}
 	<MainLayout
-		title="Venta de productos pedidos"
-		description="Realiza ventas de productos pedidos."
-		class="container mx-auto flex h-full flex-col"
+		title="Nueva venta · Lubricantes Yolanda"
+		description="Punto de venta de Lubricantes Yolanda."
+		class="flex min-h-full flex-col lg:h-full"
 	>
 		<SesionHeader
 			sesionActiva={pos.sesionActiva}
@@ -38,9 +48,9 @@
 			fmt={pos.fmt}
 		/>
 
-		<div class="flex min-h-0 flex-1 gap-4 pb-3">
+		<div class="flex min-h-0 flex-1 flex-col gap-4 lg:flex-row">
 			<!-- Productos: búsqueda + carrito -->
-			<div class="flex min-w-0 flex-1 flex-col">
+			<div class="flex min-h-[24rem] min-w-0 flex-1 flex-col gap-3">
 				<ProductSearchControl
 					bind:modoBusqueda={pos.modoBusqueda}
 					busqueda={pos.busqueda}
@@ -50,7 +60,7 @@
 						pos.busqueda = '';
 						if (modo === 'TEXTO') pos.buscarProductos('');
 						else pos.productos = [];
-						pos.mostrarDropdown = false;
+						pos.mostrarDropdown = modo === 'TEXTO';
 						document.getElementById('scan-input')?.focus();
 					}}
 					onBusqueda={(e) => pos.onBusqueda(e)}
@@ -62,7 +72,11 @@
 						<ProductResultDropdown
 							buscando={pos.buscando}
 							productos={pos.productos}
-							onAgregarAlCarrito={(p, id) => pos.agregarAlCarrito(p, id)}
+							onAgregarAlCarrito={(p, id) => {
+								pos.agregarAlCarrito(p, id);
+								document.getElementById('scan-input')?.focus();
+							}}
+							onCerrar={() => (pos.mostrarDropdown = false)}
 							fmt={pos.fmt}
 						/>
 					{/if}
@@ -98,7 +112,10 @@
 {#if pos.modalRecibo && pos.ultimaVenta}
 	<ReciboModal
 		ultimaVenta={pos.ultimaVenta}
-		onCerrar={() => (pos.modalRecibo = false)}
+		onCerrar={() => {
+			pos.modalRecibo = false;
+			setTimeout(() => document.getElementById('scan-input')?.focus(), 0);
+		}}
 		onImprimir={() => window.print()}
 		fmt={pos.fmt}
 		fmtDate={pos.fmtDate}

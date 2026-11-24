@@ -161,7 +161,7 @@
 >
 	<div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 		<div>
-			<Heading level="h4" class="text-primary font-bold">Ingresos</Heading>
+			<h1 class="titulo-pagina">Ingresos</h1>
 		</div>
 		<div class="flex items-center gap-3">
 			<Button
@@ -243,13 +243,13 @@
 		<MovimientoTableSkeleton />
 	{:else if movimientos.length === 0}
 		<div
-			class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-light-four bg-light-one p-16 text-center"
+			class="flex flex-col items-center justify-center rounded-xl border border-dashed border-light-four bg-light-one p-16 text-center"
 		>
 			<div class="mb-6 rounded-full bg-light-one_d p-6">
 				<FilePencilIcon class="size-16 text-light-three" />
 			</div>
 			<h3 class="text-xl font-bold text-light-black">No se encontraron ingresos</h3>
-			<p class="mx-auto mt-2 max-w-xs text-light-two">
+			<p class="mx-auto mt-2 max-w-xs text-acero-600">
 				{filters.search
 					? 'No hay resultados para tu búsqueda. Prueba con otros términos.'
 					: 'Aún no has registrado ningún ingreso. ¡Empieza creando uno nuevo!'}
@@ -266,40 +266,40 @@
 				<thead class="bg-light-one_d font-bold">
 					<tr>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Nombre</th
 						>
 
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Concepto</th
 						>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Monto</th
 						>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Fecha</th
 						>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Categoría</th
 						>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Pago</th
 						>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Ubicación</th
 						>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Responsable</th
 						>
 						<th
-							class="px-6 py-4 text-right text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-right text-xs font-bold text-acero-600"
 							>Acciones</th
 						>
 					</tr>

@@ -106,17 +106,17 @@
 		<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" in:fade>
 			<!-- Total Sesiones -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-blue-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-blue-600 uppercase"
+					<span class="text-xs font-semibold text-blue-600"
 						>Aperturas de Caja</span
 					>
-					<h4 class="text-3xl font-black tracking-tighter text-light-black">
+					<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 						{data.resumen.total_sesiones}
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Sesiones en el periodo
 					</div>
 				</div>
@@ -124,28 +124,21 @@
 
 			<!-- Sesiones con Diferencia -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div
-					class="absolute -top-4 -right-4 size-24 rounded-full {data.resumen
-						.sesiones_con_diferencia > 0
-						? 'bg-orange-500/5'
-						: 'bg-emerald-500/5'}"
+					class="absolute -top-4 -right-4 size-24 rounded-full {data.resumen .sesiones_con_diferencia > 0 ? 'bg-orange-500/5' : 'bg-emerald-500/5'}"
 				></div>
 				<div class="flex flex-col gap-1">
 					<span
-						class="text-[10px] font-black tracking-widest {data.resumen.sesiones_con_diferencia > 0
-							? 'text-orange-600'
-							: 'text-emerald-600'} uppercase">Cierres con Diferencia</span
+						class="text-xs font-semibold {data.resumen.sesiones_con_diferencia > 0 ? 'text-orange-600' : 'text-emerald-600'}">Cierres con Diferencia</span
 					>
 					<h4
-						class="text-3xl font-black tracking-tighter {data.resumen.sesiones_con_diferencia > 0
-							? 'text-orange-600'
-							: 'text-emerald-600'}"
+						class="text-3xl font-semibold tracking-tighter {data.resumen.sesiones_con_diferencia > 0 ? 'text-orange-600' : 'text-emerald-600'}"
 					>
 						{data.resumen.sesiones_con_diferencia}
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Requieren comprobación
 					</div>
 				</div>
@@ -153,35 +146,21 @@
 
 			<!-- Diferencia Acumulada -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div
-					class="absolute -top-4 -right-4 size-24 rounded-full {data.resumen
-						.diferencia_total_acumulada < 0
-						? 'bg-red-500/5'
-						: data.resumen.diferencia_total_acumulada > 0
-							? 'bg-yellow-500/5'
-							: 'bg-emerald-500/5'}"
+					class="absolute -top-4 -right-4 size-24 rounded-full {data.resumen .diferencia_total_acumulada < 0 ? 'bg-red-500/5' : data.resumen.diferencia_total_acumulada > 0 ? 'bg-yellow-500/5' : 'bg-emerald-500/5'}"
 				></div>
 				<div class="flex flex-col gap-1">
 					<span
-						class="text-[10px] font-black tracking-widest {data.resumen.diferencia_total_acumulada <
-						0
-							? 'text-red-500'
-							: data.resumen.diferencia_total_acumulada > 0
-								? 'text-yellow-600'
-								: 'text-emerald-600'} uppercase">Diferencia Acumulada</span
+						class="text-xs font-semibold {data.resumen.diferencia_total_acumulada < 0 ? 'text-red-500' : data.resumen.diferencia_total_acumulada > 0 ? 'text-yellow-600' : 'text-emerald-600'}">Diferencia Acumulada</span
 					>
 					<h4
-						class="text-3xl font-black tracking-tighter {data.resumen.diferencia_total_acumulada < 0
-							? 'text-red-600'
-							: data.resumen.diferencia_total_acumulada > 0
-								? 'text-yellow-600'
-								: 'text-emerald-600'}"
+						class="text-3xl font-semibold tracking-tighter {data.resumen.diferencia_total_acumulada < 0 ? 'text-red-600' : data.resumen.diferencia_total_acumulada > 0 ? 'text-yellow-600' : 'text-emerald-600'}"
 					>
 						{formatCurrency(data.resumen.diferencia_total_acumulada)}
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Balance de desvíos
 					</div>
 				</div>
@@ -189,18 +168,18 @@
 
 			<!-- Promedio Duración -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-purple-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-purple-600 uppercase"
+					<span class="text-xs font-semibold text-purple-600"
 						>Tiempo Promedio</span
 					>
-					<h4 class="text-3xl font-black tracking-tighter text-light-black">
+					<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 						{data.resumen.promedio_duracion_horas.toFixed(1)}
 						<span class="text-lg text-light-black/40">hrs</span>
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Duración por sesión
 					</div>
 				</div>
@@ -211,43 +190,39 @@
 		<div class="flex flex-col gap-8 lg:flex-row">
 			<!-- Rendimiento de Cajeros -->
 			<div
-				class="flex flex-col gap-6 rounded-3xl border border-light-four bg-light-one p-6 shadow-sm lg:w-1/3"
+				class="flex flex-col gap-6 rounded-xl border border-light-four bg-light-one p-6 shadow-sm lg:w-1/3"
 			>
 				<div class="flex items-center gap-3">
 					<div class="rounded-lg bg-pink-50 p-2 text-pink-600">
 						<UsersIcon class="size-5" />
 					</div>
-					<h3 class="text-sm font-black tracking-tight text-light-black uppercase">
+					<h3 class="text-sm font-semibold tracking-tight text-light-black">
 						Resumen por Empleado
 					</h3>
 				</div>
 				<div class="flex max-h-[600px] flex-col gap-4 overflow-y-auto pr-2">
 					{#each data.por_empleado as empleado, idx (idx)}
 						<div
-							class="flex flex-col gap-2 rounded-2xl border border-light-four p-4 transition-all hover:border-pink-200 hover:bg-pink-50/10"
+							class="flex flex-col gap-2 rounded-xl border border-light-four p-4 transition-all hover:border-pink-200 hover:bg-pink-50/10"
 						>
 							<div class="flex items-center justify-between">
 								<span class="font-bold text-light-black">{empleado.empleado}</span>
 								<span
-									class="rounded-full bg-light-two px-2 py-0.5 text-[10px] font-black text-light-black/50 uppercase"
+									class="rounded-full bg-light-two px-2 py-0.5 text-xs font-semibold text-light-black/50"
 								>
 									{empleado.sesiones} Sesiones
 								</span>
 							</div>
 							<div class="mt-2 flex items-center justify-between text-xs">
 								<span class="font-bold text-light-black/40">Ventas Registradas</span>
-								<span class="font-black text-emerald-600"
+								<span class="font-semibold text-emerald-600"
 									>{formatCurrency(empleado.total_ventas)}</span
 								>
 							</div>
 							<div class="flex items-center justify-between text-xs">
 								<span class="font-bold text-light-black/40">Diferencia Histórica</span>
 								<span
-									class="font-black {empleado.diferencia_acumulada < 0
-										? 'text-red-500'
-										: empleado.diferencia_acumulada > 0
-											? 'text-yellow-600'
-											: 'text-emerald-500'}"
+									class="font-semibold {empleado.diferencia_acumulada < 0 ? 'text-red-500' : empleado.diferencia_acumulada > 0 ? 'text-yellow-600' : 'text-emerald-500'}"
 								>
 									{formatCurrency(empleado.diferencia_acumulada)}
 								</span>
@@ -259,19 +234,19 @@
 
 			<!-- Detalle de Sesiones -->
 			<div
-				class="flex flex-col gap-6 rounded-3xl border border-light-four bg-light-one p-6 shadow-sm lg:w-2/3"
+				class="flex flex-col gap-6 rounded-xl border border-light-four bg-light-one p-6 shadow-sm lg:w-2/3"
 			>
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
 						<div class="rounded-lg bg-blue-50 p-2 text-blue-600">
 							<ListIcon class="size-5" />
 						</div>
-						<h3 class="text-sm font-black tracking-tight text-light-black uppercase">
+						<h3 class="text-sm font-semibold tracking-tight text-light-black">
 							Historial de Sesiones
 						</h3>
 					</div>
 					<span
-						class="rounded-full bg-light-two px-3 py-1 text-[10px] font-black tracking-widest text-light-black/40 uppercase"
+						class="rounded-full bg-light-two px-3 py-1 text-xs font-semibold text-light-black/40"
 					>
 						{data.detalle_sesiones.length} Registros
 					</span>
@@ -280,7 +255,7 @@
 				<div class="overflow-x-auto">
 					<table class="w-full text-left text-sm">
 						<thead
-							class="border-b border-light-four text-[10px] font-black tracking-widest text-light-black/40 uppercase"
+							class="border-b border-light-four text-xs font-semibold text-light-black/40"
 						>
 							<tr>
 								<th class="px-4 py-4">Fecha AP/CI</th>
@@ -298,11 +273,11 @@
 										<td class="px-4 py-4">
 											<div class="flex flex-col gap-0.5">
 												<span class="font-bold text-light-black">{formatDate(sesion.fecha)}</span>
-												<span class="text-[10px] font-medium text-light-black/40"
+												<span class="text-xs font-medium text-light-black/40"
 													>{formatDate(sesion.fecha)}</span
 												>
 												<span
-													class="mt-1 text-[9px] font-black tracking-wider text-light-black/30 uppercase"
+													class="mt-1 text-xs font-semibold text-light-black/30"
 													>DURACIÓN: {formatHours(sesion.duracion_horas)}</span
 												>
 											</div>
@@ -316,13 +291,13 @@
 										<td class="px-4 py-4 text-center">
 											{#if sesion.estado === 'ABIERTA'}
 												<span
-													class="inline-flex rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-black tracking-widest text-emerald-600 uppercase"
+													class="inline-flex rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-600"
 												>
 													Abierta
 												</span>
 											{:else}
 												<span
-													class="inline-flex rounded-full bg-light-four/50 px-2 py-1 text-[10px] font-black tracking-widest text-light-black/40 uppercase"
+													class="inline-flex rounded-full bg-light-four/50 px-2 py-1 text-xs font-semibold text-light-black/40"
 												>
 													Cerrada
 												</span>
@@ -332,10 +307,10 @@
 											<div class="ml-auto flex w-32 flex-col gap-1">
 												<div class="flex items-center justify-between gap-2">
 													<span
-														class="text-[9px] font-bold tracking-widest text-light-black/40 uppercase"
+														class="text-xs font-bold text-light-black/40"
 														>Apertura</span
 													>
-													<span class="font-black text-light-black"
+													<span class="font-semibold text-light-black"
 														>{formatCurrency(sesion.monto_apertura)}</span
 													>
 												</div>
@@ -343,22 +318,22 @@
 													class="flex items-center justify-between gap-2 border-y border-dashed border-light-four/50 py-1"
 												>
 													<span
-														class="text-[9px] font-bold tracking-widest text-light-black/40 uppercase"
+														class="text-xs font-bold text-light-black/40"
 														>Teórico</span
 													>
-													<span class="font-black text-light-black"
+													<span class="font-semibold text-light-black"
 														>{formatCurrency(sesion.monto_teorico)}</span
 													>
 												</div>
 												<div class="flex items-center justify-between gap-2">
 													<span
-														class="text-[9px] font-bold tracking-widest text-light-black/40 uppercase"
+														class="text-xs font-bold text-light-black/40"
 														>Cierre</span
 													>
 													{#if sesion.estado === 'ABIERTA'}
-														<span class="text-[9px] font-medium text-light-black/40 italic">-</span>
+														<span class="text-xs font-medium text-light-black/40 italic">-</span>
 													{:else}
-														<span class="font-black text-light-black"
+														<span class="font-semibold text-light-black"
 															>{formatCurrency(sesion.monto_cierre)}</span
 														>
 													{/if}
@@ -367,10 +342,10 @@
 										</td>
 										<td class="px-4 py-4 text-right">
 											<div class="flex flex-col gap-0.5">
-												<span class="font-black text-emerald-600"
+												<span class="font-semibold text-emerald-600"
 													>{formatCurrency(sesion.total_ventas)}</span
 												>
-												<span class="text-[10px] font-bold text-light-black/40 uppercase"
+												<span class="text-xs font-bold text-light-black/40"
 													>{sesion.cantidad_ventas} Trx.</span
 												>
 											</div>
@@ -383,29 +358,20 @@
 											{:else}
 												<div class="flex flex-col gap-0.5">
 													<span
-														class="font-black {sesion.diferencia === null
-															? 'text-light-black/30'
-															: sesion.diferencia! < 0
-																? 'text-red-500'
-																: sesion.diferencia! > 0
-																	? 'text-yellow-600'
-																	: 'text-light-black'}"
+														class="font-semibold {sesion.diferencia === null ? 'text-light-black/30' : sesion.diferencia! < 0 ? 'text-red-500' : sesion.diferencia! > 0 ? 'text-yellow-600' : 'text-light-black'}"
 													>
 														{sesion.diferencia !== null ? formatCurrency(sesion.diferencia) : '-'}
 													</span>
 													{#if sesion.diferencia !== null && sesion.diferencia !== 0}
 														<span
-															class="flex items-center justify-end gap-1 text-[9px] font-black uppercase {sesion.diferencia <
-															0
-																? 'text-red-500/50'
-																: 'text-yellow-600/60'}"
+															class="flex items-center justify-end gap-1 text-xs font-semibold {sesion.diferencia < 0 ? 'text-red-500/50' : 'text-yellow-600/60'}"
 														>
 															<AlertTriangleIcon class="size-3" />
 															{sesion.diferencia < 0 ? 'Faltante en Caja' : 'Sobrante en Caja'}
 														</span>
 													{:else if sesion.diferencia === 0}
 														<span
-															class="text-[9px] font-black tracking-widest text-emerald-600/60 uppercase"
+															class="text-xs font-semibold text-emerald-600/60"
 															>Cuadre Perfecto</span
 														>
 													{/if}
@@ -453,13 +419,13 @@
 		</div>
 	{:else if loading}
 		<div
-			class="flex h-96 flex-col items-center justify-center gap-4 rounded-3xl border border-light-four bg-light-one"
+			class="flex h-96 flex-col items-center justify-center gap-4 rounded-xl border border-light-four bg-light-one"
 		>
 			<div
 				class="h-12 w-12 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600"
 			></div>
 			<p
-				class="animate-pulse text-[10px] font-black tracking-widest text-light-black/40 uppercase italic"
+				class="animate-pulse text-xs font-semibold text-light-black/40 italic"
 			>
 				Cargando Reporte de Sesiones...
 			</p>

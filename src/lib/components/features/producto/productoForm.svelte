@@ -423,9 +423,7 @@
 								ondragleave={handleDragLeave}
 								ondragover={handleDragOver}
 								ondrop={handleDrop}
-								class="group relative flex aspect-square w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border-2 border-dashed transition-all {isDragging
-									? 'border-blue-500 bg-blue-50 text-blue-500'
-									: 'border-gray-300 bg-gray-50 text-gray-400 hover:border-blue-400 hover:bg-blue-50/30 hover:text-blue-500'}"
+								class="group relative flex aspect-square w-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border-2 border-dashed transition-all {isDragging ? 'border-blue-500 bg-blue-50 text-blue-500' : 'border-gray-300 bg-gray-50 text-gray-400 hover:border-blue-400 hover:bg-blue-50/30 hover:text-blue-500'}"
 							>
 								{#if photoPreview}
 									<img
@@ -437,18 +435,16 @@
 										class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100"
 									>
 										<PhotoIcon class="h-8 w-8 text-white" />
-										<span class="mt-2 text-[10px] font-bold tracking-widest text-white uppercase"
+										<span class="mt-2 text-xs font-bold text-white"
 											>Cambiar Foto</span
 										>
 									</div>
 								{:else}
 									<PhotoIcon
-										class="h-10 w-10 transition-transform {isDragging
-											? 'scale-110'
-											: 'group-hover:scale-110'}"
+										class="h-10 w-10 transition-transform {isDragging ? 'scale-110' : 'group-hover:scale-110'}"
 									/>
 									<span
-										class="text-center text-[10px] leading-snug font-bold tracking-widest uppercase"
+										class="text-center text-xs leading-snug font-bold"
 									>
 										{#if isDragging}
 											Suelta la <br /> imagen aquí
@@ -516,9 +512,7 @@
 											<button
 												type="button"
 												onclick={() => copyBarcode(formData.codigo_barras)}
-												class="flex items-center justify-center gap-1.5 rounded-lg border px-2 py-1.5 text-xs font-bold transition-all {copiedMain
-													? 'border-green-200 bg-green-50 text-green-600'
-													: 'border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100'}"
+												class="flex items-center justify-center gap-1.5 rounded-lg border px-2 py-1.5 text-xs font-bold transition-all {copiedMain ? 'border-green-200 bg-green-50 text-green-600' : 'border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100'}"
 												title="Copiar código"
 											>
 												{#if copiedMain}
@@ -584,14 +578,10 @@
 						<button
 							type="button"
 							onclick={toggleVencimiento}
-							class="flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-all {showVencimiento
-								? 'border-red-200 bg-red-50'
-								: 'border-gray-100 bg-gray-50 hover:bg-gray-100'}"
+							class="flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-all {showVencimiento ? 'border-red-200 bg-red-50' : 'border-gray-100 bg-gray-50 hover:bg-gray-100'}"
 						>
 							<div
-								class="flex h-6 w-6 items-center justify-center rounded border {showVencimiento
-									? 'border-red-500 bg-red-500 text-white'
-									: 'border-gray-300 bg-white'}"
+								class="flex h-6 w-6 items-center justify-center rounded border {showVencimiento ? 'border-red-500 bg-red-500 text-white' : 'border-gray-300 bg-white'}"
 							>
 								{#if showVencimiento}<CheckIcon class="h-4 w-4" />{/if}
 							</div>
@@ -614,7 +604,7 @@
 					</div>
 					<div class="flex-1">
 						<h2 class="font-semibold text-gray-800">Presentaciones (Por Mayor)</h2>
-						<p class="text-[10px] text-gray-500">
+						<p class="text-xs text-gray-500">
 							Agrega paquetes/cajas con precio especial. Ej: "Caja x 12" = 12 unidades.
 						</p>
 					</div>
@@ -648,7 +638,7 @@
 									>
 										<XIcon class="h-4 w-4" />
 									</button>
-									<p class="mb-3 text-[10px] font-bold tracking-widest text-blue-600 uppercase">
+									<p class="mb-3 text-xs font-bold text-blue-600">
 										Presentación #{i + 1}
 									</p>
 									<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -710,11 +700,7 @@
 													<button
 														type="button"
 														onclick={() => copyBarcode(pres.codigo_barras, i)}
-														class="flex items-center justify-center gap-1.5 rounded-lg border px-2 py-1.5 text-[10px] font-bold transition-all {copiedPresentations[
-															i
-														]
-															? 'border-green-200 bg-green-50 text-green-600'
-															: 'border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100'}"
+														class="flex items-center justify-center gap-1.5 rounded-lg border px-2 py-1.5 text-xs font-bold transition-all {copiedPresentations[ i ] ? 'border-green-200 bg-green-50 text-green-600' : 'border-gray-200 bg-gray-50 text-gray-600 hover:bg-gray-100'}"
 														title="Copiar código"
 													>
 														{#if copiedPresentations[i]}
@@ -744,7 +730,7 @@
 					</div>
 					<div class="flex-1">
 						<h2 class="font-semibold text-gray-800">Carga Inicial de Inventario</h2>
-						<p class="text-[10px] text-gray-500">
+						<p class="text-xs text-gray-500">
 							Distribuye el stock en múltiples ubicaciones desde el inicio
 						</p>
 					</div>
@@ -822,7 +808,7 @@
 									<!-- Badge + botón eliminar -->
 									<div class="mb-3 flex items-center justify-between">
 										<span
-											class="rounded-md bg-green-100 px-2 py-0.5 text-[10px] font-bold tracking-widest text-green-700 uppercase"
+											class="rounded-md bg-green-100 px-2 py-0.5 text-xs font-bold text-green-700"
 										>
 											Distribución #{i + 1}
 										</span>
@@ -900,10 +886,10 @@
 										<div class="flex flex-col justify-end">
 											{#if Number(dist.cantidad) > 0}
 												<div class="rounded-lg bg-green-50 px-3 py-2 text-right">
-													<p class="text-[10px] font-bold tracking-widest text-green-500 uppercase">
+													<p class="text-xs font-bold text-green-500">
 														Unidades base
 													</p>
-													<p class="text-xl font-black text-green-700">
+													<p class="text-xl font-semibold text-green-700">
 														{Number(dist.cantidad) * getFactorPresentacion(dist.id_presentacion)} und
 													</p>
 												</div>
@@ -937,12 +923,12 @@
 								transition:slide
 							>
 								<div>
-									<p class="text-[10px] font-bold tracking-widest text-green-200 uppercase">
+									<p class="text-xs font-bold text-green-200">
 										Total general a ingresar
 									</p>
 									<p class="text-xs text-green-200">Suma de todas las distribuciones</p>
 								</div>
-								<p class="text-3xl font-black">
+								<p class="text-3xl font-semibold">
 									{totalUnidadesBase} <span class="text-lg font-normal text-green-200">und</span>
 								</p>
 							</div>
@@ -963,7 +949,7 @@
 					</div>
 					<div>
 						<h2 class="font-bold text-gray-800">Catálogo de Producto</h2>
-						<p class="text-[10px] text-gray-500">Registra los datos maestros del producto.</p>
+						<p class="text-xs text-gray-500">Registra los datos maestros del producto.</p>
 					</div>
 				</div>
 				<div class="space-y-4 p-6">
@@ -1007,7 +993,7 @@
 							<ClipboardIcon class="h-6 w-6" />
 						{/if}
 					</div>
-					<span class="text-xl font-black tracking-widest text-gray-800 uppercase">
+					<span class="text-xl font-semibold text-gray-800">
 						{loading ? 'Guardando...' : 'Guardar'}
 					</span>
 				</button>
@@ -1021,7 +1007,7 @@
 					>
 						<XIcon class="h-6 w-6" />
 					</div>
-					<span class="text-xl font-black tracking-widest text-gray-800 uppercase">Cancelar</span>
+					<span class="text-xl font-semibold text-gray-800">Cancelar</span>
 				</button>
 			</div>
 		</div>

@@ -3,6 +3,18 @@
 @plugin '@tailwindcss/typography';
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Sistema de diseño "Taller" — Lubricantes Yolanda
+ *
+ * acero   → marco de la app (sidebar, superficies, bordes, texto secundario)
+ * marca   → rojo del logo: SOLO acciones primarias, estado activo y totales
+ * aceite  → ámbar: alertas de stock, vencimientos, avisos
+ *
+ * Los tokens antiguos (light-one, light-two, …) se mantienen para que las ~40
+ * pantallas existentes hereden la paleta nueva sin reescribirlas. En código nuevo
+ * se prefieren los nombres semánticos (acero-*, marca, aceite-*).
+ */
 @theme {
 	--breakpoint-*: initial;
 	--breakpoint-sm: 640px;
@@ -10,36 +22,69 @@
 	--breakpoint-lg: 1024px;
 	--breakpoint-xl: 1280px;
 	--breakpoint-2xl: 1536px;
-	--color-light-one: #fbfbfb;
-	--color-light-one_d: #e9e2d0;
-	--color-light-two: #c62828;
-	--color-light-two_d: #c62828;
-	--color-light-three: #cf8484;
-	--color-light-three_d: #cf8484;
-	--color-light-four: #d5a290;
-	--color-light-four_d: #d5a290;
-	--color-light-five: #1d1e1d;
-	--color-light-five_d: #161817;
-	--color-light-accent: #e9b19d;
-	--color-light-accent_d: #e9b19d;
-	--color-light-error: #fa3842;
-	--color-light-success: #16a34a;
-	--color-light-warning: #f59e0b;
-	--color-light-black: #000000;
 
-	--color-dark-one: #000000;
-	--color-dark-one_d: #333333;
-	--color-dark-two: #dad7d0;
-	--color-dark-two_d: #e2e0da;
-	--color-dark-three: #e9dec3;
-	--color-dark-three_d: #e9dec3;
-	--color-dark-four: #f3f4f6;
-	--color-dark-four_d: #e5e7eb;
-	--color-dark-accent: #9dbe8c;
-	--color-dark-accent_d: #9dbe8c;
-	--color-dark-error: #fa3842;
-	--color-dark-success: #16a34a;
-	--color-dark-warning: #f59e0b;
+	/* Tipografía */
+	--font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+	--font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+
+	/* Acero: marco y neutros fríos */
+	--color-acero-950: #171a1f;
+	--color-acero-900: #22272e;
+	--color-acero-800: #2d333b;
+	--color-acero-700: #3d444d;
+	--color-acero-600: #4a5361;
+	--color-acero-500: #6b7380;
+	--color-acero-400: #8b929c;
+	--color-acero-300: #b9bfc8;
+	--color-acero-200: #d6dae0;
+	--color-acero-100: #eceef1;
+	--color-acero-50: #f5f6f8;
+
+	/* Marca */
+	--color-marca: #c62828;
+	--color-marca-oscuro: #a11d1d;
+	--color-marca-tinte: #fbeaea;
+
+	/* Aceite (ámbar) */
+	--color-aceite: #e3a21a;
+	--color-aceite-oscuro: #9a6406;
+	--color-aceite-tinte: #fdf3dc;
+
+	/* Estados */
+	--color-ok: #1e7f4f;
+	--color-ok-tinte: #e4f3ea;
+
+	/* ── Tokens heredados, remapeados a la paleta Taller ── */
+	--color-light-one: #ffffff;
+	--color-light-one_d: #eceef1;
+	--color-light-two: #c62828;
+	--color-light-two_d: #a11d1d;
+	--color-light-three: #4a5361;
+	--color-light-three_d: #3d444d;
+	--color-light-four: #d6dae0;
+	--color-light-four_d: #b9bfc8;
+	--color-light-five: #6b7380;
+	--color-light-five_d: #4a5361;
+	--color-light-accent: #e3a21a;
+	--color-light-accent_d: #9a6406;
+	--color-light-error: #c62828;
+	--color-light-success: #1e7f4f;
+	--color-light-warning: #b77a0c;
+	--color-light-black: #1c2128;
+
+	--color-dark-one: #171a1f;
+	--color-dark-one_d: #2d333b;
+	--color-dark-two: #d6dae0;
+	--color-dark-two_d: #eceef1;
+	--color-dark-three: #b9bfc8;
+	--color-dark-three_d: #b9bfc8;
+	--color-dark-four: #f5f6f8;
+	--color-dark-four_d: #eceef1;
+	--color-dark-accent: #e3a21a;
+	--color-dark-accent_d: #e3a21a;
+	--color-dark-error: #c62828;
+	--color-dark-success: #1e7f4f;
+	--color-dark-warning: #e3a21a;
 	--color-dark-black: #000000;
 
 	--animate-wiggle: wiggle 1s ease-in-out infinite;
@@ -55,29 +100,87 @@
 		}
 	}
 }
-html,
-body {
-	padding: 0;
-	margin: 0;
+
+@layer base {
+	html,
+	body {
+		padding: 0;
+		margin: 0;
+	}
+
+	html {
+		font-family: var(--font-sans);
+		color: var(--color-acero-950);
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
+	}
+
+	body {
+		background-color: var(--color-acero-50);
+	}
+
+	/* Las cifras siempre alineadas en columnas: precios, stock, totales */
+	table,
+	input[type='number'],
+	.cifra {
+		font-variant-numeric: tabular-nums;
+	}
+
+	/* Foco visible y consistente para navegación con teclado */
+	:where(a, button, [role='button'], input, select, textarea, summary, [tabindex]):focus-visible {
+		outline: 2px solid var(--color-marca);
+		outline-offset: 2px;
+	}
+
+	::selection {
+		background-color: color-mix(in srgb, var(--color-aceite) 35%, transparent);
+	}
+}
+
+@layer components {
+	/* Título de página: condensado, como rótulo de taller */
+	.titulo-pagina {
+		font-family: var(--font-display);
+		font-weight: 600;
+		font-size: 1.75rem;
+		line-height: 1.1;
+		letter-spacing: 0.005em;
+		color: var(--color-acero-950);
+	}
+
+	.cifra-display {
+		font-family: var(--font-display);
+		font-variant-numeric: tabular-nums;
+		letter-spacing: 0.01em;
+	}
+}
+
+/* Notificaciones (notyf) con la paleta Taller */
+.notyf__toast {
+	border-radius: 10px !important;
+	font-family: var(--font-sans);
+	font-weight: 500;
+	box-shadow: 0 10px 30px -10px rgb(23 26 31 / 0.45) !important;
 }
 
 ::-webkit-scrollbar {
-	width: 8px;
-	height: 12px;
+	width: 10px;
+	height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-	background-color: var(--scrollbar-track, #f1f1f1);
-	border-radius: 10px;
+	background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: var(--scrollbar-thumb, #888);
+	background-color: var(--color-acero-300);
 	border-radius: 10px;
+	border: 2px solid var(--color-acero-50);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background-color: var(--scrollbar-thumb-hover, #555);
+	background-color: var(--color-acero-400);
 }
 
 .scrollbar-hide::-webkit-scrollbar {
@@ -87,4 +190,15 @@ body {
 .scrollbar-hide {
 	-ms-overflow-style: none;
 	scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
 }

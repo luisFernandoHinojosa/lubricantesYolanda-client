@@ -11,7 +11,10 @@
 </script>
 
 <tfoot
-	class={cn('bg-muted/50 border-t font-medium [&>tr]:last:border-b-0', className)}
+	class={cn(
+		'border-t border-acero-200 bg-acero-50 font-semibold [&>tr]:last:border-b-0',
+		className
+	)}
 	{...restProps}
 >
 	{@render children()}

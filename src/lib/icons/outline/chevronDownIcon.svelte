@@ -1,5 +1,7 @@
 <script lang="ts">
-	let { className = 'size-5' } = $props();
+	// Acepta `class` (convención del resto de íconos) y `className` (uso antiguo)
+	let { class: cls = '', className = '' }: { class?: string; className?: string } = $props();
+	const clases = $derived(cls || className || 'size-5');
 </script>
 
 <svg
@@ -12,6 +14,6 @@
 	stroke-width="2"
 	stroke-linecap="round"
 	stroke-linejoin="round"
-	class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-down {className}"
+	class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-down {clases}"
 	><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M6 9l6 6l6 -6" /></svg
 >

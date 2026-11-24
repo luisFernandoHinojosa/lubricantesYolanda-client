@@ -1,6 +1,6 @@
 <script lang="ts">
 	//blurOverlay.svelte
-	import { scale } from 'svelte/transition';
+	import { fade, scale } from 'svelte/transition';
 	import type { Snippet } from 'svelte';
 
 	interface Props {
@@ -10,17 +10,18 @@
 		outDuration?: number;
 	}
 
-	let { children, class: className = '', inDuration = 300, outDuration = 300 }: Props = $props();
+	let { children, class: className = '', inDuration = 180, outDuration = 140 }: Props = $props();
 </script>
 
 <div
-	class="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-slate-500/30 shadow-lg backdrop-blur-sm"
-	aria-label="Close modal"
+	class="fixed inset-0 z-50 flex items-end justify-center overflow-auto bg-acero-950/45 p-0 backdrop-blur-[2px] sm:items-center sm:p-4"
+	in:fade={{ duration: inDuration }}
+	out:fade={{ duration: outDuration }}
 >
 	<div
-		class="my-auto flex h-full w-full flex-col sm:h-auto sm:w-auto {className}"
-		in:scale={{ duration: inDuration }}
-		out:scale={{ duration: outDuration }}
+		class="flex w-full flex-col items-center sm:my-auto sm:w-auto {className}"
+		in:scale={{ duration: inDuration, start: 0.97 }}
+		out:scale={{ duration: outDuration, start: 0.97 }}
 	>
 		{@render children()}
 	</div>

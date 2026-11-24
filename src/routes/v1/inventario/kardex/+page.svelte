@@ -70,22 +70,22 @@
 >
 	<div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 		<div>
-			<Heading level="h4">Kardex de Movimientos</Heading>
+			<h1 class="titulo-pagina">Kardex de Movimientos</h1>
 		</div>
 	</div>
 
 	<!-- Stats Section -->
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 		<div
-			class="relative translate-y-0 overflow-hidden rounded-2xl border border-light-four bg-light-two p-6 text-light-black shadow-lg transition-transform duration-300 hover:-translate-y-1"
+			class="relative translate-y-0 overflow-hidden rounded-xl border border-acero-800 bg-acero-900 p-5 text-white transition-transform duration-300"
 		>
 			<div class="relative z-10">
 				<div
-					class="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-light-one uppercase"
+					class="mb-2 flex items-center gap-2 text-xs font-bold text-light-one"
 				>
 					Movimientos Totales
 				</div>
-				<div class="text-3xl font-black tracking-tight text-light-one">{total}</div>
+				<div class="text-3xl font-semibold tracking-tight text-light-one">{total}</div>
 			</div>
 		</div>
 	</div>
@@ -126,13 +126,13 @@
 		<MovimientoTableSkeleton />
 	{:else if movimientos.length === 0}
 		<div
-			class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-light-four bg-light-one p-16 text-center"
+			class="flex flex-col items-center justify-center rounded-xl border border-dashed border-light-four bg-light-one p-16 text-center"
 		>
 			<div class="mb-6 rounded-full bg-light-one_d p-6">
 				<span class="text-4xl text-gray-300">📦</span>
 			</div>
 			<h3 class="text-xl font-bold text-light-black">No se encontraron movimientos</h3>
-			<p class="mx-auto mt-2 max-w-xs text-light-two">
+			<p class="mx-auto mt-2 max-w-xs text-acero-600">
 				{filters.search
 					? 'No hay resultados para tu búsqueda. Prueba con otros términos.'
 					: 'Aún no hay movimientos registrados en el kardex.'}
@@ -144,32 +144,32 @@
 				<thead class="bg-light-one_d font-bold">
 					<tr>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Fecha
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Movimiento
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Producto / Lote
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Ubicación
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Cantidad
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Responsable
 						</th>
@@ -185,12 +185,7 @@
 							</td>
 							<td class="px-6 py-4 text-sm">
 								<span
-									class="inline-flex items-center justify-center rounded-full border px-3 py-1 text-[10px] font-bold uppercase
-									{mov.tipo_movimiento === 'INGRESO'
-										? 'border-green-200 bg-green-50 text-green-700'
-										: mov.tipo_movimiento === 'TRASLADO'
-											? 'border-blue-200 bg-blue-50 text-blue-700'
-											: 'border-red-200 bg-red-50 text-red-700'}"
+									class="inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-bold {mov.tipo_movimiento === 'INGRESO' ? 'border-green-200 bg-green-50 text-green-700' : mov.tipo_movimiento === 'TRASLADO' ? 'border-blue-200 bg-blue-50 text-blue-700' : 'border-red-200 bg-red-50 text-red-700'}"
 								>
 									{mov.tipo_movimiento}
 								</span>
@@ -200,7 +195,7 @@
 									{mov.lote?.producto?.nombre_comercial || 'Desconocido'}
 								</div>
 								<div
-									class="mt-1 inline-block rounded bg-gray-100 px-1.5 py-0.5 font-mono text-[10px] font-semibold tracking-wider text-gray-400"
+									class="mt-1 inline-block rounded bg-gray-100 px-1.5 py-0.5 tabular-nums text-xs font-semibold text-gray-400"
 								>
 									{mov.lote?.codigo_lote || 'S/N'}
 								</div>
@@ -219,9 +214,7 @@
 								{/if}
 							</td>
 							<td
-								class="px-6 py-4 text-sm font-bold {mov.tipo_movimiento === 'INGRESO'
-									? 'text-green-600'
-									: 'text-red-600'}"
+								class="px-6 py-4 text-sm font-bold {mov.tipo_movimiento === 'INGRESO' ? 'text-green-600' : 'text-red-600'}"
 							>
 								{mov.tipo_movimiento === 'INGRESO' ? '+' : '-'}{mov.cantidad}
 							</td>

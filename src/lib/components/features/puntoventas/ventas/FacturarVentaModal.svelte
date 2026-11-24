@@ -152,15 +152,15 @@
 			<!-- Venta y cliente -->
 			<div class="rounded-xl border border-light-four bg-light-one_d/40 p-4">
 				<div class="flex items-center justify-between">
-					<span class="text-[11px] font-bold tracking-widest text-light-five uppercase">Venta</span>
-					<span class="font-mono font-bold text-light-black">{venta.numero_comprobante}</span>
+					<span class="text-xs font-bold text-light-five">Venta</span>
+					<span class="tabular-nums font-bold text-light-black">{venta.numero_comprobante}</span>
 				</div>
 				<div class="mt-2 flex items-center justify-between gap-3">
-					<span class="text-[11px] font-bold tracking-widest text-light-five uppercase">Cliente</span>
+					<span class="text-xs font-bold text-light-five">Cliente</span>
 					{#if clienteVentaFacturable && venta.cliente}
 						<span class="truncate text-right text-light-black {clienteNuevo ? 'line-through opacity-60' : ''}">
 							<span class="font-bold">{venta.cliente.nombre_completo}</span>
-							· CI/NIT <span class="font-mono">{venta.cliente.ci}</span>
+							· CI/NIT <span class="tabular-nums">{venta.cliente.ci}</span>
 						</span>
 					{:else}
 						<span class="font-bold text-light-black italic">Público General</span>
@@ -168,10 +168,10 @@
 				</div>
 				{#if clienteNuevo}
 					<div class="mt-1 flex items-center justify-between gap-3">
-						<span class="text-[11px] font-bold tracking-widest text-emerald-700 uppercase">Nuevo</span>
+						<span class="text-xs font-bold text-emerald-700">Nuevo</span>
 						<span class="truncate text-right text-emerald-700">
 							<span class="font-bold">{nombreCliente(clienteNuevo)}</span>
-							· CI/NIT <span class="font-mono">{clienteNuevo.ci}</span>
+							· CI/NIT <span class="tabular-nums">{clienteNuevo.ci}</span>
 						</span>
 					</div>
 				{/if}
@@ -244,7 +244,7 @@
 					<!-- Recargo IVA (solo al facturar por primera vez) -->
 					<div class="space-y-2">
 						<div class="flex items-center justify-between">
-							<h3 class="text-[11px] font-bold tracking-widest text-light-five uppercase">
+							<h3 class="text-xs font-bold text-light-five">
 								Recargo IVA al cliente
 							</h3>
 							<Button
@@ -291,9 +291,7 @@
 											role="radio"
 											aria-checked={metodoPagoRecargo === metodo}
 											onclick={() => (metodoPagoRecargo = metodo)}
-											class="rounded-md py-1.5 text-xs font-bold transition {metodoPagoRecargo === metodo
-												? 'bg-light-two text-light-one shadow-sm'
-												: 'text-light-five hover:bg-light-one hover:text-light-black'}"
+											class="rounded-md py-1.5 text-xs font-bold transition {metodoPagoRecargo === metodo ? 'bg-light-two text-light-one shadow-sm' : 'text-light-five hover:bg-light-one hover:text-light-black'}"
 										>
 											{metodo}
 										</button>
@@ -301,9 +299,7 @@
 
 									<!-- Select nativo invisible sobre el segmento (igual que en el POS) -->
 									<label
-										class="relative flex cursor-pointer items-center justify-center gap-0.5 rounded-md py-1.5 text-xs font-bold transition {esSecundario
-											? 'bg-light-two text-light-one shadow-sm'
-											: 'text-light-five hover:bg-light-one hover:text-light-black'}"
+										class="relative flex cursor-pointer items-center justify-center gap-0.5 rounded-md py-1.5 text-xs font-bold transition {esSecundario ? 'bg-light-two text-light-one shadow-sm' : 'text-light-five hover:bg-light-one hover:text-light-black'}"
 									>
 										<span class="truncate">{esSecundario ? metodoPagoRecargo : 'MÁS'}</span>
 										<ChevronDownIcon className="h-3 w-3 shrink-0" />
@@ -330,7 +326,7 @@
 				<dl class="space-y-1 border-t border-light-four pt-3">
 					<div class="flex justify-between text-light-black">
 						<dt>Monto a facturar</dt>
-						<dd class="font-mono">{fmt(base)}</dd>
+						<dd class="tabular-nums">{fmt(base)}</dd>
 					</div>
 					{#if volverAEmitir}
 						<div class="flex justify-between text-light-black">
@@ -338,22 +334,22 @@
 								Recargo IVA
 								<span class="text-light-five">(ya cobrado, no se modifica)</span>
 							</dt>
-							<dd class="font-mono">+{fmt(venta.monto_recargo_iva || 0)}</dd>
+							<dd class="tabular-nums">+{fmt(venta.monto_recargo_iva || 0)}</dd>
 						</div>
 						<div class="flex items-end justify-between pt-1">
-							<dt class="text-xs font-bold tracking-widest text-light-black uppercase">Total venta</dt>
-							<dd class="font-mono text-2xl leading-none font-bold text-light-two">
+							<dt class="text-xs font-bold text-light-black">Total venta</dt>
+							<dd class="tabular-nums text-2xl leading-none font-bold text-acero-600">
 								{fmt(venta.total)}
 							</dd>
 						</div>
 					{:else}
 						<div class="flex justify-between font-semibold text-emerald-700">
 							<dt>Recargo IVA a cobrar</dt>
-							<dd class="font-mono">+{fmt(montoRecargo)}</dd>
+							<dd class="tabular-nums">+{fmt(montoRecargo)}</dd>
 						</div>
 						<div class="flex items-end justify-between pt-1">
-							<dt class="text-xs font-bold tracking-widest text-light-black uppercase">Nuevo total</dt>
-							<dd class="font-mono text-2xl leading-none font-bold text-light-two">
+							<dt class="text-xs font-bold text-light-black">Nuevo total</dt>
+							<dd class="tabular-nums text-2xl leading-none font-bold text-acero-600">
 								{fmt(base + montoRecargo)}
 							</dd>
 						</div>

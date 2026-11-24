@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { fade, scale } from 'svelte/transition';
-	import { XIcon } from '$lib/icons/outline';
-	import { Input } from '$lib/components/ui';
+	import { Button, Modal } from '$lib/components/ui';
 	import type { ProductoPOS } from '$lib/interfaces/venta.interface';
 
 	interface Props {
@@ -12,60 +10,59 @@
 	}
 
 	let { pendingProduct, cantidadManual = $bindable(), onCerrar, onConfirmar }: Props = $props();
+
+	const valida = $derived(!!cantidadManual && parseFloat(cantidadManual) > 0);
+	const RAPIDAS = [0.25, 0.5, 0.75, 1, 2, 5, 10];
 </script>
 
-<div
-	class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-md"
-	transition:fade
+<Modal
+	isOpen={true}
+	title="Cantidad a vender"
+	description={pendingProduct.producto.nombre_comercial}
+	onClose={onCerrar}
+	maxWidth="sm:max-w-sm"
 >
-	<div
-		class="w-full max-w-xs overflow-hidden rounded-3xl border border-light-one_d bg-light-one shadow-2xl"
-		transition:scale={{ duration: 200 }}
+	<form
+		class="space-y-4"
+		onsubmit={(e) => {
+			e.preventDefault();
+			if (valida) onConfirmar();
+		}}
 	>
-		<div class="flex items-center justify-between border-b border-light-one_d px-6 py-4">
-			<div>
-				<h3 class="text-sm font-bold text-light-black">
-					{pendingProduct.producto.nombre_comercial}
-				</h3>
-				<p class="text-xs text-light-five">Ingrese la cantidad a vender</p>
-			</div>
-			<button
-				onclick={onCerrar}
-				class="flex h-8 w-8 items-center justify-center rounded-xl text-light-five transition hover:bg-light-one_d hover:text-light-two"
-				><XIcon class="h-4 w-4" /></button
-			>
-		</div>
-		<div class="space-y-5 p-6">
-			<div class="text-center">
-				<Input
-					type="number"
-					autofocus
-					step="0.001"
-					bind:value={cantidadManual}
-					onkeydown={(e) => e.key === 'Enter' && onConfirmar()}
-					placeholder="0.000"
-				/>
-				<span class="mt-2 block text-xs text-light-five"
-					>Stock disponible: <strong class="font-mono text-light-black"
-						>{pendingProduct.producto.stock_disponible}</strong
-					></span
+		<div>
+			<label for="cantidad-manual" class="sr-only">Cantidad</label>
+			<input
+				id="cantidad-manual"
+				type="number"
+				step="0.001"
+				min="0"
+				inputmode="decimal"
+				bind:value={cantidadManual}
+				placeholder="0"
+				class="h-16 w-full rounded-lg border border-acero-200 px-4 text-center font-display text-4xl font-semibold text-acero-950 tabular-nums outline-none focus:border-acero-600 focus:ring-[3px] focus:ring-acero-200"
+			/>
+			<p class="mt-2 text-center text-sm text-acero-500">
+				Disponible: <span class="font-semibold text-acero-900 tabular-nums"
+					>{pendingProduct.producto.stock_disponible}</span
 				>
-			</div>
-			<div class="grid grid-cols-4 gap-2">
-				{#each [0.25, 0.5, 1, 2, 5, 10, 0.1, 0.75] as q, index (index)}
-					<button
-						onclick={() => (cantidadManual = q.toString())}
-						class="rounded-xl border border-light-one_d bg-light-one px-2 py-2.5 font-mono text-xs font-bold text-light-five transition hover:border-light-success hover:bg-light-success/10 hover:text-light-success"
-						>{q}</button
-					>
-				{/each}
-			</div>
-			<button
-				onclick={onConfirmar}
-				disabled={!cantidadManual || parseFloat(cantidadManual) <= 0}
-				class="flex w-full items-center justify-center gap-2 rounded-2xl bg-light-success py-3.5 font-bold text-white transition hover:brightness-110 disabled:opacity-40"
-				>Agregar al carrito</button
-			>
+			</p>
 		</div>
-	</div>
-</div>
+		<div class="flex flex-wrap justify-center gap-1.5" aria-label="Cantidades rápidas">
+			{#each RAPIDAS as q (q)}
+				<button
+					type="button"
+					onclick={() => (cantidadManual = q.toString())}
+					class="h-9 min-w-12 rounded-md border px-2 text-sm font-semibold tabular-nums transition-colors {cantidadManual ===
+					q.toString()
+						? 'border-acero-900 bg-acero-900 text-white'
+						: 'border-acero-200 text-acero-700 hover:border-acero-300 hover:bg-acero-50'}"
+				>
+					{q.toString().replace('.', ',')}
+				</button>
+			{/each}
+		</div>
+		<Button type="submit" variant="primary" size="lg" fullWidth disabled={!valida}
+			>Agregar a la venta</Button
+		>
+	</form>
+</Modal>

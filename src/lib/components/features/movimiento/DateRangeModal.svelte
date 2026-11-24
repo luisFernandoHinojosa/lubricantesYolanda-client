@@ -52,7 +52,7 @@
 	>
 		<div
 			use:clickOutside={handleClose}
-			class="w-full max-w-md overflow-hidden rounded-3xl bg-light-one shadow-2xl ring-1 ring-light-four"
+			class="w-full max-w-md overflow-hidden rounded-xl bg-light-one shadow-2xl ring-1 ring-light-four"
 			transition:scale={{ duration: 200, start: 0.95 }}
 		>
 			<!-- Header -->
@@ -70,7 +70,7 @@
 					</div>
 					<button
 						onclick={handleClose}
-						class="rounded-full p-2 text-light-two transition-colors hover:bg-light-four"
+						class="rounded-full p-2 text-acero-600 transition-colors hover:bg-light-four"
 					>
 						<XIcon class="size-5" />
 					</button>
@@ -126,7 +126,7 @@
 					<Button
 						variant="outline"
 						onclick={handleClose}
-						class="flex-1 rounded-2xl border-light-four bg-white py-3 hover:bg-light-one_d"
+						class="flex-1 rounded-xl border-light-four bg-white py-3 hover:bg-light-one_d"
 					>
 						Cancelar
 					</Button>
@@ -134,7 +134,7 @@
 						variant="primary"
 						onclick={handleApply}
 						disabled={!!error}
-						class="flex-1 rounded-2xl py-3 shadow-lg {error ? '' : 'shadow-primary/20'}"
+						class="flex-1 rounded-xl py-3 shadow-lg {error ? '' : 'shadow-primary/20'}"
 					>
 						{#snippet leftIcon()}<ZoomIcon class="size-5" />{/snippet}
 						Aplicar

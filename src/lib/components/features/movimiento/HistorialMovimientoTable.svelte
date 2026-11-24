@@ -15,22 +15,22 @@
 	<table class="min-w-full divide-y divide-light-four">
 		<thead class="bg-light-one_d">
 			<tr>
-				<th class="px-6 py-5 text-left text-xs font-bold tracking-widest text-light-two uppercase"
+				<th class="px-6 py-5 text-left text-xs font-bold text-acero-600"
 					>Tipo</th
 				>
-				<th class="px-6 py-5 text-left text-xs font-bold tracking-widest text-light-two uppercase"
+				<th class="px-6 py-5 text-left text-xs font-bold text-acero-600"
 					>Fecha</th
 				>
-				<th class="px-6 py-5 text-left text-xs font-bold tracking-widest text-light-two uppercase"
+				<th class="px-6 py-5 text-left text-xs font-bold text-acero-600"
 					>Categoría</th
 				>
-				<th class="px-6 py-5 text-left text-xs font-bold tracking-widest text-light-two uppercase"
+				<th class="px-6 py-5 text-left text-xs font-bold text-acero-600"
 					>Descripción / Nombre</th
 				>
-				<th class="px-6 py-5 text-left text-xs font-bold tracking-widest text-light-two uppercase"
+				<th class="px-6 py-5 text-left text-xs font-bold text-acero-600"
 					>Pago / Sucursal</th
 				>
-				<th class="px-6 py-5 text-right text-xs font-bold tracking-widest text-light-two uppercase"
+				<th class="px-6 py-5 text-right text-xs font-bold text-acero-600"
 					>Monto</th
 				>
 			</tr>

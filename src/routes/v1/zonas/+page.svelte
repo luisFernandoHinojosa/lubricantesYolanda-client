@@ -130,7 +130,7 @@
 <div class="container mx-auto">
 	<div class="mb-6 flex items-center justify-between">
 		<div>
-			<h1 class="text-3xl font-bold text-light-two">Zonas</h1>
+			<h1 class="text-3xl font-bold text-acero-600">Zonas</h1>
 		</div>
 		<div class="flex items-center gap-3">
 			<Button onclick={openCreateModal} variant="primary">
@@ -151,7 +151,7 @@
 						placeholder="Buscar por nombre, apellido, CI..."
 						class="w-full rounded-md border border-light-four bg-light-one px-4 py-2 pl-10 text-light-two_d focus:border-light-two focus:ring-1 focus:ring-light-two focus:outline-none"
 					/>
-					<span class="absolute top-1/2 left-3 -translate-y-1/2 text-light-two"><ZoomIcon /></span>
+					<span class="absolute top-1/2 left-3 -translate-y-1/2 text-acero-600"><ZoomIcon /></span>
 				</div>
 			</div>
 		</div>
@@ -163,9 +163,9 @@
 		<div
 			class="flex flex-col items-center justify-center rounded-lg border border-light-four bg-light-one p-12"
 		>
-			<span class="mb-4 block text-6xl text-light-two"><FilePencilIcon class="size-24" /></span>
+			<span class="mb-4 block text-6xl text-acero-600"><FilePencilIcon class="size-24" /></span>
 			<h3 class="mb-2 text-lg font-medium text-light-two_d">No hay zonas</h3>
-			<p class="text-sm text-light-two">
+			<p class="text-sm text-acero-600">
 				{filters.search
 					? 'No se encontraron zonas con los filtros aplicados'
 					: 'Comienza agregando tu primer zona'}
@@ -177,22 +177,22 @@
 				<thead class="bg-light-two">
 					<tr>
 						<th
-							class="px-6 py-3 text-left text-xs font-medium tracking-wider text-light-one uppercase"
+							class="px-6 py-3 text-left text-xs font-medium text-light-one"
 						>
 							Id
 						</th>
 						<th
-							class="px-6 py-3 text-left text-xs font-medium tracking-wider text-light-one uppercase"
+							class="px-6 py-3 text-left text-xs font-medium text-light-one"
 						>
 							Nombre
 						</th>
 						<th
-							class="px-6 py-3 text-left text-xs font-medium tracking-wider text-light-one uppercase"
+							class="px-6 py-3 text-left text-xs font-medium text-light-one"
 						>
 							Provincia
 						</th>
 						<th
-							class="px-6 py-3 text-right text-xs font-medium tracking-wider text-light-one uppercase"
+							class="px-6 py-3 text-right text-xs font-medium text-light-one"
 						>
 							Acciones
 						</th>

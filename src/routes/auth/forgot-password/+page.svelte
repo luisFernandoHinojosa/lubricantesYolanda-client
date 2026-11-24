@@ -1,32 +1,32 @@
 <script lang="ts">
-	import backgroundImg from '$lib/assets/images/background1.png';
-	import { Button, Heading, Image } from '$lib/components/ui';
-	import { MailIcon } from '$lib/icons/outline';
+	import { AuthShell } from '$lib/components/layout';
+	import { Button } from '$lib/components/ui';
+	import { ArrowLeftIcon, CheckCircleIcon } from '$lib/icons/outline';
 	import { authService } from '$lib/services';
 	import { alert } from '$lib/utils';
-	import { ArrowLeftIcon } from '$lib/icons/outline';
 	import { resolve } from '$app/paths';
 
 	let email = $state('');
 	let isLoading = $state(false);
 	let emailSent = $state(false);
+	let lista = $state(false);
+	$effect(() => {
+		lista = true;
+	});
 
-	async function handleSubmit(e: Event) {
+	async function handleSubmit(e: SubmitEvent) {
 		e.preventDefault();
-		if (!email) return;
+		if (!email.trim()) return;
 
 		try {
 			isLoading = true;
-			await authService.forgotPassword(email);
+			await authService.forgotPassword(email.trim());
 			emailSent = true;
-			alert(
-				'success',
-				'Si el email está registrado, recibirás un enlace para restablecer tu contraseña.'
-			);
 		} catch (error: unknown) {
 			console.error('Error in forgot password:', error);
 			const message =
-				(error as any)?.message || 'Error al procesar la solicitud. Intente nuevamente.';
+				(error as { message?: string })?.message ||
+				'No se pudo enviar el enlace. Intente de nuevo.';
 			alert('error', message);
 		} finally {
 			isLoading = false;
@@ -34,77 +34,62 @@
 	}
 </script>
 
-<main class="relative flex min-h-screen items-center justify-center overflow-hidden">
-	<div class="absolute inset-0 z-0">
-		<Image src={backgroundImg} alt="Background" class="h-full w-full object-cover" />
-	</div>
+<svelte:head><title>Recuperar contraseña · Lubricantes Yolanda</title></svelte:head>
 
-	<div class="absolute top-6 left-6 z-20">
-		<div class="flex h-24 w-64 items-center justify-center rounded bg-light-one/60 p-2">
-			<Image objectFit="contain" src="/images/logo1.webp.png" alt="" />
-		</div>
-	</div>
-
-	<div
-		class="z-10 w-full max-w-md rounded-lg border-8 border-light-one_d bg-light-one p-8 shadow-lg"
+<AuthShell>
+	<a
+		href={resolve('/auth/sign-in')}
+		class="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-acero-600 hover:text-acero-950"
 	>
-		<div class="mb-6 flex items-center gap-2">
-			<a
-				href={resolve('/auth/sign-in')}
-				class="text-light-three transition-colors hover:text-light-four"
-			>
-				<ArrowLeftIcon class="size-5" />
-			</a>
-			<Heading level="h3" class="mx-auto">Forgot Password</Heading>
-		</div>
+		<ArrowLeftIcon class="size-4" /> Volver a iniciar sesión
+	</a>
 
-		{#if !emailSent}
-			<p class="mb-8 text-center text-sm text-light-three">
-				Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
-			</p>
+	{#if !emailSent}
+		<h1 class="font-display text-4xl font-semibold text-acero-950">Recuperar contraseña</h1>
+		<p class="mt-2 text-acero-600">
+			Escriba el correo de su cuenta y le enviaremos un enlace para crear una contraseña nueva.
+		</p>
 
-			<form onsubmit={handleSubmit} class="space-y-6">
-				<div class="space-y-1">
-					<label for="email" class="text-sm font-medium text-light-three">Email</label>
-					<div class="relative">
-						<span class="absolute top-3 left-0 text-light-four"><MailIcon /></span>
-						<input
-							id="email"
-							type="email"
-							bind:value={email}
-							placeholder="ejemplo@email.com"
-							class="border-g w-full border-t-0 border-r-0 border-b border-l-0 bg-transparent py-3 pl-8 text-light-three placeholder-light-four outline-0 transition-colors duration-200 outline-none focus:border-b-light-four_d focus:ring-0 focus:outline-0"
-							disabled={isLoading}
-							required
-						/>
-					</div>
-				</div>
-
-				<div class="pt-4">
-					<Button type="submit" variant="primary" fullWidth size="md" loading={isLoading}>
-						ENVIAR ENLACE
-					</Button>
-				</div>
-			</form>
-		{:else}
-			<div class="space-y-6 py-6 text-center">
-				<div
-					class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl font-bold text-green-600"
+		<form onsubmit={handleSubmit} class="mt-8 space-y-5">
+			<div>
+				<label for="email" class="mb-1.5 block text-sm font-medium text-acero-800"
+					>Correo electrónico</label
 				>
-					✓
-				</div>
-				<p class="text-light-three">
-					Hemos enviado las instrucciones a <strong>{email}</strong>.
-				</p>
-				<p class="text-sm text-light-four">
-					Por favor revisa tu bandeja de entrada y sigue el enlace para restablecer tu contraseña.
-				</p>
-				<div class="pt-4">
-					<a href={resolve('/auth/sign-in')}>
-						<Button variant="primary" fullWidth size="md">VOLVER AL LOGIN</Button>
-					</a>
-				</div>
+				<!-- svelte-ignore a11y_autofocus -->
+				<input
+					id="email"
+					type="email"
+					autocomplete="email"
+					autofocus
+					bind:value={email}
+					placeholder="nombre@correo.com"
+					class="block h-12 w-full rounded-lg border border-acero-200 px-3.5 text-base outline-none placeholder:text-acero-400 focus:border-acero-600 focus:ring-[3px] focus:ring-acero-200"
+					disabled={isLoading}
+					required
+				/>
 			</div>
-		{/if}
-	</div>
-</main>
+			<Button
+				type="submit"
+				variant="primary"
+				fullWidth
+				size="lg"
+				loading={isLoading}
+				disabled={!lista}>Enviar enlace</Button
+			>
+		</form>
+	{:else}
+		<div role="status">
+			<span class="mb-5 flex size-12 items-center justify-center rounded-full bg-ok-tinte text-ok">
+				<CheckCircleIcon class="size-6" />
+			</span>
+			<h1 class="font-display text-4xl font-semibold text-acero-950">Revise su correo</h1>
+			<p class="mt-2 text-acero-600">
+				Si <strong class="text-acero-950">{email}</strong> está registrado, le llegará un enlace para
+				crear una contraseña nueva. Revise también la carpeta de correo no deseado.
+			</p>
+			<Button href={resolve('/auth/sign-in')} variant="secondary" fullWidth size="lg" class="mt-8">
+				Volver a iniciar sesión
+			</Button>
+		</div>
+	{/if}
+</AuthShell>

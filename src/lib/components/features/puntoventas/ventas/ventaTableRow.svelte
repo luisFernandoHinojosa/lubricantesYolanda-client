@@ -128,16 +128,14 @@
 </script>
 
 <tr
-	class="transition-colors hover:bg-red-100/50 {anulada
-		? 'bg-gray-100 opacity-60'
-		: 'bg-[#D19999]/10'}"
+	class="transition-colors hover:bg-red-100/50 {anulada ? 'bg-gray-100 opacity-60' : 'bg-acero-100/10'}"
 >
 	<td class="border-r border-gray-200/50 px-6 py-4">
 		<div class="flex items-center gap-2">
 			<p class="font-bold text-gray-700">{venta.numero_comprobante}</p>
 			{#if anulada}
 				<span
-					class="inline-flex rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-700"
+					class="inline-flex rounded-full bg-red-100 px-2 py-0.5 text-xs font-bold text-red-700"
 					>Anulada</span
 				>
 			{/if}
@@ -145,19 +143,18 @@
 		{#if venta.factura}
 			{@const badge = FACTURA_BADGE[venta.factura.estado]}
 			<span
-				class="mt-1 inline-flex rounded-full px-2 py-0.5 text-[10px] font-bold {badge?.clase ??
-					'bg-gray-100 text-gray-700'}"
+				class="mt-1 inline-flex rounded-full px-2 py-0.5 text-xs font-bold {badge?.clase ?? 'bg-gray-100 text-gray-700'}"
 			>
 				{badge?.texto ?? venta.factura.estado}
 				{#if venta.factura.estado === 'FACTURADA' || venta.factura.estado === 'ANULADA'}&nbsp;N° {venta.factura.numero_factura}{/if}
 			</span>
 		{/if}
 		{#if venta.sucursal}
-			<p class="mt-1 font-mono text-[10px] text-gray-500">
+			<p class="mt-1 tabular-nums text-xs text-gray-500">
 				Sucursal: {venta.sucursal.nombre}
 			</p>
 		{/if}
-		<p class="mt-1 font-mono text-[10px] text-gray-500">
+		<p class="mt-1 tabular-nums text-xs text-gray-500">
 			Caja: {venta.id_sesion_caja?.substring(0, 8)}
 		</p>
 	</td>
@@ -184,40 +181,35 @@
 			{#if venta.pagos && venta.pagos.length > 0}
 				{#each venta.pagos as pago, i (i)}
 					<span
-						class="inline-flex items-center justify-center rounded-full border border-[#B91C1C]/20 px-3 py-1 text-[10px] font-bold uppercase
-						{pago.metodo_pago === 'EFECTIVO'
-							? 'bg-[#D19999]/20 text-[#8B1515]'
-							: 'border-blue-200 bg-blue-100/50 text-blue-700'}"
+						class="inline-flex items-center justify-center rounded-full border border-marca/20 px-3 py-1 text-xs font-bold {pago.metodo_pago === 'EFECTIVO' ? 'bg-acero-100/20 text-marca-oscuro' : 'border-blue-200 bg-blue-100/50 text-blue-700'}"
 						title={formatCurrency(pago.monto)}
 					>
 						{pago.metodo_pago}
 					</span>
 				{/each}
 			{:else}
-				<span class="text-[10px] font-bold uppercase text-gray-400">Sin pagos</span>
+				<span class="text-xs font-bold text-gray-400">Sin pagos</span>
 			{/if}
 		</div>
 	</td>
 	<td class="border-r border-gray-200/50 px-6 py-4 text-right">
 		<p
-			class="text-base font-extrabold {anulada
-				? 'text-light-error line-through'
-				: 'text-light-success'}"
+			class="text-base font-semibold {anulada ? 'text-light-error line-through' : 'text-light-success'}"
 		>
 			{formatCurrency(venta.total)}
 		</p>
 		{#if venta.monto_descuento_global > 0}
-			<p class="mt-0.5 text-[10px] font-bold text-gray-600">
+			<p class="mt-0.5 text-xs font-bold text-gray-600">
 				- {formatCurrency(venta.monto_descuento_global)} Desc.
 			</p>
 		{/if}
 		{#if venta.monto_recargo_iva > 0}
-			<p class="mt-0.5 text-[10px] font-bold text-gray-600">
+			<p class="mt-0.5 text-xs font-bold text-gray-600">
 				+ {formatCurrency(venta.monto_recargo_iva)} Recargo ({venta.porcentaje_recargo_iva}%)
 			</p>
 		{/if}
 		{#if tieneMovimientos}
-			<p class="mt-0.5 text-[10px] font-bold text-orange-700">
+			<p class="mt-0.5 text-xs font-bold text-orange-700">
 				Neto: {formatCurrency(venta.total_neto)}
 			</p>
 		{/if}
@@ -227,7 +219,7 @@
 			<div bind:this={triggerElement} class="inline-block">
 				<Button
 					variant="ghost"
-					class="size-8 p-0! text-light-two hover:bg-light-one_d hover:text-light-black"
+					class="size-8 p-0! text-acero-600 hover:bg-light-one_d hover:text-light-black"
 					onclick={() => (isDropdownOpen = !isDropdownOpen)}
 					loading={isLoadingDetalles || isLoadingPrint || isAnulando}
 				>

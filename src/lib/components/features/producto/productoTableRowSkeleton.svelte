@@ -1,51 +1,34 @@
 <script lang="ts">
-	import { PhotoIcon } from '$lib/icons/outline';
-
 	interface Props {
 		index: number;
 	}
 
 	let { index }: Props = $props();
+	// Anchos variados para que la carga no parezca una rejilla perfecta
+	const w = ['w-40', 'w-56', 'w-32', 'w-48'][index % 4];
 </script>
 
-<tr
-	class="{index % 2 === 0
-		? 'bg-[#D19999]/10'
-		: 'bg-[#D19999]/20'} animate-pulse transition-colors"
->
-	<td class="border-r border-gray-100 px-4 py-2 text-center">
-		<div
-			class="mx-auto flex h-10 w-10 items-center justify-center rounded-lg bg-gray-200 text-gray-300"
-		>
-			<PhotoIcon class="h-5 w-5" />
+<tr class="animate-pulse" aria-hidden="true">
+	<td class="px-4 py-3">
+		<div class="flex items-center gap-3">
+			<div class="size-10 shrink-0 rounded-md bg-acero-100"></div>
+			<div class="space-y-1.5">
+				<div class="h-3.5 {w} rounded bg-acero-200"></div>
+				<div class="h-3 w-24 rounded bg-acero-100"></div>
+			</div>
 		</div>
 	</td>
-	<td class="border-r border-gray-100 px-4 py-5">
-		<div class="h-4 w-32 rounded bg-gray-200"></div>
+	<td class="px-4 py-3">
+		<div class="h-3.5 w-24 rounded bg-acero-200"></div>
+		<div class="mt-1.5 h-3 w-16 rounded bg-acero-100"></div>
 	</td>
-	<td class="border-r border-gray-100 px-4 py-5">
-		<div class="h-4 w-24 rounded bg-gray-200"></div>
-	</td>
-	<td class="border-r border-gray-100 px-4 py-5 font-bold">
-		<div class="h-4 w-12 rounded bg-gray-200 ml-auto mr-auto"></div>
-	</td>
-	<td class="border-r border-gray-100 px-4 py-5">
-		<div class="h-4 w-20 rounded bg-gray-200"></div>
-	</td>
-	<td class="border-r border-gray-100 px-4 py-5">
-		<div class="h-4 w-24 rounded bg-gray-200"></div>
-	</td>
-	<td class="border-r border-gray-100 px-4 py-5">
-		<div class="h-4 w-28 rounded bg-gray-200"></div>
-	</td>
-	<td class="border-r border-gray-100 px-4 py-5 text-center">
-		<div class="h-4 w-16 rounded bg-gray-200 mx-auto mb-1"></div>
-		<div class="h-3 w-20 rounded bg-gray-100 mx-auto"></div>
-	</td>
-	<td class="border-r border-gray-100 px-4 py-5 text-center">
-		<div class="h-4 w-10 rounded bg-gray-200 mx-auto"></div>
-	</td>
-	<td class="px-4 py-5 text-center">
-		<div class="h-4 w-8 rounded bg-gray-100 mx-auto"></div>
-	</td>
+	<td class="hidden px-4 py-3 xl:table-cell"><div class="h-3.5 w-28 rounded bg-acero-100"></div></td
+	>
+	<td class="hidden px-4 py-3 lg:table-cell"><div class="h-3.5 w-24 rounded bg-acero-100"></div></td
+	>
+	<td class="px-4 py-3"><div class="ml-auto h-5 w-14 rounded bg-acero-200"></div></td>
+	<td class="hidden px-4 py-3 md:table-cell"
+		><div class="h-6 w-20 rounded-md bg-acero-100"></div></td
+	>
+	<td class="px-4 py-3"><div class="mx-auto size-8 rounded-md bg-acero-100"></div></td>
 </tr>

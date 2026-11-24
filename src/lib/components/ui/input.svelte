@@ -3,12 +3,14 @@
 	import { cubicOut } from 'svelte/easing';
 	import type { Component } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
+	import { errorText, fieldBase, fieldError, fieldOk, labelBase } from './fieldStyles';
 
 	type InputSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-	interface Props extends HTMLInputAttributes {
+	interface Props extends Omit<HTMLInputAttributes, 'size'> {
 		icon?: Component;
 		label?: string;
 		error?: string;
+		hint?: string;
 		size?: InputSize;
 		value?: string | number | null | undefined;
 	}
@@ -18,6 +20,7 @@
 		icon,
 		label,
 		error,
+		hint,
 		size = 'md',
 		value = $bindable(),
 		...restProps
@@ -25,48 +28,54 @@
 
 	const sizeStyles: Record<InputSize, string> = {
 		xs: 'h-8 px-2.5 text-xs',
-		sm: 'h-10 px-3 text-sm',
-		md: 'h-11 px-4 text-sm sm:text-base',
-		lg: 'h-13 px-4 text-base sm:text-lg',
-		xl: 'h-15 px-5 text-lg sm:text-xl'
+		sm: 'h-9 px-3 text-sm',
+		md: 'h-[42px] px-3 text-[0.9375rem]',
+		lg: 'h-12 px-4 text-base',
+		xl: 'h-14 px-5 text-lg'
 	};
+
+	const uid = $props.id();
+	const inputId = $derived(restProps.id ?? `in-${uid}`);
+	const describedBy = $derived(error ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined);
+	const Icon = $derived(icon);
 </script>
 
 <div class={className}>
-	<label
-		for={restProps.id}
-		class="grid grid-cols-[auto,_1fr] items-center gap-0.5 text-sm leading-6 font-medium text-light-black sm:text-base"
-	>
-		<span class="truncate"
-			>{label} <span class="text-red-500">{restProps.required && '*'} </span></span
-		>
-	</label>
-	<div class="relative {label && 'mt-1'}  {icon && 'grid grid-cols-1'}">
+	{#if label}
+		<label for={inputId} class={labelBase}>
+			{label}{#if restProps.required}<span class="ml-0.5 text-marca" aria-hidden="true">*</span
+				>{/if}
+		</label>
+	{/if}
+	<div class="relative">
 		<input
 			{...restProps}
+			id={inputId}
 			bind:value
-			class={[
-				'block w-full rounded-xl border border-light-four bg-light-one text-black ring-light-three transition-all outline-none placeholder:text-light-five hover:ring-1 hover:ring-light-two_d focus:ring-2 focus:ring-light-three',
-				sizeStyles[size],
-				icon && 'pl-10',
-				'placeholder:text-xs placeholder:sm:text-sm'
-			]
+			aria-invalid={error ? 'true' : undefined}
+			aria-describedby={describedBy}
+			class={[fieldBase, error ? fieldError : fieldOk, sizeStyles[size], Icon && 'pl-10']
 				.filter(Boolean)
 				.join(' ')}
 		/>
-		{#if icon}
-			<p
-				class="pointer-events-none absolute col-start-1 row-start-1 ml-3 self-center text-light-two_d"
+		{#if Icon}
+			<span
+				class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-acero-400 [&_svg]:size-5"
+				aria-hidden="true"
 			>
-				{#await Promise.resolve(icon) then Icon}
-					<Icon />
-				{/await}
-			</p>
-		{/if}
-		{#if error}
-			<p transition:slide={{ duration: 300, easing: cubicOut }} class="mt-1 text-sm text-red-500">
-				{error}
-			</p>
+				<Icon />
+			</span>
 		{/if}
 	</div>
+	{#if error}
+		<p
+			id="{inputId}-error"
+			transition:slide={{ duration: 200, easing: cubicOut }}
+			class={errorText}
+		>
+			{error}
+		</p>
+	{:else if hint}
+		<p id="{inputId}-hint" class="mt-1.5 text-sm text-acero-500">{hint}</p>
+	{/if}
 </div>

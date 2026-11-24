@@ -3,7 +3,14 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes, HTMLAnchorAttributes } from 'svelte/elements';
 
-	type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'link' | 'danger';
+	type ButtonVariant =
+		| 'primary'
+		| 'secondary'
+		| 'outline'
+		| 'ghost'
+		| 'destructive'
+		| 'link'
+		| 'danger';
 	type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 	interface Props {
@@ -45,45 +52,45 @@
 	const styles = {
 		base: [
 			'relative',
-			'inline-flex items-center justify-center',
-			'font-medium select-none',
-			'transition-all duration-200 ease-out',
-			'focus:outline-none focus:ring-2 focus:ring-offset-2',
-			'disabled:opacity-50 disabled:cursor-not-allowed',
-			'active:scale-95 transform-gpu',
+			'inline-flex items-center justify-center whitespace-nowrap',
+			'font-semibold select-none',
+			'transition-[background-color,border-color,color,box-shadow] duration-150 ease-out',
+			'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marca',
+			'disabled:opacity-50 disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:cursor-not-allowed',
+			'active:translate-y-px',
 			'touch-manipulation'
 		].join(' '),
 
 		variants: {
 			primary:
-				'bg-light-two text-light-one hover:bg-light-two_d active:bg-light-two_d focus:ring-light-two shadow-md hover:shadow-lg',
+				'bg-marca text-white hover:bg-marca-oscuro active:bg-marca-oscuro shadow-[inset_0_-2px_0_rgb(0_0_0/0.18)] disabled:bg-acero-200 disabled:text-acero-500 disabled:shadow-none disabled:opacity-100',
 			secondary:
-				'bg-light-one border border-light-two text-light-two hover:bg-light-one_d active:bg-light-one_d focus:ring-light-two shadow-sm',
+				'bg-white border border-acero-200 text-acero-900 hover:bg-acero-50 hover:border-acero-300 active:bg-acero-100',
 			outline:
-				'bg-transparent text-light-two border border-light-four active:bg-light-one_d focus:ring-light-four_d',
+				'bg-transparent border border-acero-300 text-acero-800 hover:bg-white hover:border-acero-400 active:bg-acero-100',
 			ghost:
-				'bg-transparent text-light-two hover:bg-light-one_d active:bg-light-one_d focus:ring-light-four_d',
+				'bg-transparent text-acero-700 hover:bg-acero-100 hover:text-acero-950 active:bg-acero-200',
 			destructive:
-				'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus:ring-red-500 shadow-md hover:shadow-lg',
+				'bg-white border border-marca/40 text-marca hover:bg-marca-tinte hover:border-marca active:bg-marca-tinte',
 			danger:
-				'bg-red-500 text-white hover:bg-red-600 active:bg-red-700 focus:ring-red-500 shadow-md hover:shadow-lg',
-			link: 'bg-transparent text-light-two p-0 hover:text-light-two_d hover:underline focus:ring-light-two_d underline-offset-4'
+				'bg-marca text-white hover:bg-marca-oscuro active:bg-marca-oscuro shadow-[inset_0_-2px_0_rgb(0_0_0/0.18)]',
+			link: 'bg-transparent text-marca p-0 min-h-0 hover:text-marca-oscuro hover:underline underline-offset-4'
 		},
 
 		sizes: {
-			xs: 'px-1.5 py-1 text-xs min-h-[32px] gap-1.5 rounded-md',
-			sm: 'px-3 py-2 text-sm min-h-[36px] gap-2 rounded-md',
-			md: 'px-4 py-2.5 text-base min-h-[44px] gap-2 rounded-lg',
-			lg: 'px-6 py-3 text-lg min-h-[52px] gap-2.5 rounded-lg',
-			xl: 'px-8 py-4 text-xl min-h-[60px] gap-3 rounded-xl'
+			xs: 'px-2 py-1 text-xs min-h-[30px] gap-1.5 rounded-md',
+			sm: 'px-3 py-1.5 text-sm min-h-[36px] gap-2 rounded-md',
+			md: 'px-4 py-2 text-[0.9375rem] min-h-[42px] gap-2 rounded-lg',
+			lg: 'px-5 py-2.5 text-base min-h-[48px] gap-2.5 rounded-lg',
+			xl: 'px-7 py-3.5 text-lg min-h-[56px] gap-3 rounded-xl'
 		},
 
 		iconSizes: {
-			xs: 'p-1.5 text-xs min-h-[32px] rounded-md',
-			sm: 'p-2 text-sm min-h-[36px] rounded-md',
-			md: 'p-2.5 text-base min-h-[44px] rounded-lg',
-			lg: 'p-3 text-lg min-h-[52px] rounded-lg',
-			xl: 'p-4 text-xl min-h-[60px] rounded-xl'
+			xs: 'p-1.5 text-xs min-h-[30px] min-w-[30px] rounded-md',
+			sm: 'p-2 text-sm min-h-[36px] min-w-[36px] rounded-md',
+			md: 'p-2.5 text-base min-h-[42px] min-w-[42px] rounded-lg',
+			lg: 'p-3 text-lg min-h-[48px] min-w-[48px] rounded-lg',
+			xl: 'p-4 text-xl min-h-[56px] min-w-[56px] rounded-xl'
 		}
 	} as const;
 
@@ -134,7 +141,6 @@
 		href={isDisabled ? undefined : href}
 		{target}
 		{rel}
-		role="button"
 		onclick={handleClick}
 		{...restProps}
 	>
@@ -148,13 +154,17 @@
 
 {#snippet buttonContent()}
 	{#if loading}
-		<span class="absolute inset-0 flex items-center justify-center" aria-label="Cargando...">
+		<span
+			class="absolute inset-0 flex items-center justify-center"
+			role="status"
+			aria-label="Cargando"
+		>
 			<LoaderIcon class="h-5 w-5 animate-spin" />
 		</span>
 	{/if}
 
 	{#if leftIcon}
-		<span aria-hidden="true" class:invisible={loading}>
+		<span aria-hidden="true" class="inline-flex shrink-0" class:invisible={loading}>
 			{@render leftIcon()}
 		</span>
 	{/if}
@@ -166,7 +176,7 @@
 	{/if}
 
 	{#if rightIcon}
-		<span aria-hidden="true" class:invisible={loading}>
+		<span aria-hidden="true" class="inline-flex shrink-0" class:invisible={loading}>
 			{@render rightIcon()}
 		</span>
 	{/if}

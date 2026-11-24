@@ -27,13 +27,13 @@
 			<!-- Hero Section -->
 			<div class="flex flex-col gap-6 md:flex-row">
 				<div
-					class="flex h-48 w-48 shrink-0 items-center justify-center rounded-2xl border border-light-four bg-light-one_d"
+					class="flex h-48 w-48 shrink-0 items-center justify-center rounded-xl border border-light-four bg-light-one_d"
 				>
 					{#if producto.imagen_url}
 						<img
 							src={producto.imagen_url}
 							alt={producto.nombre_comercial}
-							class="h-full w-full rounded-2xl object-cover"
+							class="h-full w-full rounded-xl object-cover"
 						/>
 					{:else}
 						<PhotoIcon class="size-16 text-light-three" />
@@ -45,7 +45,7 @@
 						<Heading level="h3" class="line-clamp-5">{producto.nombre_comercial}</Heading>
 					</div>
 
-					<div class="flex flex-wrap gap-4 text-sm font-medium text-light-two">
+					<div class="flex flex-wrap gap-4 text-sm font-medium text-acero-600">
 						<span class="flex items-center gap-1">
 							<TagIcon class="size-4" />
 							{producto.categoria?.nombre || 'Sin Categoría'}
@@ -59,7 +59,7 @@
 							{producto.unidad_medida?.abreviatura}
 						</span>
 					</div>
-					<div class="mt-2 flex flex-col gap-1 font-mono text-xs text-light-three">
+					<div class="mt-2 flex flex-col gap-1 tabular-nums text-xs text-light-three">
 						<div>Código de barras: {producto.codigo_barras || '—'}</div>
 						<div class="flex items-center gap-1 font-bold text-emerald-600">
 							Precio de Venta: Bs. {Number(producto.precio_venta || 0).toFixed(2)}
@@ -87,14 +87,14 @@
 									class="rounded-xl border border-light-four bg-light-one p-3 transition-colors hover:bg-light-one_d"
 								>
 									<div class="flex items-center justify-between">
-										<span class="text-sm font-bold text-light-black uppercase">{pres.nombre}</span>
-										<Badge variant="info" class="text-[10px]"
+										<span class="text-sm font-bold text-light-black">{pres.nombre}</span>
+										<Badge variant="info" class="text-xs"
 											>Factor: {pres.factor_conversion}</Badge
 										>
 									</div>
 									<div class="mt-2 flex items-center justify-between">
-										<span class="text-xs font-medium text-light-two">SKU: {pres.sku || 'N/A'}</span>
-										<span class="font-black text-emerald-600">Bs. {pres.precio_especial}</span>
+										<span class="text-xs font-medium text-acero-600">SKU: {pres.sku || 'N/A'}</span>
+										<span class="font-semibold text-emerald-600">Bs. {pres.precio_especial}</span>
 									</div>
 								</div>
 							{/each}
@@ -111,7 +111,7 @@
 				<!-- Batches Section -->
 				<div class="space-y-4">
 					<div class="flex items-center justify-between border-b border-light-four pb-2">
-						<Heading level="h5" class="flex items-center gap-2 ">
+						<Heading level="h5" class="flex items-center gap-2">
 							<StopwatchIcon class="size-5 text-light-three" />
 							Lotes y Stock
 						</Heading>
@@ -127,21 +127,19 @@
 										class="mb-2 flex items-center justify-between border-b border-light-four pb-2"
 									>
 										<div class="flex flex-col">
-											<span class="text-xs font-black text-light-black"
+											<span class="text-xs font-semibold text-light-black"
 												>Lote: {lote.codigo_lote}</span
 											>
-											<span class="text-[10px] text-light-three uppercase"
+											<span class="text-xs text-light-three"
 												>{lote.proveedor?.nombre || 'Sin Proveedor'}</span
 											>
 										</div>
 										<div class="text-right">
-											<span class="block text-[10px] font-bold text-light-two uppercase"
+											<span class="block text-xs font-bold text-acero-600"
 												>Vencimiento</span
 											>
 											<span
-												class="text-xs font-medium {lote.fecha_vencimiento
-													? 'text-light-error'
-													: 'text-light-three'}"
+												class="text-xs font-medium {lote.fecha_vencimiento ? 'text-light-error' : 'text-light-three'}"
 											>
 												{formatDate(lote.fecha_vencimiento)}
 											</span>
@@ -149,17 +147,17 @@
 									</div>
 
 									<div class="space-y-2">
-										<div class="text-[10px] font-bold tracking-widest text-light-three uppercase">
+										<div class="text-xs font-bold text-light-three">
 											Distribución
 										</div>
 										{#if lote.stock_distribuciones && lote.stock_distribuciones.length > 0}
 											{#each lote.stock_distribuciones as dist (dist.id)}
 												<div class="flex items-center justify-between text-xs">
-													<span class="flex items-center gap-1 text-light-two">
+													<span class="flex items-center gap-1 text-acero-600">
 														<MapPinIcon class="size-3" />
 														{dist.ubicacion?.nombre} ({dist.ubicacion?.tipo_area})
 													</span>
-													<span class="font-black text-light-black"
+													<span class="font-semibold text-light-black"
 														>{dist.cantidad_actual} {producto.unidad_medida?.abreviatura}</span
 													>
 												</div>

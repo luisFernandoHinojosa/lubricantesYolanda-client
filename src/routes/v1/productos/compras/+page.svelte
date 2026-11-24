@@ -141,14 +141,14 @@
 		<div in:fade class="space-y-6">
 			<div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 				<div>
-					<Heading level="h4">Historial de Compras</Heading>
+					<h1 class="titulo-pagina">Historial de Compras</h1>
 				</div>
 
 				<div class="flex items-center gap-3">
 					<Button
 						variant="primary"
 						onclick={toggleForm}
-						class="border-red-600 bg-red-600 shadow-lg shadow-red-600/20 hover:bg-red-700"
+						class=""
 					>
 						{#snippet leftIcon()}
 							<PlusIcon class="size-5" />
@@ -161,16 +161,16 @@
 			<!-- Stats Section -->
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				<div
-					class="relative translate-y-0 overflow-hidden rounded-2xl border border-light-four bg-light-two p-6 text-light-black shadow-lg transition-transform duration-300 hover:-translate-y-1"
+					class="relative translate-y-0 overflow-hidden rounded-xl border border-acero-800 bg-acero-900 p-5 text-white transition-transform duration-300"
 				>
 					<div class="relative z-10">
 						<div
-							class="mb-2 flex items-center gap-2 text-xs font-bold tracking-wider text-light-one uppercase"
+							class="mb-2 flex items-center gap-2 text-xs font-bold text-light-one"
 						>
 							<ShoppingCartIcon class="size-4 text-light-one" />
 							Compras Registradas
 						</div>
-						<div class="text-3xl font-black tracking-tight text-light-one">{total}</div>
+						<div class="text-3xl font-semibold tracking-tight text-light-one">{total}</div>
 					</div>
 				</div>
 			</div>
@@ -210,13 +210,13 @@
 				<MovimientoTableSkeleton />
 			{:else if compras.length === 0}
 				<div
-					class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-light-four bg-light-one p-16 text-center"
+					class="flex flex-col items-center justify-center rounded-xl border border-dashed border-light-four bg-light-one p-16 text-center"
 				>
 					<div class="mb-6 rounded-full bg-light-one_d p-6">
 						<FilePencilIcon class="size-16 text-light-three" />
 					</div>
 					<h3 class="text-xl font-bold text-light-black">No se encontraron compras</h3>
-					<p class="mx-auto mt-2 max-w-xs text-light-two">
+					<p class="mx-auto mt-2 max-w-xs text-acero-600">
 						{filters.search
 							? 'No hay resultados para tu búsqueda. Prueba con otros términos.'
 							: 'Aún no has registrado ninguna compra. ¡Empieza creando una nueva!'}
@@ -237,37 +237,37 @@
 						<thead class="bg-light-one_d font-bold">
 							<tr>
 								<th
-									class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 								>
 									Comprobante
 								</th>
 								<th
-									class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 								>
 									Fecha
 								</th>
 								<th
-									class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 								>
 									Proveedor
 								</th>
 								<th
-									class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 								>
 									Responsable
 								</th>
 								<th
-									class="px-6 py-4 text-center text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-center text-xs font-bold text-acero-600"
 								>
 									Estado Pago
 								</th>
 								<th
-									class="px-6 py-4 text-right text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-right text-xs font-bold text-acero-600"
 								>
 									Total
 								</th>
 								<th
-									class="px-6 py-4 text-right text-xs font-bold tracking-wider text-light-two uppercase"
+									class="px-6 py-4 text-right text-xs font-bold text-acero-600"
 								>
 									Acciones
 								</th>
@@ -282,7 +282,7 @@
 										<div class="line-clamp-1 font-bold text-gray-700">
 											{compra.numero_comprobante || 'S/N'}
 										</div>
-										<div class="mt-1 font-mono text-[10px] text-gray-400">
+										<div class="mt-1 tabular-nums text-xs text-gray-400">
 											ID: {compra.id?.substring(0, 8)}
 										</div>
 									</td>
@@ -300,7 +300,7 @@
 									<td class="px-6 py-4 text-sm">
 										{#if compra.empleado}
 											<div class="flex flex-col">
-												<span class="text-xs font-semibold text-light-two uppercase">Empleado</span>
+												<span class="text-xs font-semibold text-acero-600">Empleado</span>
 												<span>
 													{compra.empleado.nombre}
 													{compra.empleado.apellido_paterno}
@@ -310,12 +310,7 @@
 									</td>
 									<td class="px-6 py-4 text-center">
 										<span
-											class="inline-flex items-center justify-center rounded-full border px-3 py-1 text-[10px] font-bold uppercase
-											{compra.estado_pago === 'PAGADO'
-												? 'border-green-200 bg-green-50 text-green-700'
-												: compra.estado_pago === 'PENDIENTE'
-													? 'border-red-200 bg-red-50 text-red-700'
-													: 'border-orange-200 bg-orange-50 text-orange-700'}"
+											class="inline-flex items-center justify-center rounded-full border px-3 py-1 text-xs font-bold {compra.estado_pago === 'PAGADO' ? 'border-green-200 bg-green-50 text-green-700' : compra.estado_pago === 'PENDIENTE' ? 'border-red-200 bg-red-50 text-red-700' : 'border-orange-200 bg-orange-50 text-orange-700'}"
 										>
 											{compra.estado_pago}
 										</span>

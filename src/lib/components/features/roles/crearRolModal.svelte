@@ -132,9 +132,7 @@
 						type="text"
 						id="nombre_rol"
 						bind:value={formData.nombre_rol}
-						class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.nombre_rol
-							? 'border-red-500'
-							: ''}"
+						class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.nombre_rol ? 'border-red-500' : ''}"
 						placeholder="Ej: Administrador"
 						disabled={loading || isReadOnly}
 					/>
@@ -153,9 +151,7 @@
 						bind:value={formData.code_rol}
 						oninput={handleCodeInput}
 						maxlength="10"
-						class="w-full rounded-lg border border-gray-300 px-4 py-2 uppercase focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.code_rol
-							? 'border-red-500'
-							: ''}"
+						class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.code_rol ? 'border-red-500' : ''}"
 						placeholder="Ej: ADM"
 						disabled={loading || isReadOnly || isEdit}
 					/>
@@ -180,9 +176,7 @@
 						id="descripcion"
 						bind:value={formData.descripcion}
 						rows="4"
-						class="w-full resize-none rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.descripcion
-							? 'border-red-500'
-							: ''}"
+						class="w-full resize-none rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.descripcion ? 'border-red-500' : ''}"
 						placeholder="Describe las responsabilidades y alcance del rol..."
 						disabled={loading || isReadOnly}
 					></textarea>

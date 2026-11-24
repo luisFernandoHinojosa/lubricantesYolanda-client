@@ -4,6 +4,20 @@
 	import { Input } from '$lib/components/ui';
 	import { METODO_PAGO_FACTURA } from '$lib/constants/dataFacturacion';
 	import type { MetodoPagoVenta, PagoVenta } from '$lib/interfaces/venta.interface';
+	import { PISTA, SEGMENTO, SEGMENTO_ACTIVO, SEGMENTO_INACTIVO, TITULO_SECCION } from './segmentos';
+
+	// Nombres legibles para los códigos de método de pago
+	const NOMBRE_METODO: Record<string, string> = {
+		EFECTIVO: 'Efectivo',
+		QR: 'QR',
+		TARJETA: 'Tarjeta',
+		CHEQUE: 'Cheque',
+		DEPOSITO: 'Depósito',
+		VALES: 'Vales',
+		OTROS: 'Otros'
+	};
+	const nombreMetodo = (m: string) =>
+		NOMBRE_METODO[m] ?? m.charAt(0) + m.slice(1).toLowerCase().replaceAll('_', ' ');
 
 	interface Props {
 		pagos: PagoVenta[];
@@ -46,51 +60,47 @@
 	let completo = $derived(totalPagado >= totalFinal);
 </script>
 
-<section class="space-y-2">
+<section class="space-y-2" aria-labelledby="pos-pago">
 	<div class="flex items-center justify-between">
-		<h3 class="text-[11px] font-bold tracking-widest text-light-five uppercase">Pago</h3>
+		<h3 id="pos-pago" class={TITULO_SECCION}>Pago</h3>
 		<button
 			type="button"
 			onclick={onAgregarPago}
-			class="flex items-center gap-1 text-xs font-semibold text-light-two hover:underline"
+			class="flex items-center gap-1 rounded px-1 text-sm font-semibold text-acero-700 hover:text-acero-950 hover:underline"
 		>
-			<PlusIcon class="h-3.5 w-3.5" /> Dividir pago
+			<PlusIcon class="h-4 w-4" /> Dividir pago
 		</button>
 	</div>
 
 	{#each pagos as pago, i (i)}
 		{@const esSecundario = SECUNDARIOS.includes(pago.metodo_pago)}
-		<div class="space-y-1.5 {pagos.length > 1 ? 'rounded-xl border border-light-four p-2' : ''}">
+		<div class="space-y-1.5 {pagos.length > 1 ? 'rounded-lg border border-acero-200 p-2' : ''}">
 			<div class="flex items-center gap-1">
-				<div
-					class="grid flex-1 grid-cols-4 gap-0.5 rounded-lg bg-light-one_d p-0.5"
-					role="radiogroup"
-					aria-label="Método de pago"
-				>
+				<div class="{PISTA} flex-1 grid-cols-4" role="radiogroup" aria-label="Método de pago">
 					{#each PRINCIPALES as metodo (metodo)}
 						<button
 							type="button"
 							role="radio"
 							aria-checked={pago.metodo_pago === metodo}
 							onclick={() => (pago.metodo_pago = metodo)}
-							class="rounded-md py-1.5 text-xs font-bold transition {pago.metodo_pago === metodo
-								? 'bg-light-two text-light-one shadow-sm'
-								: 'text-light-five hover:bg-light-one hover:text-light-black'}"
+							class="{SEGMENTO} px-1 {pago.metodo_pago === metodo
+								? SEGMENTO_ACTIVO
+								: SEGMENTO_INACTIVO}"
 						>
-							{metodo}
+							{nombreMetodo(metodo)}
 						</button>
 					{/each}
 
 					<!-- Select nativo invisible sobre el segmento: teclado y táctil sin componentes extra -->
 					<label
-						class="relative flex cursor-pointer items-center justify-center gap-0.5 rounded-md py-1.5 text-xs font-bold transition {esSecundario
-							? 'bg-light-two text-light-one shadow-sm'
-							: 'text-light-five hover:bg-light-one hover:text-light-black'}"
+						class="{SEGMENTO} relative flex cursor-pointer items-center justify-center gap-0.5 px-1 focus-within:ring-2 focus-within:ring-marca {esSecundario
+							? SEGMENTO_ACTIVO
+							: SEGMENTO_INACTIVO}"
 					>
-						<span class="truncate">{esSecundario ? pago.metodo_pago : 'MÁS'}</span>
+						<span class="truncate">{esSecundario ? nombreMetodo(pago.metodo_pago) : 'Otro'}</span>
 						<ChevronDownIcon className="h-3 w-3 shrink-0" />
 						<select
-							class="absolute inset-0 cursor-pointer bg-light-one text-sm font-medium text-light-black opacity-0"
+							class="absolute inset-0 cursor-pointer bg-white text-sm font-medium text-acero-950 opacity-0"
 							aria-label="Otros métodos de pago"
 							value={esSecundario ? pago.metodo_pago : ''}
 							onchange={(e) =>
@@ -98,7 +108,7 @@
 						>
 							<option value="" disabled>Otros métodos</option>
 							{#each SECUNDARIOS as metodo (metodo)}
-								<option value={metodo}>{metodo}</option>
+								<option value={metodo}>{nombreMetodo(metodo)}</option>
 							{/each}
 						</select>
 					</label>
@@ -107,7 +117,7 @@
 					<button
 						type="button"
 						onclick={() => onRemoverPago(i)}
-						class="rounded-full p-1 text-light-error transition-colors hover:bg-red-50"
+						class="rounded-md p-1.5 text-acero-400 transition-colors hover:bg-marca-tinte hover:text-marca"
 						title="Eliminar método de pago"
 						aria-label="Eliminar método de pago"
 					>
@@ -119,15 +129,17 @@
 			<div class="grid grid-cols-2 gap-1.5">
 				<Input
 					type="number"
-					size="xs"
+					size="sm"
 					min="0"
 					icon={CoinIcon}
 					bind:value={pago.monto}
 					oninput={onMontoManual}
+					aria-label="Monto recibido en {nombreMetodo(pago.metodo_pago)}"
 					placeholder="Monto recibido"
 				/>
 				<Input
-					size="xs"
+					size="sm"
+					aria-label="Referencia del pago"
 					bind:value={pago.referencia}
 					placeholder={PLACEHOLDER_REFERENCIA[pago.metodo_pago] ?? 'Referencia (opcional)'}
 				/>
@@ -135,16 +147,17 @@
 		</div>
 	{/each}
 
-	{#if totalFinal > 0}
-		<div
-			class="flex items-center justify-between text-sm font-bold {completo
-				? 'text-emerald-700'
-				: 'text-light-error'}"
-		>
-			<span>{completo ? 'Cambio' : 'Falta'}</span>
-			<span class="font-mono">{fmt(completo ? cambio : totalFinal - totalPagado)}</span>
-		</div>
+	{#if totalFinal > 0 && !completo}
+		<p class="flex items-center justify-between text-sm font-semibold text-marca">
+			<span>Falta cobrar</span>
+			<span class="tabular-nums">{fmt(totalFinal - totalPagado)}</span>
+		</p>
 	{/if}
 
-	<Input size="xs" bind:value={notasVenta} placeholder="Notas de la venta (opcional)" />
+	<Input
+		size="sm"
+		bind:value={notasVenta}
+		aria-label="Notas de la venta"
+		placeholder="Notas de la venta (opcional)"
+	/>
 </section>

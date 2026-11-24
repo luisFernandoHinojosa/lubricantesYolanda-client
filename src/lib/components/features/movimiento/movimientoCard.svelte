@@ -67,13 +67,13 @@
 	</td>
 	<td class="px-6 py-4 text-sm">
 		<div class="flex flex-col">
-			<span class="text-xs font-semibold text-light-two uppercase">Sucursal</span>
+			<span class="text-xs font-semibold text-acero-600">Sucursal</span>
 			<span>{movimiento.sucursal?.nombre || '-'}</span>
 		</div>
 	</td>
 	<td class="px-6 py-4 text-sm">
 		<div class="flex flex-col">
-			<span class="text-xs font-semibold text-light-two uppercase">Empleado</span>
+			<span class="text-xs font-semibold text-acero-600">Empleado</span>
 			<span>{movimiento.empleado?.nombre} {movimiento.empleado?.apellido_paterno || ''}</span>
 		</div>
 	</td>
@@ -82,7 +82,7 @@
 			<button
 				bind:this={trigger}
 				onclick={() => (isDropdownOpen = !isDropdownOpen)}
-				class="hover:text-primary text-light-two transition-colors"
+				class="hover:text-primary text-acero-600 transition-colors"
 			>
 				<DotsVerticalIcon class="size-5" />
 			</button>

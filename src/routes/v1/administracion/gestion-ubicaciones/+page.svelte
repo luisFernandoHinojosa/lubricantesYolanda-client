@@ -212,7 +212,7 @@
 	<!-- Header -->
 	<div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 		<div>
-			<Heading level="h4">Gestión de Ubicaciones</Heading>
+			<h1 class="titulo-pagina">Gestión de Ubicaciones</h1>
 			<!-- <p class="mt-1 text-sm text-gray-500">
 				Administra tus áreas macro (Tienda, Depósito) y sus ubicaciones físicas (Pasillos,
 				Estantes).
@@ -299,9 +299,7 @@
 					{@const isLoadingChildren = loadingFisicas === ubic.id}
 
 					<div
-						class="overflow-hidden rounded-xl bg-light-one shadow-sm transition-all {isExpanded
-							? 'border border-light-five shadow-md'
-							: ''}"
+						class="overflow-hidden rounded-xl bg-light-one shadow-sm transition-all {isExpanded ? 'border border-light-five shadow-md' : ''}"
 					>
 						<!-- Macro Row — was a single <button>, now a <div> with two sibling areas -->
 						<div
@@ -315,9 +313,7 @@
 							>
 								<!-- Expand indicator -->
 								<div
-									class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-all {isExpanded
-										? 'rotate-90 bg-light-four text-light-one'
-										: 'bg-light-four_d text-light-one'}"
+									class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-all {isExpanded ? 'rotate-90 bg-light-four text-light-one' : 'bg-light-four_d text-light-one'}"
 								>
 									<ChevronRightIcon class="h-4 w-4" />
 								</div>
@@ -326,9 +322,7 @@
 									<div class="flex items-center gap-3">
 										<h3 class="text-base font-bold text-light-black">{ubic.nombre}</h3>
 										<span
-											class="rounded-full px-2.5 py-0.5 text-sm font-bold tracking-wider uppercase {getTipoAreaBadge(
-												ubic.tipo_area
-											)}"
+											class="rounded-full px-2.5 py-0.5 text-sm font-bold {getTipoAreaBadge( ubic.tipo_area )}"
 										>
 											{ubic.tipo_area}
 										</span>
@@ -358,7 +352,7 @@
 
 						<!-- Children Panel -->
 						{#if isExpanded}
-							<div class=" px-5 py-4" transition:slide>
+							<div class="px-5 py-4" transition:slide>
 								{#if isLoadingChildren}
 									<div class="flex items-center gap-2 py-4">
 										<LoaderIcon class="h-5 w-5 animate-spin text-light-four" />
@@ -402,7 +396,7 @@
 										class="mt-3 rounded-lg border border-blue-100 bg-blue-50/50 p-4"
 										transition:slide
 									>
-										<p class="mb-3 text-lg font-bold tracking-wider text-light-two uppercase">
+										<p class="mb-3 text-lg font-bold text-acero-600">
 											Nueva ubicación física
 										</p>
 										<div class="grid grid-cols-1 gap-3 md:grid-cols-2">

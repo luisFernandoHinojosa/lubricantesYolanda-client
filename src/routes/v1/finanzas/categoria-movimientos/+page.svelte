@@ -182,10 +182,10 @@
 		<CategoriaMovimientoTableSkeleton />
 	{:else if categorias.length === 0}
 		<div
-			class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-light-four bg-light-one p-16 text-center"
+			class="flex flex-col items-center justify-center rounded-xl border border-dashed border-light-four bg-light-one p-16 text-center"
 		>
 			<h3 class="text-xl font-bold text-light-black">No se encontraron categorías</h3>
-			<p class="mx-auto mt-2 max-w-xs text-light-two">
+			<p class="mx-auto mt-2 max-w-xs text-acero-600">
 				{filters.search
 					? 'No hay resultados para tu búsqueda. Prueba con otros términos.'
 					: 'Aún no has creado ninguna categoría financiera.'}
@@ -202,19 +202,19 @@
 				<thead class="bg-light-one_d font-bold">
 					<tr>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Nombre</th
 						>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Tipo</th
 						>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Descripción</th
 						>
 						<th
-							class="px-6 py-4 text-right text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-right text-xs font-bold text-acero-600"
 							>Acciones</th
 						>
 					</tr>

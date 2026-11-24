@@ -302,7 +302,7 @@
 		/>
 
 		{#if cliente}
-			<p class="text-sm text-light-two sm:col-span-2">
+			<p class="text-sm text-acero-600 sm:col-span-2">
 				Puntos acumulados: <span class="font-semibold text-light-black">{cliente.puntos}</span>
 				<span class="text-xs">(se ajustan desde la opción «Ajustar puntos»)</span>
 			</p>

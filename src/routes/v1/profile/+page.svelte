@@ -57,7 +57,7 @@
 	class="container mx-auto space-y-6"
 >
 	<div class="mb-6 flex items-center justify-between">
-		<Heading level="h4">Mi Cuenta</Heading>
+		<h1 class="titulo-pagina">Mi Cuenta</h1>
 	</div>
 
 	<!-- Tabs Navigation -->
@@ -65,10 +65,7 @@
 		<div class="flex gap-8">
 			<button
 				onclick={() => (activeTab = 'general')}
-				class="relative pb-4 text-sm font-semibold transition-colors
-                {activeTab === 'general'
-					? 'text-light-three'
-					: 'text-light-five hover:text-light-three'}"
+				class="relative pb-4 text-sm font-semibold transition-colors {activeTab === 'general' ? 'text-light-three' : 'text-light-five hover:text-light-three'}"
 			>
 				Información General
 				{#if activeTab === 'general'}
@@ -77,10 +74,7 @@
 			</button>
 			<button
 				onclick={() => (activeTab = 'security')}
-				class="relative pb-4 text-sm font-semibold transition-colors
-                {activeTab === 'security'
-					? 'text-light-three'
-					: 'text-light-five hover:text-light-three'}"
+				class="relative pb-4 text-sm font-semibold transition-colors {activeTab === 'security' ? 'text-light-three' : 'text-light-five hover:text-light-three'}"
 			>
 				Seguridad y Acceso
 				{#if activeTab === 'security'}
@@ -122,14 +116,14 @@
 					<div class="space-y-4">
 						<Heading level="h5">Acerca de</Heading>
 						<div class="space-y-3">
-							<div class="flex items-center gap-3 text-light-two">
+							<div class="flex items-center gap-3 text-acero-600">
 								<WhatsappIcon class="size-6 shrink-0 text-light-five" />
 								<span class="w-16 text-sm font-medium text-light-five">Teléfono:</span>
 								<span class="truncate text-sm text-light-black"
 									>{$currentUserStore?.Empleado?.telefono || 'No registrado'}</span
 								>
 							</div>
-							<div class="flex items-center gap-3 text-light-two">
+							<div class="flex items-center gap-3 text-acero-600">
 								<MailIcon class="size-6 shrink-0 text-light-five" />
 								<span class="w-16 text-sm font-medium text-light-five">Correo:</span>
 								<span
@@ -145,7 +139,7 @@
 					<div class="space-y-4">
 						<Heading level="h5">Dirección</Heading>
 						<div class="space-y-3">
-							<div class="flex items-start gap-3 text-light-two">
+							<div class="flex items-start gap-3 text-acero-600">
 								<MapPinIcon class="size-6 shrink-0 text-light-five" />
 								<div class="flex flex-col gap-2">
 									<div class="flex gap-2">
@@ -170,22 +164,20 @@
 						<div class="overflow-x-auto">
 							<ul class="flex flex-wrap gap-8">
 								<li class="text-light-five">
-									<div class="text-xs font-semibold tracking-wider uppercase">Sucursal</div>
+									<div class="text-xs font-semibold">Sucursal</div>
 									<div class="text-md mt-1 font-medium text-light-black">No asignada</div>
 								</li>
 								<li class="text-light-five">
-									<div class="text-xs font-semibold tracking-wider uppercase">Rol de Usuario</div>
+									<div class="text-xs font-semibold">Rol de Usuario</div>
 									<div class="text-md mt-1 font-medium text-light-black">
 										{$currentUserStore?.Role?.nombre_rol || 'USER'}
 									</div>
 								</li>
 								<li class="text-light-five">
-									<div class="text-xs font-semibold tracking-wider uppercase">Estado</div>
+									<div class="text-xs font-semibold">Estado</div>
 									<div class="mt-1 flex items-center gap-2">
 										<div
-											class="h-2 w-2 rounded-full {$currentUserStore?.esta_activo
-												? 'bg-green-500'
-												: 'bg-red-500'}"
+											class="h-2 w-2 rounded-full {$currentUserStore?.esta_activo ? 'bg-green-500' : 'bg-red-500'}"
 										></div>
 										<span class="text-md font-medium text-light-black"
 											>{$currentUserStore?.esta_activo ? 'Activo' : 'Inactivo'}</span
@@ -193,7 +185,7 @@
 									</div>
 								</li>
 								<li class="text-light-five">
-									<div class="text-xs font-semibold tracking-wider uppercase">Compensación</div>
+									<div class="text-xs font-semibold">Compensación</div>
 									<div class="text-md mt-1 font-medium text-light-black">
 										Bs. {$currentUserStore?.Empleado?.salario_base || '0.00'}
 									</div>
@@ -263,7 +255,7 @@
 								enviaremos un enlace de restablecimiento directamente a tu correo registrado.
 							</p>
 
-							<div class=" p-4">
+							<div class="p-4">
 								<div class="flex items-center gap-2 text-xs font-medium text-light-three">
 									<MailIcon class="size-4" />
 									Email de recuperación:

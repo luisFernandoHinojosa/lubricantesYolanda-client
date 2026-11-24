@@ -6,6 +6,7 @@
 	import DescuentoPanel from './DescuentoPanel.svelte';
 	import PagosPanel from './PagosPanel.svelte';
 	import type { VentasState } from './ventas.svelte';
+	import { PISTA, SEGMENTO, SEGMENTO_ACTIVO, SEGMENTO_INACTIVO, TITULO_SECCION } from './segmentos';
 
 	interface Props {
 		pos: VentasState;
@@ -18,8 +19,9 @@
 	);
 
 	let tipoDocumento = $derived(
-		TIPO_DOCUMENTO_IDENTIDAD_FACTURA.find((t) => t.codigoClasificador === pos.clienteForm.tipo_documento)
-			?.descripcion.split(' ')[0] ?? 'CI'
+		TIPO_DOCUMENTO_IDENTIDAD_FACTURA.find(
+			(t) => t.codigoClasificador === pos.clienteForm.tipo_documento
+		)?.descripcion.split(' ')[0] ?? 'CI'
 	);
 
 	let puedeConfirmar = $derived(
@@ -30,13 +32,34 @@
 			(!pos.facturar || pos.clienteFacturable) &&
 			!pos.procesandoVenta
 	);
+
+	// Qué falta para poder cobrar: se muestra bajo el botón en lugar de dejarlo deshabilitado sin explicación
+	let motivoBloqueo = $derived.by(() => {
+		if (pos.procesandoVenta) return '';
+		if (pos.carrito.length === 0) return 'Agregue al menos un producto.';
+		if (pos.descuentoExcedido) return 'El descuento supera el subtotal.';
+		if (pos.facturar && !pos.clienteFacturable)
+			return 'Para facturar, asigne un cliente con CI o NIT.';
+		if (pos.facturar && !pos.recargoIvaValido) return 'El recargo IVA debe estar entre 0 y 100 %.';
+		if (!pos.pagoSuficiente)
+			return `Falta cobrar ${pos.fmt(Math.max(0, pos.totalFinal - pos.totalPagado))}.`;
+		return '';
+	});
+
+	const numero = new Intl.NumberFormat('es-BO', {
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2
+	});
+	const cantidadProductos = $derived(pos.carrito.reduce((acc, i) => acc + (i.cantidad || 0), 0));
+	const descuento = $derived(pos.montoDescuentoGlobal());
 </script>
 
 <aside
-	class="flex w-104 shrink-0 flex-col overflow-hidden rounded-2xl border border-light-four bg-light-one print:hidden"
+	class="flex w-full shrink-0 flex-col overflow-hidden rounded-xl border border-acero-200 bg-white lg:w-84 2xl:w-100 print:hidden"
+	aria-label="Cobro de la venta"
 >
 	<!-- Configuración de la venta. Scroll solo como respaldo en pantallas bajas -->
-	<div class="min-h-0 flex-1 divide-y divide-light-four overflow-y-auto *:px-4 *:py-3">
+	<div class="min-h-0 flex-1 divide-y divide-acero-100 overflow-y-auto *:px-4 *:py-3.5">
 		<ClientePanel
 			clienteActivo={pos.clienteActivo}
 			bind:clienteForm={pos.clienteForm}
@@ -50,60 +73,61 @@
 		/>
 
 		<!-- Comprobante -->
-		<section class="space-y-1.5">
+		<section class="space-y-2" aria-labelledby="pos-comprobante">
 			<div class="flex items-center justify-between gap-3">
-				<h3 class="text-[11px] font-bold tracking-widest text-light-five uppercase">Comprobante</h3>
-				<div class="grid grid-cols-2 gap-0.5 rounded-lg bg-light-one_d p-0.5">
+				<h3 id="pos-comprobante" class={TITULO_SECCION}>Comprobante</h3>
+				<div class="{PISTA} grid-cols-2" role="radiogroup" aria-labelledby="pos-comprobante">
 					<button
 						type="button"
+						role="radio"
+						aria-checked={!pos.facturar}
 						onclick={() => pos.toggleFacturacion(false)}
-						class="rounded-md px-3 py-1 text-xs font-bold transition {!pos.facturar
-							? 'bg-light-two text-light-one shadow-sm'
-							: 'text-light-five hover:bg-light-one hover:text-light-black'}"
+						class="{SEGMENTO} {!pos.facturar ? SEGMENTO_ACTIVO : SEGMENTO_INACTIVO}"
 					>
 						Recibo
 					</button>
 					<button
 						type="button"
+						role="radio"
+						aria-checked={pos.facturar}
 						onclick={() => pos.toggleFacturacion(true)}
-						class="rounded-md px-3 py-1 text-xs font-bold transition {pos.facturar
-							? 'bg-emerald-600 text-white shadow-sm'
-							: 'text-light-five hover:bg-light-one hover:text-light-black'}"
+						class="{SEGMENTO} {pos.facturar ? SEGMENTO_ACTIVO : SEGMENTO_INACTIVO}"
 					>
-						Factura SIAT
+						Factura
 					</button>
 				</div>
 			</div>
 			{#if pos.facturar}
 				{#if pos.clienteFacturable}
-					<p class="truncate text-xs text-emerald-800">
-						A nombre de <span class="font-bold">{nombreCliente || '—'}</span>
-						· {tipoDocumento} <span class="font-mono">{pos.clienteForm.ci}</span>
+					<p class="truncate text-sm text-acero-600">
+						A nombre de <span class="font-semibold text-acero-950">{nombreCliente || '—'}</span>,
+						{tipoDocumento} <span class="tabular-nums">{pos.clienteForm.ci}</span>
 					</p>
 				{:else}
-					<p class="flex items-center gap-1 text-xs font-medium text-amber-700">
-						<AlertTriangleIcon class="h-3.5 w-3.5 shrink-0" />
-						Asigne un cliente con CI o NIT para facturar.
+					<p class="flex items-start gap-1.5 text-sm text-aceite-oscuro">
+						<AlertTriangleIcon class="mt-0.5 size-4 shrink-0" />
+						Asigne un cliente con CI o NIT para emitir la factura.
 					</p>
 				{/if}
-				<label class="flex items-center justify-between gap-3 text-xs text-light-black">
+				<label class="flex items-center justify-between gap-3 text-sm text-acero-700">
 					<span>Recargo IVA</span>
-					<span class="flex items-center gap-1">
+					<span class="flex items-center gap-1.5">
 						<input
 							type="number"
 							min="0"
 							max="100"
 							step="0.01"
 							bind:value={pos.porcentajeRecargoIva}
-							class="w-16 rounded-md border px-2 py-1 text-right font-mono text-xs {pos.recargoIvaValido
-								? 'border-light-four'
-								: 'border-light-error text-light-error'}"
+							aria-invalid={!pos.recargoIvaValido ? 'true' : undefined}
+							class="h-8 w-20 rounded-md border px-2 text-right text-sm tabular-nums outline-none focus:ring-[3px] focus:ring-acero-200 {pos.recargoIvaValido
+								? 'border-acero-200'
+								: 'border-marca text-marca'}"
 						/>
-						<span class="text-light-five">%</span>
+						<span class="text-acero-500">%</span>
 					</span>
 				</label>
 				{#if !pos.recargoIvaValido}
-					<p class="text-xs font-medium text-light-error">El recargo debe estar entre 0 y 100%.</p>
+					<p class="text-sm text-marca">El recargo debe estar entre 0 y 100 %.</p>
 				{/if}
 			{/if}
 		</section>
@@ -126,39 +150,62 @@
 		/>
 	</div>
 
-	<!-- Totales y confirmación -->
-	<div class="shrink-0 space-y-3 border-t border-light-four bg-light-one_d/40 p-4">
-		{#if pos.montoDescuentoGlobal() > 0 || pos.montoRecargoIva > 0}
-			<dl class="space-y-0.5 text-xs">
-				<div class="flex justify-between text-light-black">
-					<dt>Subtotal</dt>
-					<dd class="font-mono">{pos.fmt(pos.subtotalItems)}</dd>
-				</div>
-				{#if pos.montoDescuentoGlobal() > 0}
-					<div class="flex justify-between font-semibold text-light-error">
-						<dt>Descuento</dt>
-						<dd class="font-mono">-{pos.fmt(pos.montoDescuentoGlobal())}</dd>
+	<!-- Visor de total y confirmación -->
+	<div class="shrink-0 space-y-3 border-t border-acero-200 p-3">
+		<div class="rounded-lg bg-acero-900 px-4 pt-3 pb-3.5 text-acero-300" aria-live="polite">
+			{#if descuento > 0 || pos.montoRecargoIva > 0}
+				<dl class="mb-2 space-y-0.5 border-b border-acero-700 pb-2 text-sm">
+					<div class="flex justify-between">
+						<dt>Subtotal</dt>
+						<dd class="tabular-nums">{pos.fmt(pos.subtotalItems)}</dd>
 					</div>
-				{/if}
-				{#if pos.montoRecargoIva > 0}
-					<div class="flex justify-between font-semibold text-emerald-700">
-						<dt>Recargo IVA ({pos.porcentajeRecargoIva}%)</dt>
-						<dd class="font-mono">+{pos.fmt(pos.montoRecargoIva)}</dd>
-					</div>
-				{/if}
-			</dl>
-		{/if}
-		<div class="flex items-end justify-between">
-			<span class="text-xs font-bold tracking-widest text-light-black uppercase">
-				Total
-				<span class="block text-[11px] font-medium tracking-normal text-light-five normal-case">
-					{pos.carrito.length} producto{pos.carrito.length === 1 ? '' : 's'}
+					{#if descuento > 0}
+						<div class="flex justify-between text-[#ff9a9a]">
+							<dt>Descuento</dt>
+							<dd class="tabular-nums">−{pos.fmt(descuento)}</dd>
+						</div>
+					{/if}
+					{#if pos.montoRecargoIva > 0}
+						<div class="flex justify-between">
+							<dt>Recargo IVA ({pos.porcentajeRecargoIva} %)</dt>
+							<dd class="tabular-nums">+{pos.fmt(pos.montoRecargoIva)}</dd>
+						</div>
+					{/if}
+				</dl>
+			{/if}
+			<div class="flex items-baseline justify-between gap-3">
+				<span class="text-sm">
+					Total
+					<span class="block text-xs text-acero-400 tabular-nums">
+						{pos.carrito.length}
+						{pos.carrito.length === 1
+							? 'producto'
+							: 'productos'}{#if cantidadProductos !== pos.carrito.length},
+							{numero.format(cantidadProductos).replace(/,00$/, '')} unid.{/if}
+					</span>
 				</span>
-			</span>
-			<span class="font-mono text-3xl leading-none font-bold text-light-two tabular-nums">
-				{pos.fmt(pos.totalFinal)}
-			</span>
+				<span class="flex items-baseline gap-1.5 text-white" data-testid="pos-total">
+					<span class="font-display text-xl font-medium text-acero-400">Bs</span>
+					<span
+						class="font-display text-4xl leading-none font-semibold tracking-tight tabular-nums"
+					>
+						{numero.format(pos.totalFinal)}
+					</span>
+				</span>
+			</div>
+			{#if pos.totalFinal > 0 && pos.cambio > 0}
+				<div class="mt-2.5 flex items-baseline justify-between border-t border-acero-700 pt-2">
+					<span class="text-sm">Cambio a entregar</span>
+					<span
+						class="font-display text-2xl font-semibold text-aceite tabular-nums"
+						data-testid="pos-cambio"
+					>
+						{pos.fmt(pos.cambio)}
+					</span>
+				</div>
+			{/if}
 		</div>
+
 		<Button
 			onclick={() => pos.finalizarVenta()}
 			disabled={!puedeConfirmar}
@@ -166,8 +213,17 @@
 			variant="primary"
 			size="lg"
 			fullWidth
+			aria-describedby={motivoBloqueo ? 'pos-motivo' : undefined}
+			aria-keyshortcuts="F2"
 		>
-			{pos.facturar ? 'Confirmar y facturar' : 'Confirmar venta'}
+			{pos.facturar ? 'Cobrar y facturar' : 'Cobrar venta'}
+			<kbd
+				class="ml-1 rounded border border-white/30 px-1.5 py-px font-sans text-xs font-semibold text-white/80"
+				aria-hidden="true">F2</kbd
+			>
 		</Button>
+		{#if motivoBloqueo}
+			<p id="pos-motivo" class="text-center text-sm text-acero-500">{motivoBloqueo}</p>
+		{/if}
 	</div>
 </aside>

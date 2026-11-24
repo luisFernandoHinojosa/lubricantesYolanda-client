@@ -56,91 +56,78 @@
 		}
 	}
 
-	let startItem = $derived((currentPage - 1) * perPage + 1);
+	let startItem = $derived(total === 0 ? 0 : (currentPage - 1) * perPage + 1);
 	let endItem = $derived(Math.min(currentPage * perPage, total));
 	let visiblePages = $derived(getVisiblePages());
 </script>
 
-<div class="flex flex-col gap-4 px-4 py-3 sm:px-6">
+<nav class="flex flex-col gap-3 px-4 py-3 sm:px-5" aria-label="Paginación">
 	<div class="hidden w-full items-center justify-between md:flex">
-		<div class="flex items-center gap-4">
-			<p class="text-sm text-light-black">
-				Mostrando <span class="font-medium">{startItem}</span> a
-				<span class="font-medium">{endItem}</span> de
-				<span class="font-medium">{total}</span> resultados
-			</p>
-		</div>
-
-		<div class="flex items-center gap-2">
-			<button
-				onclick={goToPreviousPage}
-				disabled={currentPage === 1}
-				class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-light-four bg-light-one text-sm font-medium text-light-two_d transition-colors hover:bg-light-one_d disabled:cursor-not-allowed disabled:opacity-40"
-				title="Página anterior"
-			>
-				<ChevronLeftIcon />
-			</button>
-
-			<div class="flex items-center gap-1">
-				{#each visiblePages as page (page)}
-					<button
-						onclick={() => handlePageClick(page)}
-						class="inline-flex h-9 min-w-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors {page ===
-						currentPage
-							? 'border-light-three bg-light-two text-light-one'
-							: 'border-light-four bg-light-one text-light-two_d hover:bg-light-one_d'}"
-					>
-						{page}
-					</button>
-				{/each}
-			</div>
-
-			<button
-				onclick={goToNextPage}
-				disabled={currentPage === totalPages}
-				class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-light-four bg-light-one text-sm font-medium text-light-two_d transition-colors hover:bg-light-one_d disabled:cursor-not-allowed disabled:opacity-40"
-				title="Página siguiente"
-			>
-				<ChevronRightIcon />
-			</button>
-		</div>
-	</div>
-
-	<div class="flex w-full flex-col items-center gap-3 md:hidden">
-		<div class="flex w-full items-center justify-between">
-			<button
-				onclick={goToPreviousPage}
-				disabled={currentPage === 1}
-				class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-light-four bg-light-one text-light-two_d transition-colors active:bg-light-one_d disabled:opacity-30"
-			>
-				<ChevronLeftIcon />
-			</button>
-
-			<div class="flex items-center gap-1.5">
-				{#each visiblePages.filter((p) => Math.abs(p - currentPage) <= 1) as page (page)}
-					<button
-						onclick={() => handlePageClick(page)}
-						class="inline-flex h-10 min-w-10 items-center justify-center rounded-lg border px-3 text-sm font-semibold transition-colors {page ===
-						currentPage
-							? 'border-light-three bg-light-two text-light-one'
-							: 'border-light-four bg-light-one text-light-two_d'}"
-					>
-						{page}
-					</button>
-				{/each}
-			</div>
-
-			<button
-				onclick={goToNextPage}
-				disabled={currentPage === totalPages}
-				class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-light-four bg-light-one text-light-two_d transition-colors active:bg-light-one_d disabled:opacity-30"
-			>
-				<ChevronRightIcon />
-			</button>
-		</div>
-		<p class="text-xs font-medium text-light-two">
-			Página <span class="text-light-black">{currentPage}</span> de
-			<span class="text-light-black">{totalPages}</span>
+		<p class="text-sm text-acero-500">
+			<span class="font-semibold text-acero-900 tabular-nums">{startItem}–{endItem}</span> de
+			<span class="font-semibold text-acero-900 tabular-nums">{total}</span>
 		</p>
+
+		<div class="flex items-center gap-1">
+			<button
+				type="button"
+				onclick={goToPreviousPage}
+				disabled={currentPage === 1}
+				class="inline-flex size-9 items-center justify-center rounded-md text-acero-700 transition-colors hover:bg-acero-100 disabled:cursor-not-allowed disabled:opacity-35"
+				aria-label="Página anterior"
+			>
+				<ChevronLeftIcon class="size-5" />
+			</button>
+
+			{#each visiblePages as page (page)}
+				<button
+					type="button"
+					onclick={() => handlePageClick(page)}
+					aria-current={page === currentPage ? 'page' : undefined}
+					aria-label="Página {page}"
+					class="inline-flex h-9 min-w-9 items-center justify-center rounded-md px-2.5 text-sm font-semibold tabular-nums transition-colors {page ===
+					currentPage
+						? 'bg-acero-900 text-white'
+						: 'text-acero-700 hover:bg-acero-100'}"
+				>
+					{page}
+				</button>
+			{/each}
+
+			<button
+				type="button"
+				onclick={goToNextPage}
+				disabled={currentPage === totalPages || totalPages === 0}
+				class="inline-flex size-9 items-center justify-center rounded-md text-acero-700 transition-colors hover:bg-acero-100 disabled:cursor-not-allowed disabled:opacity-35"
+				aria-label="Página siguiente"
+			>
+				<ChevronRightIcon class="size-5" />
+			</button>
+		</div>
 	</div>
-</div>
+
+	<div class="flex w-full items-center justify-between md:hidden">
+		<button
+			type="button"
+			onclick={goToPreviousPage}
+			disabled={currentPage === 1}
+			class="inline-flex size-11 items-center justify-center rounded-lg border border-acero-200 bg-white text-acero-700 active:bg-acero-100 disabled:opacity-35"
+			aria-label="Página anterior"
+		>
+			<ChevronLeftIcon class="size-5" />
+		</button>
+		<p class="text-sm text-acero-600">
+			Página <span class="font-semibold text-acero-950 tabular-nums">{currentPage}</span> de
+			<span class="font-semibold text-acero-950 tabular-nums">{Math.max(totalPages, 1)}</span>
+		</p>
+		<button
+			type="button"
+			onclick={goToNextPage}
+			disabled={currentPage === totalPages || totalPages === 0}
+			class="inline-flex size-11 items-center justify-center rounded-lg border border-acero-200 bg-white text-acero-700 active:bg-acero-100 disabled:opacity-35"
+			aria-label="Página siguiente"
+		>
+			<ChevronRightIcon class="size-5" />
+		</button>
+	</div>
+</nav>

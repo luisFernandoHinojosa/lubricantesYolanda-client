@@ -121,11 +121,11 @@
 		<div in:fade={{ duration: 400 }}>
 			<div class="mb-4 flex items-center gap-4">
 				<div
-					class="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-600 shadow-lg shadow-red-600/20"
+					class="flex h-12 w-12 items-center justify-center rounded-xl bg-red-600 shadow-lg shadow-red-600/20"
 				>
 					<ReportAnalyticsIcon class="size-6 text-white" />
 				</div>
-				<Heading level="h4">Centro de Reportes</Heading>
+				<h1 class="titulo-pagina">Centro de Reportes</h1>
 			</div>
 		</div>
 
@@ -133,10 +133,10 @@
 			{#each categories as category (category.name)}
 				<section class="space-y-6" in:slide={{ duration: 500 }}>
 					<div class="flex flex-col gap-1">
-						<h2 class="text-md font-black tracking-tight text-light-black uppercase">
+						<h2 class="text-md font-semibold tracking-tight text-light-black">
 							{category.name}
 						</h2>
-						<p class="text-xs font-bold tracking-widest text-light-black/40 uppercase">
+						<p class="text-xs font-bold text-light-black/40">
 							{category.description}
 						</p>
 					</div>
@@ -165,10 +165,10 @@
 						{#snippet leftIcon()}<ArrowLeftIcon class="size-5" />{/snippet}
 					</Button>
 					<div>
-						<h1 class="text-md font-black tracking-tight text-light-black uppercase">
+						<h1 class="text-md font-semibold tracking-tight text-light-black">
 							Reporte de {activeReport}
 						</h1>
-						<p class="mt-1 text-xs font-normal tracking-widest text-light-two uppercase">
+						<p class="mt-1 text-xs font-normal text-acero-600">
 							Administración / Reportes / {activeReport}
 						</p>
 					</div>
@@ -194,11 +194,11 @@
 					<EmpleadosReport />
 				{:else}
 					<div
-						class="flex h-96 flex-col items-center justify-center rounded-3xl border border-dashed border-light-four bg-light-one text-center"
+						class="flex h-96 flex-col items-center justify-center rounded-xl border border-dashed border-light-four bg-light-one text-center"
 					>
 						<BoxIcon class="mb-4 size-16 text-light-black/20" />
-						<h3 class="text-xl font-bold text-light-black/40 uppercase">En Desarrollo</h3>
-						<p class="mt-1 text-xs tracking-widest text-light-black/30 uppercase">
+						<h3 class="text-xl font-bold text-light-black/40">En Desarrollo</h3>
+						<p class="mt-1 text-xs text-light-black/30">
 							Este reporte estará disponible próximamente
 						</p>
 					</div>

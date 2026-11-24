@@ -37,7 +37,7 @@
 <tr class="transition-colors hover:bg-gray-50">
 	<td class="px-6 py-4 whitespace-nowrap">
 		<span
-			class="inline-flex rounded-full bg-light-four px-2 text-xs leading-5 font-semibold text-light-two"
+			class="inline-flex rounded-full bg-light-four px-2 text-xs leading-5 font-semibold text-acero-600"
 		>
 			{rol.code_rol}
 		</span>

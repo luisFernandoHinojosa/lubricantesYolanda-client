@@ -116,9 +116,9 @@
 
 	const colorStyles: Record<TextColor, string> = {
 		primary: 'text-light-black',
-		secondary: 'text-light-two_d',
-		muted: 'text-light-four',
-		accent: 'text-light-three',
+		secondary: 'text-acero-600',
+		muted: 'text-acero-500',
+		accent: 'text-marca',
 		success: 'text-light-success',
 		warning: 'text-light-warning',
 		error: 'text-light-error',

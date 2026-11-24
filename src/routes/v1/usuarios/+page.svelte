@@ -296,32 +296,32 @@
 						<thead class="bg-gray-50">
 							<tr>
 								<th
-									class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+									class="px-6 py-3 text-left text-xs font-medium text-gray-500"
 								>
 									Usuario
 								</th>
 								<th
-									class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+									class="px-6 py-3 text-left text-xs font-medium text-gray-500"
 								>
 									Email
 								</th>
 								<th
-									class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+									class="px-6 py-3 text-left text-xs font-medium text-gray-500"
 								>
 									Rol
 								</th>
 								<th
-									class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+									class="px-6 py-3 text-left text-xs font-medium text-gray-500"
 								>
 									Estado
 								</th>
 								<th
-									class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+									class="px-6 py-3 text-left text-xs font-medium text-gray-500"
 								>
 									Fecha Creación
 								</th>
 								<th
-									class="px-6 py-3 text-right text-xs font-medium tracking-wider text-gray-500 uppercase"
+									class="px-6 py-3 text-right text-xs font-medium text-gray-500"
 								>
 									Acciones
 								</th>
@@ -363,9 +363,7 @@
 											class="relative inline-flex items-center"
 										>
 											<span
-												class="inline-flex rounded-full px-2 text-xs leading-5 font-semibold {usuario.esta_activo
-													? 'bg-green-100 text-green-800'
-													: 'bg-red-100 text-red-800'}"
+												class="inline-flex rounded-full px-2 text-xs leading-5 font-semibold {usuario.esta_activo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"
 											>
 												{usuario.esta_activo ? 'Activo' : 'Inactivo'}
 											</span>

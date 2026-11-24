@@ -40,10 +40,7 @@
 	</td>
 	<td class="px-6 py-4 text-sm">
 		<span
-			class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold {categoria.tipo ===
-			'INGRESO'
-				? 'bg-green-100 text-green-700'
-				: 'bg-red-100 text-red-700'}"
+			class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold {categoria.tipo === 'INGRESO' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}"
 		>
 			{categoria.tipo}
 		</span>
@@ -56,7 +53,7 @@
 			<button
 				bind:this={trigger}
 				onclick={() => (isDropdownOpen = !isDropdownOpen)}
-				class="hover:text-primary text-light-two transition-colors"
+				class="hover:text-primary text-acero-600 transition-colors"
 			>
 				<DotsVerticalIcon class="size-5" />
 			</button>

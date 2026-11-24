@@ -147,7 +147,7 @@
 >
 	<div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 		<div>
-			<Heading level="h4">Historial de Movimientos</Heading>
+			<h1 class="titulo-pagina">Historial de Movimientos</h1>
 		</div>
 	</div>
 
@@ -164,10 +164,7 @@
 					{#each [{ id: 'hoy', label: 'Hoy' }, { id: 'ayer', label: 'Ayer' }, { id: 'semana', label: 'Esta Semana' }, { id: 'mes', label: 'Mes Actual' }, { id: 'personalizado', label: 'Personalizado' }] as shortcut (shortcut.id)}
 						<button
 							onclick={() => setShortcut(shortcut.id as DateShortcut)}
-							class="rounded-xl border px-4 py-2 text-xs font-bold transition-all {activeShortcut ===
-							shortcut.id
-								? 'shadow-primary/20 border-light-four bg-light-two text-light-one shadow-md'
-								: 'border-light-four bg-light-one text-light-two hover:border-light-four_d hover:text-light-two_d'}"
+							class="rounded-xl border px-4 py-2 text-xs font-bold transition-all {activeShortcut === shortcut.id ? 'shadow-primary/20 border-light-four bg-light-two text-light-one shadow-md' : 'border-light-four bg-light-one text-acero-600 hover:border-light-four_d hover:text-light-two_d'}"
 						>
 							{shortcut.label}
 						</button>
@@ -192,13 +189,13 @@
 		<HistorialMovimientoTableSkeleton />
 	{:else if movimientos.length === 0}
 		<div
-			class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-light-four bg-light-one p-16 text-center"
+			class="flex flex-col items-center justify-center rounded-xl border border-dashed border-light-four bg-light-one p-16 text-center"
 		>
 			<div class="mb-6 rounded-full bg-light-one_d p-6 text-light-three">
 				<FilterIcon class="size-16" />
 			</div>
 			<h3 class="text-xl font-bold text-light-black">No se encontraron movimientos</h3>
-			<p class="mx-auto mt-2 max-w-xs text-light-two">
+			<p class="mx-auto mt-2 max-w-xs text-acero-600">
 				No hay registros para este rango de fechas. Prueba con otros términos o filtros.
 			</p>
 		</div>

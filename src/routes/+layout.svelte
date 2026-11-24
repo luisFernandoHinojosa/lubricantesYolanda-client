@@ -6,6 +6,11 @@
 	import { fade, scale } from 'svelte/transition';
 
 	let { children } = $props();
+
+	// Señal de que la página ya es interactiva (hidratada)
+	$effect(() => {
+		document.documentElement.dataset.app = 'lista';
+	});
 	let updateButton = $state<HTMLButtonElement>();
 
 	// Cuando aparece el modal, el foco va al botón (Enter actualiza) y se bloquea el scroll de fondo
@@ -76,8 +81,8 @@
 				Nueva versión disponible
 			</h2>
 			<p id="update-desc" class="mb-6 text-sm text-light-five/80">
-				Se instalaron mejoras en el sistema. Presiona <strong>Actualizar</strong> para seguir
-				trabajando con la versión más reciente.
+				Se instalaron mejoras en el sistema. Presiona <strong>Actualizar</strong> para seguir trabajando
+				con la versión más reciente.
 			</p>
 
 			<button

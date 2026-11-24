@@ -72,7 +72,7 @@
 
 <TableRow class="border-light-four hover:bg-light-one_d {cliente.esta_activo ? '' : 'opacity-60'}">
 	<TableCell class="px-6 py-4 text-sm font-medium whitespace-nowrap text-light-black">
-		<span class="mr-1 text-xs text-light-two">{tipoDocumento}</span>{documento}
+		<span class="mr-1 text-xs text-acero-600">{tipoDocumento}</span>{documento}
 	</TableCell>
 	<TableCell class="px-6 py-4 text-sm whitespace-nowrap">{nombreCompleto}</TableCell>
 	<TableCell class="px-6 py-4 text-sm whitespace-nowrap">{cliente.correo_electronico}</TableCell>

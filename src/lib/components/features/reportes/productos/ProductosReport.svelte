@@ -116,22 +116,22 @@
 		<div class="grid grid-cols-1 gap-6 sm:grid-cols-3" in:fade>
 			<!-- Categoría A -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-emerald-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-emerald-600 uppercase"
+					<span class="text-xs font-semibold text-emerald-600"
 						>Categoría A (Alta Rotación)</span
 					>
 					<div class="mt-1 flex items-end gap-3">
-						<h4 class="text-3xl font-black tracking-tighter text-light-black">
+						<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 							{data.analisis_abc.A.productos} <span class="text-lg text-light-black/40">prod.</span>
 						</h4>
 						<span class="mb-1 text-sm font-bold text-emerald-600">
 							({data.analisis_abc.A.porcentaje_ventas}%)
 						</span>
 					</div>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Aportación en ventas globales
 					</div>
 				</div>
@@ -139,22 +139,22 @@
 
 			<!-- Categoría B -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-blue-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-blue-600 uppercase"
+					<span class="text-xs font-semibold text-blue-600"
 						>Categoría B (Rotación Media)</span
 					>
 					<div class="mt-1 flex items-end gap-3">
-						<h4 class="text-3xl font-black tracking-tighter text-light-black">
+						<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 							{data.analisis_abc.B.productos} <span class="text-lg text-light-black/40">prod.</span>
 						</h4>
 						<span class="mb-1 text-sm font-bold text-blue-600">
 							({data.analisis_abc.B.porcentaje_ventas}%)
 						</span>
 					</div>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Aportación en ventas globales
 					</div>
 				</div>
@@ -162,22 +162,22 @@
 
 			<!-- Categoría C -->
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-orange-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-orange-600 uppercase"
+					<span class="text-xs font-semibold text-orange-600"
 						>Categoría C (Baja Rotación)</span
 					>
 					<div class="mt-1 flex items-end gap-3">
-						<h4 class="text-3xl font-black tracking-tighter text-light-black">
+						<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 							{data.analisis_abc.C.productos} <span class="text-lg text-light-black/40">prod.</span>
 						</h4>
 						<span class="mb-1 text-sm font-bold text-orange-600">
 							({data.analisis_abc.C.porcentaje_ventas}%)
 						</span>
 					</div>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Aportación en ventas globales
 					</div>
 				</div>
@@ -188,14 +188,14 @@
 		<div class="flex flex-col gap-8 xl:flex-row">
 			<!-- Más Vendidos -->
 			<div
-				class="flex w-full flex-col gap-4 rounded-3xl border border-light-four bg-light-one p-6 shadow-sm xl:w-1/3"
+				class="flex w-full flex-col gap-4 rounded-xl border border-light-four bg-light-one p-6 shadow-sm xl:w-1/3"
 			>
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
 						<div class="rounded-lg bg-emerald-50 p-2 text-emerald-600">
 							<TredingUpIcon class="size-5" />
 						</div>
-						<h3 class="text-sm font-black tracking-tight text-light-black uppercase">
+						<h3 class="text-sm font-semibold tracking-tight text-light-black">
 							Más Vendidos
 						</h3>
 					</div>
@@ -204,7 +204,7 @@
 				<div class="min-h-[400px] overflow-x-auto">
 					<table class="w-full text-left text-sm">
 						<thead
-							class="border-b border-light-four text-[10px] font-black tracking-widest text-light-black/40 uppercase"
+							class="border-b border-light-four text-xs font-semibold text-light-black/40"
 						>
 							<tr>
 								<th class="px-2 py-3">Producto</th>
@@ -218,23 +218,21 @@
 								{#each paginatedMasVendidos as item, i (i)}
 									<tr class="group transition-all hover:bg-light-one_d">
 										<td class="px-2 py-3 text-xs font-bold text-light-black">{item.producto}</td>
-										<td class="px-2 py-3 text-center text-xs font-black text-emerald-600"
+										<td class="px-2 py-3 text-center text-xs font-semibold text-emerald-600"
 											>{item.cantidad_vendida}</td
 										>
-										<td class="px-2 py-3 text-right text-xs font-black text-light-black"
+										<td class="px-2 py-3 text-right text-xs font-semibold text-light-black"
 											>{formatCurrency(item.ingresos)}</td
 										>
 										<td class="px-2 py-3 text-right text-xs">
 											<div class="flex flex-col gap-0.5">
 												<span
-													class="font-black {item.margen && item.margen > 0
-														? 'text-emerald-600'
-														: 'text-light-black/50'}"
+													class="font-semibold {item.margen && item.margen > 0 ? 'text-emerald-600' : 'text-light-black/50'}"
 												>
 													{item.margen !== undefined ? formatCurrency(item.margen) : '-'}
 												</span>
 												{#if item.margen_porcentaje !== undefined}
-													<span class="text-[9px] font-bold text-light-black/40"
+													<span class="text-xs font-bold text-light-black/40"
 														>{item.margen_porcentaje.toFixed(2)}%</span
 													>
 												{/if}
@@ -256,7 +254,7 @@
 				<!-- Pagination Más Vendidos -->
 				{#if totalPagesMas > 1}
 					<div class="flex items-center justify-between border-t border-light-four pt-4">
-						<span class="text-[10px] font-bold text-light-black/40"
+						<span class="text-xs font-bold text-light-black/40"
 							>Pág {pageMas} / {totalPagesMas}</span
 						>
 						<div class="flex gap-1">
@@ -279,14 +277,14 @@
 
 			<!-- Menos Vendidos -->
 			<div
-				class="flex w-full flex-col gap-4 rounded-3xl border border-light-four bg-light-one p-6 shadow-sm xl:w-1/3"
+				class="flex w-full flex-col gap-4 rounded-xl border border-light-four bg-light-one p-6 shadow-sm xl:w-1/3"
 			>
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
 						<div class="rounded-lg bg-orange-50 p-2 text-orange-600">
 							<TrendingDownIcon class="size-5" />
 						</div>
-						<h3 class="text-sm font-black tracking-tight text-light-black uppercase">
+						<h3 class="text-sm font-semibold tracking-tight text-light-black">
 							Menos Vendidos
 						</h3>
 					</div>
@@ -295,7 +293,7 @@
 				<div class="min-h-[400px] overflow-x-auto">
 					<table class="w-full text-left text-sm">
 						<thead
-							class="border-b border-light-four text-[10px] font-black tracking-widest text-light-black/40 uppercase"
+							class="border-b border-light-four text-xs font-semibold text-light-black/40"
 						>
 							<tr>
 								<th class="px-2 py-3">Producto</th>
@@ -308,10 +306,10 @@
 								{#each paginatedMenosVendidos as item, i (i)}
 									<tr class="group transition-all hover:bg-light-one_d">
 										<td class="px-2 py-3 text-xs font-bold text-light-black">{item.producto}</td>
-										<td class="px-2 py-3 text-center text-xs font-black text-orange-600"
+										<td class="px-2 py-3 text-center text-xs font-semibold text-orange-600"
 											>{item.cantidad_vendida}</td
 										>
-										<td class="px-2 py-3 text-right text-xs font-black text-light-black"
+										<td class="px-2 py-3 text-right text-xs font-semibold text-light-black"
 											>{formatCurrency(item.ingresos)}</td
 										>
 									</tr>
@@ -330,7 +328,7 @@
 				<!-- Pagination Menos Vendidos -->
 				{#if totalPagesMenos > 1}
 					<div class="flex items-center justify-between border-t border-light-four pt-4">
-						<span class="text-[10px] font-bold text-light-black/40"
+						<span class="text-xs font-bold text-light-black/40"
 							>Pág {pageMenos} / {totalPagesMenos}</span
 						>
 						<div class="flex gap-1">
@@ -353,14 +351,14 @@
 
 			<!-- Sin Movimiento -->
 			<div
-				class="flex w-full flex-col gap-4 rounded-3xl border border-light-four bg-light-one p-6 shadow-sm xl:w-1/3"
+				class="flex w-full flex-col gap-4 rounded-xl border border-light-four bg-light-one p-6 shadow-sm xl:w-1/3"
 			>
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
 						<div class="rounded-lg bg-red-50 p-2 text-red-600">
 							<BoxIcon class="size-5" />
 						</div>
-						<h3 class="text-sm font-black tracking-tight text-light-black uppercase">
+						<h3 class="text-sm font-semibold tracking-tight text-light-black">
 							Sin Movimiento
 						</h3>
 					</div>
@@ -369,7 +367,7 @@
 				<div class="min-h-[400px] overflow-x-auto">
 					<table class="w-full text-left text-sm">
 						<thead
-							class="border-b border-light-four text-[10px] font-black tracking-widest text-light-black/40 uppercase"
+							class="border-b border-light-four text-xs font-semibold text-light-black/40"
 						>
 							<tr>
 								<th class="px-2 py-3">Producto / SKU</th>
@@ -383,7 +381,7 @@
 										<td class="px-2 py-3 text-xs font-bold text-light-black">{item.producto}</td>
 										<td class="px-2 py-3 text-center">
 											<span
-												class="inline-flex rounded-full bg-red-50 px-2 py-0.5 text-[9px] font-black tracking-widest text-red-600 uppercase"
+												class="inline-flex rounded-full bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-600"
 												>Sin Rotación</span
 											>
 										</td>
@@ -403,7 +401,7 @@
 				<!-- Pagination Sin Movimiento -->
 				{#if totalPagesSin > 1}
 					<div class="flex items-center justify-between border-t border-light-four pt-4">
-						<span class="text-[10px] font-bold text-light-black/40"
+						<span class="text-xs font-bold text-light-black/40"
 							>Pág {pageSin} / {totalPagesSin}</span
 						>
 						<div class="flex gap-1">
@@ -426,13 +424,13 @@
 		</div>
 	{:else if loading}
 		<div
-			class="flex h-96 flex-col items-center justify-center gap-4 rounded-3xl border border-light-four bg-light-one"
+			class="flex h-96 flex-col items-center justify-center gap-4 rounded-xl border border-light-four bg-light-one"
 		>
 			<div
 				class="h-12 w-12 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600"
 			></div>
 			<p
-				class="animate-pulse text-[10px] font-black tracking-widest text-light-black/40 uppercase italic"
+				class="animate-pulse text-xs font-semibold text-light-black/40 italic"
 			>
 				Cargando Reporte de Productos...
 			</p>

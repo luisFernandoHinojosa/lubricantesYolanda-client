@@ -90,79 +90,79 @@
 		<!-- Stats Grid -->
 		<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" in:fade>
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-blue-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-blue-600 uppercase"
+					<span class="text-xs font-semibold text-blue-600"
 						>Total Activos</span
 					>
-					<h4 class="text-3xl font-black tracking-tighter text-light-black">
+					<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 						{data.resumen.total_clientes_activos}
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						En cartera total
 					</div>
 				</div>
 			</div>
 
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-emerald-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-emerald-600 uppercase"
+					<span class="text-xs font-semibold text-emerald-600"
 						>Nuevos vs Recurrentes</span
 					>
 					<div class="mt-1 flex items-end justify-between">
 						<div class="flex flex-col">
-							<span class="text-[10px] font-black text-light-black/40 uppercase">Nuevos</span>
-							<h4 class="text-xl font-black text-emerald-600">
+							<span class="text-xs font-semibold text-light-black/40">Nuevos</span>
+							<h4 class="text-xl font-semibold text-emerald-600">
 								+{data.resumen.clientes_nuevos_periodo}
 							</h4>
 						</div>
 						<div class="flex flex-col text-right">
-							<span class="text-[10px] font-black text-light-black/40 uppercase">Recurrentes</span>
-							<h4 class="text-xl font-black text-light-black">
+							<span class="text-xs font-semibold text-light-black/40">Recurrentes</span>
+							<h4 class="text-xl font-semibold text-light-black">
 								{data.resumen.clientes_recurrentes}
 							</h4>
 						</div>
 					</div>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Actividad en el periodo
 					</div>
 				</div>
 			</div>
 
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-purple-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-purple-600 uppercase"
+					<span class="text-xs font-semibold text-purple-600"
 						>Mayoristas</span
 					>
-					<h4 class="text-3xl font-black tracking-tighter text-light-black">
+					<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 						{data.resumen.clientes_mayoristas}
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Clientes tipo MAY
 					</div>
 				</div>
 			</div>
 
 			<div
-				class="relative overflow-hidden rounded-3xl border border-light-four bg-light-one p-6 shadow-sm"
+				class="relative overflow-hidden rounded-xl border border-light-four bg-light-one p-6 shadow-sm"
 			>
 				<div class="absolute -top-4 -right-4 size-24 rounded-full bg-orange-500/5"></div>
 				<div class="flex flex-col gap-1">
-					<span class="text-[10px] font-black tracking-widest text-orange-600 uppercase"
+					<span class="text-xs font-semibold text-orange-600"
 						>Minoristas</span
 					>
-					<h4 class="text-3xl font-black tracking-tighter text-light-black">
+					<h4 class="text-3xl font-semibold tracking-tighter text-light-black">
 						{data.resumen.clientes_minoristas}
 					</h4>
-					<div class="mt-2 text-[10px] font-bold text-light-black/40 uppercase">
+					<div class="mt-2 text-xs font-bold text-light-black/40">
 						Clientes tipo MIN
 					</div>
 				</div>
@@ -173,19 +173,19 @@
 		<div class="flex flex-col gap-8 xl:flex-row">
 			<!-- Top Clientes Table -->
 			<div
-				class="flex flex-col gap-6 rounded-3xl border border-light-four bg-light-one p-6 shadow-sm xl:w-2/3"
+				class="flex flex-col gap-6 rounded-xl border border-light-four bg-light-one p-6 shadow-sm xl:w-2/3"
 			>
 				<div class="flex items-center gap-3">
 					<div class="rounded-lg bg-emerald-50 p-2 text-emerald-600">
 						<UsersIcon class="size-5" />
 					</div>
-					<h3 class="text-sm font-black tracking-tight text-light-black uppercase">Top Clientes</h3>
+					<h3 class="text-sm font-semibold tracking-tight text-light-black">Top Clientes</h3>
 				</div>
 
 				<div class="min-h-[400px] overflow-x-auto">
 					<table class="w-full text-left text-sm">
 						<thead
-							class="border-b border-light-four text-[10px] font-black tracking-widest text-light-black/40 uppercase"
+							class="border-b border-light-four text-xs font-semibold text-light-black/40"
 						>
 							<tr>
 								<th class="px-4 py-4">Cliente</th>
@@ -201,32 +201,29 @@
 										<td class="px-4 py-4">
 											<div class="flex flex-col gap-0.5">
 												<span class="font-bold text-light-black">{cliente.cliente}</span>
-												<span class="text-[10px] font-medium text-light-black/40"
+												<span class="text-xs font-medium text-light-black/40"
 													>CI/NIT: {cliente.ci}</span
 												>
 											</div>
 										</td>
 										<td class="px-4 py-4 text-center">
 											<span
-												class="inline-flex rounded-full px-2 py-0.5 text-[9px] font-black tracking-widest uppercase {cliente.tipo ===
-												'MAY'
-													? 'bg-purple-50 text-purple-600'
-													: 'bg-orange-50 text-orange-600'}"
+												class="inline-flex rounded-full px-2 py-0.5 text-xs font-semibold {cliente.tipo === 'MAY' ? 'bg-purple-50 text-purple-600' : 'bg-orange-50 text-orange-600'}"
 											>
 												{cliente.tipo}
 											</span>
 										</td>
 										<td class="px-4 py-4 text-right">
 											<div class="flex flex-col gap-0.5">
-												<span class="font-black text-emerald-600"
+												<span class="font-semibold text-emerald-600"
 													>{formatCurrency(cliente.total_compras)}</span
 												>
-												<span class="text-[10px] font-bold text-light-black/40 uppercase"
+												<span class="text-xs font-bold text-light-black/40"
 													>{cliente.cantidad_ventas} Trx.</span
 												>
 											</div>
 										</td>
-										<td class="px-4 py-4 text-right text-xs font-black text-blue-600">
+										<td class="px-4 py-4 text-right text-xs font-semibold text-blue-600">
 											{cliente.puntos} pts
 										</td>
 									</tr>
@@ -275,13 +272,13 @@
 
 			<!-- Ventas por Zona -->
 			<!-- <div
-				class="flex flex-col gap-6 rounded-3xl border border-light-four bg-light-one p-6 shadow-sm xl:w-1/3"
+				class="flex flex-col gap-6 rounded-xl border border-light-four bg-light-one p-6 shadow-sm xl:w-1/3"
 			>
 				<div class="flex items-center gap-3">
 					<div class="rounded-lg bg-pink-50 p-2 text-pink-600">
 						<MapPinIcon class="size-5" />
 					</div>
-					<h3 class="text-sm font-black tracking-tight text-light-black uppercase">
+					<h3 class="text-sm font-semibold tracking-tight text-light-black">
 						Ventas por Zona Geográfica
 					</h3>
 				</div>
@@ -290,15 +287,15 @@
 					{#if data.por_zona.length > 0}
 						{#each data.por_zona as zona, index (index)}
 							<div
-								class="flex items-center justify-between rounded-2xl border border-light-four p-4 transition-all hover:border-pink-200 hover:bg-pink-50/10"
+								class="flex items-center justify-between rounded-xl border border-light-four p-4 transition-all hover:border-pink-200 hover:bg-pink-50/10"
 							>
 								<div class="flex flex-col gap-0.5">
 									<span class="text-sm font-bold text-light-black">{zona.zona}</span>
-									<span class="text-[10px] font-bold text-light-black/40 uppercase"
+									<span class="text-xs font-bold text-light-black/40"
 										>{zona.cantidad} Órdenes</span
 									>
 								</div>
-								<span class="text-sm font-black text-emerald-600"
+								<span class="text-sm font-semibold text-emerald-600"
 									>{formatCurrency(zona.total_ventas)}</span
 								>
 							</div>
@@ -315,13 +312,13 @@
 		</div>
 	{:else if loading}
 		<div
-			class="flex h-96 flex-col items-center justify-center gap-4 rounded-3xl border border-light-four bg-light-one"
+			class="flex h-96 flex-col items-center justify-center gap-4 rounded-xl border border-light-four bg-light-one"
 		>
 			<div
 				class="h-12 w-12 animate-spin rounded-full border-4 border-blue-200 border-t-blue-600"
 			></div>
 			<p
-				class="animate-pulse text-[10px] font-black tracking-widest text-light-black/40 uppercase italic"
+				class="animate-pulse text-xs font-semibold text-light-black/40 italic"
 			>
 				Cargando Reporte de Clientes...
 			</p>

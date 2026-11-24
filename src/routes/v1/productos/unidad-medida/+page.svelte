@@ -140,7 +140,7 @@
 >
 	<div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 		<div>
-			<Heading level="h4">Unidades de Medida</Heading>
+			<h1 class="titulo-pagina">Unidades de Medida</h1>
 		</div>
 		<div class="flex items-center gap-3">
 			<Button onclick={openCreateModal} variant="primary">
@@ -170,13 +170,13 @@
 		<UnidadMedidaTableSkeleton />
 	{:else if unidadMedidas.length === 0}
 		<div
-			class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-light-four bg-light-one p-16 text-center"
+			class="flex flex-col items-center justify-center rounded-xl border border-dashed border-light-four bg-light-one p-16 text-center"
 		>
 			<div class="mb-6 rounded-full bg-light-one_d p-6">
 				<FilePencilIcon class="size-16 text-light-three" />
 			</div>
 			<h3 class="text-xl font-bold text-light-black">No se encontraron unidades de medida</h3>
-			<p class="mx-auto mt-2 max-w-xs text-light-two">
+			<p class="mx-auto mt-2 max-w-xs text-acero-600">
 				{filters.search
 					? 'No hay resultados para tu búsqueda. Prueba con otros términos.'
 					: 'Aún no has registrado ninguna unidad de medida. ¡Empieza creando una nueva!'}
@@ -185,7 +185,7 @@
 				<Button
 					onclick={openCreateModal}
 					variant="outline"
-					class="mt-8 border-light-four text-light-two hover:bg-light-one_d"
+					class="mt-8 border-light-four text-acero-600 hover:bg-light-one_d"
 				>
 					Crear mi primera unidad
 				</Button>
@@ -196,36 +196,36 @@
 			<table class="min-w-full divide-y divide-light-four">
 				<thead class="bg-light-one_d font-bold">
 					<tr>
-						<!-- <th class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase">
+						<!-- <th class="px-6 py-4 text-left text-xs font-bold text-acero-600">
                             CI / NIT
                         </th> -->
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Nombre
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Abreviatura
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Código Factura
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Creado en
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Actualizado en
 						</th>
 						<th
-							class="px-6 py-4 text-right text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-right text-xs font-bold text-acero-600"
 						>
 							Acciones
 						</th>

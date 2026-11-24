@@ -1,196 +1,165 @@
 <script lang="ts">
-	import backgroundImg from '$lib/assets/images/background1.png';
-	import { Button, Heading, Image } from '$lib/components/ui';
-	import {
-		EyeIcon,
-		EyeOffIcon,
-		FacebookIcon,
-		InstagramIcon,
-		LinkedinIcon,
-		MailIcon
-	} from '$lib/icons/outline';
-	import { LockIcon } from '$lib/icons/solid';
+	import { page } from '$app/state';
+	import { Button } from '$lib/components/ui';
+	import { AuthShell } from '$lib/components/layout';
+	import { EyeIcon, EyeOffIcon, AlertTriangleIcon } from '$lib/icons/outline';
 	import { ErrorType, type LoginCredentials } from '$lib/interfaces';
 	import { AppError } from '$lib/services';
 	import { authStore, currentUserStore, isLoading } from '$lib/stores';
 	import { redirect } from '$lib/utils';
+	import { canAccess, getDefaultRedirect } from '$lib/utils/rbac.utils';
 	import { resolve } from '$app/paths';
-	import { getDefaultRedirect } from '$lib/utils/rbac.utils';
 
-	let email: string = '';
-	let password: string = '';
-	let showPassword: boolean = false;
-	let loginError: string = '';
+	let email = $state('');
+	let password = $state('');
+	let showPassword = $state(false);
+	let loginError = $state('');
+	let emailInput = $state<HTMLInputElement>();
+	// Hasta que la página es interactiva, el formulario no se puede enviar (evita un envío nativo vacío)
+	let lista = $state(false);
+	$effect(() => {
+		lista = true;
+	});
 
-	// $: if (email || password) {
-	// 	errors = [];
-	// 	loginError = '';
-	// }
+	// Pantalla que se intentó abrir sin sesión (solo rutas internas)
+	const redirectTo = $derived.by(() => {
+		const r = page.url.searchParams.get('redirectTo');
+		return r && r.startsWith('/v1/') ? r : null;
+	});
 
-	const handleLogin = async (event: Event): Promise<void> => {
+	const handleLogin = async (event: SubmitEvent): Promise<void> => {
 		event.preventDefault();
-		//await goto('/v1/inicio');
-		// errors = [];
-		// loginError = '';
-		// const validation = validateLoginForm(email, password);
-		// if (!validation.isValid) {
-		// 	errors = validation.errors;
-		// 	return;
-		// }
+		loginError = '';
 
-		const credentials: LoginCredentials = {
-			email: email.trim(),
-			password: password
-		};
-
+		const credentials: LoginCredentials = { email: email.trim(), password };
 		authStore.setLoading(true);
 
 		try {
 			await authStore.login(credentials);
-			//	redirect('v1/inicio');
 			const user = $currentUserStore;
-			console.log(' currentUserStore', $currentUserStore);
 			if (user) {
-				console.log(' user', user.Role.code_rol);
-				redirect(getDefaultRedirect(user.Role.code_rol));
+				const rol = user.Role.code_rol;
+				redirect(
+					redirectTo && canAccess(rol, redirectTo) ? redirectTo : getDefaultRedirect(rol),
+					true
+				);
 			} else {
-				// Login succeeded but user data wasn't loaded — send back to login
-				loginError = 'Error al obtener datos del usuario. Intenta nuevamente.';
+				loginError = 'No se pudieron cargar los datos de su cuenta. Intente de nuevo.';
 			}
 		} catch (error) {
-			console.error('Error durante el login:', error);
-
 			if (error instanceof AppError) {
 				switch (error.type) {
 					case ErrorType.AUTHENTICATION:
-						loginError = 'Credenciales incorrectas. Verifica tu email y contraseña.';
+						loginError = 'El correo o la contraseña no son correctos.';
 						break;
 					case ErrorType.NETWORK:
-						loginError = 'Error de conexión. Verifica tu conexión a internet.';
+						loginError = 'No hay conexión con el servidor. Revise su internet e intente de nuevo.';
 						break;
 					case ErrorType.SERVER:
-						loginError = 'Error del servidor. Intenta nuevamente en unos minutos.';
+						loginError = 'El servidor no responde. Intente de nuevo en unos minutos.';
 						break;
 					default:
-						loginError = error.message || 'Error desconocido durante el login.';
+						loginError = error.message || 'No se pudo iniciar sesión. Intente de nuevo.';
 				}
 			} else {
-				loginError = 'Error inesperado. Intenta nuevamente.';
+				loginError = 'No se pudo iniciar sesión. Intente de nuevo.';
 			}
+			emailInput?.focus();
 		} finally {
 			authStore.setLoading(false);
 		}
 	};
 
-	// Función para manejar el toggle de password
-	const togglePassword = (): void => {
-		showPassword = !showPassword;
-	};
+	const CAMPO =
+		'block h-12 w-full rounded-lg border border-acero-200 bg-white px-3.5 text-base text-acero-950 outline-none placeholder:text-acero-400 hover:border-acero-300 focus:border-acero-600 focus:ring-[3px] focus:ring-acero-200 disabled:bg-acero-50';
 </script>
 
-<main class="relative flex min-h-screen items-center justify-center overflow-hidden">
-	<div class="absolute inset-0 z-0">
-		<Image src={backgroundImg} alt="Background" class="h-full w-full object-cover" />
-	</div>
+<svelte:head><title>Iniciar sesión · Lubricantes Yolanda</title></svelte:head>
 
-	<div class="absolute top-6 left-6 z-20">
-		<div class="flex h-24 w-64 items-center justify-center rounded bg-light-one/60 p-2">
-			<Image objectFit="contain" src="/images/logo1.webp" alt="Lubricantes Yolanda" />
+<AuthShell>
+	<h1 class="font-display text-4xl font-semibold text-acero-950">Iniciar sesión</h1>
+	<p class="mt-2 text-acero-600">
+		{redirectTo
+			? 'Su sesión terminó. Ingrese de nuevo para continuar.'
+			: 'Ingrese con la cuenta que le dio el administrador.'}
+	</p>
+
+	{#if loginError}
+		<div
+			class="mt-6 flex items-start gap-2.5 rounded-lg border border-marca/30 bg-marca-tinte px-3.5 py-3 text-[0.9375rem] text-marca-oscuro"
+			role="alert"
+		>
+			<AlertTriangleIcon class="mt-0.5 size-5 shrink-0" />
+			<span>{loginError}</span>
 		</div>
-	</div>
+	{/if}
 
-	<div
-		class="z-10 w-full max-w-md rounded-lg border-8 border-light-one_d bg-light-one p-8 shadow-lg"
-	>
-		<div class="mb-8 text-center">
-			<Heading level="h3">Sign in</Heading>
+	<form onsubmit={handleLogin} class="mt-8 space-y-5">
+		<div>
+			<label for="email" class="mb-1.5 block text-sm font-medium text-acero-800"
+				>Correo electrónico</label
+			>
+			<!-- svelte-ignore a11y_autofocus -->
+			<input
+				bind:this={emailInput}
+				id="email"
+				type="email"
+				autocomplete="username"
+				inputmode="email"
+				autofocus
+				bind:value={email}
+				placeholder="nombre@correo.com"
+				class={CAMPO}
+				disabled={$isLoading}
+				aria-invalid={loginError ? 'true' : undefined}
+				required
+			/>
 		</div>
 
-		<!-- Mostrar errores generales -->
-		{#if loginError}
-			<div class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700">
-				{loginError}
+		<div>
+			<div class="mb-1.5 flex items-baseline justify-between">
+				<label for="password" class="block text-sm font-medium text-acero-800">Contraseña</label>
+				<a
+					href={resolve('/auth/forgot-password')}
+					class="text-sm font-medium text-acero-600 underline-offset-2 hover:text-acero-950 hover:underline"
+				>
+					¿La olvidó?
+				</a>
 			</div>
-		{/if}
+			<div class="relative">
+				<input
+					id="password"
+					type={showPassword ? 'text' : 'password'}
+					autocomplete="current-password"
+					bind:value={password}
+					class="{CAMPO} pr-12"
+					disabled={$isLoading}
+					aria-invalid={loginError ? 'true' : undefined}
+					required
+				/>
+				<button
+					type="button"
+					onclick={() => (showPassword = !showPassword)}
+					class="absolute inset-y-0 right-0 flex w-12 items-center justify-center rounded-r-lg text-acero-500 hover:text-acero-950"
+					disabled={!lista}
+					aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+					aria-pressed={showPassword}
+				>
+					{#if showPassword}<EyeOffIcon />{:else}<EyeIcon />{/if}
+				</button>
+			</div>
+		</div>
 
-		<!-- Mostrar errores de validación -->
-		<!-- {#if errors.length > 0}
-			<div class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3">
-				{#each errors as error}
-					<p class="text-sm text-red-700">{error}</p>
-				{/each}
-			</div>
-		{/if} -->
-
-		<form on:submit={handleLogin} class="space-y-6">
-			<div class="space-y-1">
-				<label for="email" class="text-sm font-medium text-light-three">Email</label>
-				<div class="relative">
-					<span class="absolute top-3 left-0 text-light-four"><MailIcon /></span>
-					<input
-						id="email"
-						type="email"
-						bind:value={email}
-						placeholder="Type your email"
-						class="border-g w-full border-t-0 border-r-0 border-b border-l-0 bg-transparent py-3 pl-8 text-light-three placeholder-light-four outline-0 transition-colors duration-200 outline-none focus:border-b-light-four_d focus:ring-0 focus:outline-0"
-						disabled={$isLoading}
-						required
-					/>
-				</div>
-			</div>
-
-			<div class="space-y-1">
-				<label for="password" class="text-sm font-medium text-light-three">Password</label>
-				<div class="relative">
-					<span class="absolute top-3 left-0 text-light-four"><LockIcon /></span>
-					<input
-						id="password"
-						type={showPassword ? 'text' : 'password'}
-						bind:value={password}
-						placeholder="Type your password"
-						class="w-full border-t-0 border-r-0 border-b border-l-0 border-light-four bg-transparent py-3 pr-12 pl-8 text-light-three placeholder-light-four transition-colors duration-200 outline-none focus:border-b-light-four_d focus:ring-0 focus:outline-0"
-						disabled={$isLoading}
-						required
-					/>
-					<button
-						type="button"
-						on:click={togglePassword}
-						class="absolute top-3 right-0 text-gray-400 transition-colors hover:text-gray-600"
-						disabled={$isLoading}
-					>
-						{#if showPassword}
-							<EyeIcon />
-						{:else}
-							<EyeOffIcon />
-						{/if}
-					</button>
-				</div>
-				<div class="pt-2 text-right">
-					<a
-						href={resolve('/auth/forgot-password')}
-						class="text-xs text-light-four transition-colors hover:text-light-four_d"
-					>
-						Olvidé mi contraseña
-					</a>
-				</div>
-			</div>
-
-			<div class="pt-4">
-				<Button type="submit" variant="primary" fullWidth size="md" loading={$isLoading}>
-					LOGIN
-				</Button>
-			</div>
-			<div class="flex justify-center space-x-4">
-				<Button type="button" variant="ghost" disabled={$isLoading}>
-					<FacebookIcon />
-				</Button>
-				<Button type="button" variant="ghost" disabled={$isLoading}>
-					<InstagramIcon />
-				</Button>
-				<Button type="button" variant="ghost" disabled={$isLoading}>
-					<LinkedinIcon />
-				</Button>
-			</div>
-		</form>
-	</div>
-</main>
+		<Button
+			type="submit"
+			variant="primary"
+			fullWidth
+			size="lg"
+			loading={$isLoading}
+			disabled={!lista}>Ingresar</Button
+		>
+	</form>
+	{#snippet pie()}
+		¿No tiene cuenta? Pídala al administrador del sistema.
+	{/snippet}
+</AuthShell>

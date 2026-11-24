@@ -95,7 +95,7 @@
 			<div class="rounded-lg bg-red-100 p-2 text-red-600">
 				<FiltersIcon class="size-5" />
 			</div>
-			<h3 class="text-sm font-black tracking-tight text-light-black uppercase">
+			<h3 class="text-sm font-semibold tracking-tight text-light-black">
 				Filtros de Análisis
 			</h3>
 		</div>

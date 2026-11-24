@@ -47,7 +47,7 @@
 		<!-- svelte-ignore a11y_no_static_element_interactions -->
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<div
-			class="relative mx-4 max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-2xl border border-light-four bg-light-one shadow-2xl"
+			class="relative mx-4 max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-xl border border-light-four bg-light-one shadow-2xl"
 			onclick={(e) => e.stopPropagation()}
 			transition:fly={{ y: 20, duration: 300 }}
 		>
@@ -57,10 +57,7 @@
 			>
 				<div class="flex items-center gap-3">
 					<div
-						class="flex size-10 items-center justify-center rounded-xl {devolucion.tipo ===
-						'DEVOLUCION'
-							? 'bg-red-100 text-red-600'
-							: 'bg-blue-100 text-blue-600'}"
+						class="flex size-10 items-center justify-center rounded-xl {devolucion.tipo === 'DEVOLUCION' ? 'bg-red-100 text-red-600' : 'bg-blue-100 text-blue-600'}"
 					>
 						{#if devolucion.tipo === 'DEVOLUCION'}
 							<svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -80,12 +77,12 @@
 						<h3 class="text-lg font-bold text-light-black">
 							{devolucion.tipo === 'DEVOLUCION' ? 'Devolución' : 'Cambio'}
 						</h3>
-						<p class="text-xs font-mono text-light-two">{devolucion.numero_devolucion}</p>
+						<p class="text-xs tabular-nums text-acero-600">{devolucion.numero_devolucion}</p>
 					</div>
 				</div>
 
 				<button
-					class="rounded-xl p-2 text-light-two transition-colors hover:bg-light-one_d hover:text-light-black"
+					class="rounded-xl p-2 text-acero-600 transition-colors hover:bg-light-one_d hover:text-light-black"
 					onclick={onClose}
 				>
 					<XIcon class="size-5" />
@@ -97,7 +94,7 @@
 				<!-- Info Grid -->
 				<div class="grid grid-cols-2 gap-4 md:grid-cols-3">
 					<div class="rounded-xl bg-light-one_d p-4">
-						<span class="text-[10px] font-bold tracking-wider text-light-two uppercase"
+						<span class="text-xs font-bold text-acero-600"
 							>Fecha</span
 						>
 						<p class="mt-1 text-sm font-bold text-light-black">
@@ -105,30 +102,24 @@
 						</p>
 					</div>
 					<div class="rounded-xl bg-light-one_d p-4">
-						<span class="text-[10px] font-bold tracking-wider text-light-two uppercase"
+						<span class="text-xs font-bold text-acero-600"
 							>Estado</span
 						>
 						<p class="mt-1">
 							<span
-								class="rounded-full px-3 py-1 text-[10px] font-bold uppercase {devolucion.estado ===
-								'COMPLETADA'
-									? 'bg-green-100 text-green-700'
-									: 'bg-red-100 text-red-700'}"
+								class="rounded-full px-3 py-1 text-xs font-bold {devolucion.estado === 'COMPLETADA' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}"
 							>
 								{devolucion.estado}
 							</span>
 						</p>
 					</div>
 					<div class="rounded-xl bg-light-one_d p-4">
-						<span class="text-[10px] font-bold tracking-wider text-light-two uppercase"
+						<span class="text-xs font-bold text-acero-600"
 							>Tipo</span
 						>
 						<p class="mt-1">
 							<span
-								class="rounded-full px-3 py-1 text-[10px] font-bold uppercase {devolucion.tipo ===
-								'DEVOLUCION'
-									? 'bg-red-100 text-red-700'
-									: 'bg-blue-100 text-blue-700'}"
+								class="rounded-full px-3 py-1 text-xs font-bold {devolucion.tipo === 'DEVOLUCION' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}"
 							>
 								{devolucion.tipo}
 							</span>
@@ -136,7 +127,7 @@
 					</div>
 					{#if devolucion.venta_original}
 						<div class="rounded-xl bg-light-one_d p-4">
-							<span class="text-[10px] font-bold tracking-wider text-light-two uppercase"
+							<span class="text-xs font-bold text-acero-600"
 								>Venta Original</span
 							>
 							<p class="mt-1 text-sm font-bold text-light-black">
@@ -146,19 +137,19 @@
 					{/if}
 					{#if devolucion.cliente}
 						<div class="rounded-xl bg-light-one_d p-4">
-							<span class="text-[10px] font-bold tracking-wider text-light-two uppercase"
+							<span class="text-xs font-bold text-acero-600"
 								>Cliente</span
 							>
 							<p class="mt-1 text-sm font-bold text-light-black">
 								{devolucion.cliente.nombre}
 								{devolucion.cliente.apellido_paterno}
 							</p>
-							<p class="text-xs text-light-two">CI: {devolucion.cliente.ci}</p>
+							<p class="text-xs text-acero-600">CI: {devolucion.cliente.ci}</p>
 						</div>
 					{/if}
 					{#if devolucion.empleado}
 						<div class="rounded-xl bg-light-one_d p-4">
-							<span class="text-[10px] font-bold tracking-wider text-light-two uppercase"
+							<span class="text-xs font-bold text-acero-600"
 								>Responsable</span
 							>
 							<p class="mt-1 text-sm font-bold text-light-black">
@@ -172,7 +163,7 @@
 				<!-- Motivo -->
 				{#if devolucion.motivo}
 					<div class="rounded-xl border border-amber-200 bg-amber-50 p-4">
-						<span class="text-[10px] font-bold tracking-wider text-amber-600 uppercase"
+						<span class="text-xs font-bold text-amber-600"
 							>Motivo</span
 						>
 						<p class="mt-1 text-sm text-amber-800">{devolucion.motivo}</p>
@@ -182,7 +173,7 @@
 				<!-- Detalles Table -->
 				{#if devolucion.detalles && devolucion.detalles.length > 0}
 					<div>
-						<h4 class="mb-3 text-xs font-bold tracking-wider text-light-two uppercase">
+						<h4 class="mb-3 text-xs font-bold text-acero-600">
 							Productos Devueltos
 						</h4>
 						<div class="overflow-x-auto rounded-xl border border-light-four">
@@ -190,19 +181,19 @@
 								<thead class="bg-light-one_d">
 									<tr>
 										<th
-											class="px-4 py-3 text-left text-[10px] font-bold tracking-wider text-light-two uppercase"
+											class="px-4 py-3 text-left text-xs font-bold text-acero-600"
 											>Producto</th
 										>
 										<th
-											class="px-4 py-3 text-center text-[10px] font-bold tracking-wider text-light-two uppercase"
+											class="px-4 py-3 text-center text-xs font-bold text-acero-600"
 											>Cantidad</th
 										>
 										<th
-											class="px-4 py-3 text-right text-[10px] font-bold tracking-wider text-light-two uppercase"
+											class="px-4 py-3 text-right text-xs font-bold text-acero-600"
 											>Precio</th
 										>
 										<th
-											class="px-4 py-3 text-right text-[10px] font-bold tracking-wider text-light-two uppercase"
+											class="px-4 py-3 text-right text-xs font-bold text-acero-600"
 											>Subtotal</th
 										>
 									</tr>
@@ -216,14 +207,14 @@
 												</p>
 												{#if det.presentacion_original}
 													<span
-														class="inline-block rounded-full bg-blue-100 px-2 py-0.5 text-[9px] font-semibold text-blue-700"
+														class="inline-block rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700"
 													>
 														{det.presentacion_original.nombre}
 													</span>
 												{/if}
 												{#if det.numero_serie_devuelta}
 													<span
-														class="inline-block rounded-full bg-purple-100 px-2 py-0.5 text-[9px] font-semibold text-purple-700"
+														class="inline-block rounded-full bg-purple-100 px-2 py-0.5 text-xs font-semibold text-purple-700"
 													>
 														S/N: {det.numero_serie_devuelta}
 													</span>
@@ -232,7 +223,7 @@
 											<td class="px-4 py-3 text-center text-sm font-bold text-light-black">
 												{det.cantidad_devuelta}
 											</td>
-											<td class="px-4 py-3 text-right text-sm text-light-two">
+											<td class="px-4 py-3 text-right text-sm text-acero-600">
 												{formatCurrency(det.precio_original)}
 											</td>
 											<td class="px-4 py-3 text-right text-sm font-bold text-red-600">
@@ -246,7 +237,7 @@
 												<td class="px-4 py-3" colspan="1">
 													<div class="flex items-center gap-2">
 														<span
-															class="rounded-full bg-blue-200 px-2 py-0.5 text-[9px] font-bold text-blue-700"
+															class="rounded-full bg-blue-200 px-2 py-0.5 text-xs font-bold text-blue-700"
 															>NUEVO</span
 														>
 														<p class="text-sm font-bold text-blue-800">
@@ -255,7 +246,7 @@
 													</div>
 													{#if det.presentacion_nueva}
 														<span
-															class="ml-12 inline-block rounded-full bg-blue-100 px-2 py-0.5 text-[9px] font-semibold text-blue-700"
+															class="ml-12 inline-block rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700"
 														>
 															{det.presentacion_nueva.nombre}
 														</span>
@@ -281,24 +272,20 @@
 
 				<!-- Totals -->
 				<div
-					class="rounded-xl border p-5 {devolucion.tipo === 'DEVOLUCION'
-						? 'border-red-200 bg-gradient-to-br from-red-50 to-rose-50'
-						: 'border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50'}"
+					class="rounded-xl border p-5 {devolucion.tipo === 'DEVOLUCION' ? 'border-red-200 bg-gradient-to-br from-red-50 to-rose-50' : 'border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50'}"
 				>
 					<div class="space-y-2">
 						<div class="flex items-center justify-between text-sm">
-							<span class="text-light-two">Monto devuelto</span>
+							<span class="text-acero-600">Monto devuelto</span>
 							<span class="font-bold text-red-600">
 								{formatCurrency(devolucion.monto_devuelto)}
 							</span>
 						</div>
 						{#if devolucion.tipo === 'CAMBIO'}
 							<div class="flex items-center justify-between text-sm">
-								<span class="text-light-two">Diferencia (nuevo - devuelto)</span>
+								<span class="text-acero-600">Diferencia (nuevo - devuelto)</span>
 								<span
-									class="font-bold {parseFloat(devolucion.monto_diferencia) >= 0
-										? 'text-amber-600'
-										: 'text-green-600'}"
+									class="font-bold {parseFloat(devolucion.monto_diferencia) >= 0 ? 'text-amber-600' : 'text-green-600'}"
 								>
 									{formatCurrency(devolucion.monto_diferencia)}
 								</span>

@@ -108,7 +108,7 @@
 	}
 </script>
 
-<div class=" fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
 	<div class="w-full max-w-2xl overflow-y-auto rounded-lg bg-white shadow-xl">
 		<!-- Header -->
 		<div
@@ -161,9 +161,7 @@
 						type="text"
 						id="name_user"
 						bind:value={formData.name_user}
-						class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.name_user
-							? 'border-red-500'
-							: ''}"
+						class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.name_user ? 'border-red-500' : ''}"
 						placeholder="Ej: juan.perez"
 						disabled={loading || isReadOnly}
 					/>
@@ -181,9 +179,7 @@
 						type="email"
 						id="email"
 						bind:value={formData.email}
-						class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.email
-							? 'border-red-500'
-							: ''}"
+						class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.email ? 'border-red-500' : ''}"
 						placeholder="ejemplo@correo.com"
 						disabled={loading || isReadOnly}
 					/>
@@ -198,9 +194,7 @@
 					<select
 						id="rol_id"
 						bind:value={formData.rol_id}
-						class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.rol_id
-							? 'border-red-500'
-							: ''}"
+						class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.rol_id ? 'border-red-500' : ''}"
 						disabled={loading || isReadOnly}
 					>
 						<option value="">Seleccione un rol</option>
@@ -219,9 +213,7 @@
 					<select
 						id="id_sucursal"
 						bind:value={formData.id_sucursal}
-						class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.id_sucursal
-							? 'border-red-500'
-							: ''}"
+						class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.id_sucursal ? 'border-red-500' : ''}"
 						disabled={loading || isReadOnly}
 					>
 						<option value="">Seleccione una sucursal</option>
@@ -242,9 +234,7 @@
 							type={showPassword ? 'text' : 'password'}
 							id="password"
 							bind:value={formData.password}
-							class="w-full rounded-lg border border-gray-300 px-4 py-2 pr-12 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.password
-								? 'border-red-500'
-								: ''}"
+							class="w-full rounded-lg border border-gray-300 px-4 py-2 pr-12 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.password ? 'border-red-500' : ''}"
 							placeholder="Ingrese la contraseña"
 							disabled={loading || isReadOnly}
 						/>
@@ -296,9 +286,7 @@
 							type={showConfirmPassword ? 'text' : 'password'}
 							id="confirmPassword"
 							bind:value={confirmPassword}
-							class="w-full rounded-lg border border-gray-300 px-4 py-2 pr-12 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.confirmPassword
-								? 'border-red-500'
-								: ''}"
+							class="w-full rounded-lg border border-gray-300 px-4 py-2 pr-12 focus:border-transparent focus:ring-2 focus:ring-blue-500 {errors.confirmPassword ? 'border-red-500' : ''}"
 							placeholder="Confirme la contraseña"
 							disabled={loading || isReadOnly}
 						/>

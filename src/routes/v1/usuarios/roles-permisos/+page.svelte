@@ -98,7 +98,7 @@
 <MainLayout title="Roles" description="Listado de roles." class="container mx-auto space-y-6">
 	<div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 		<div>
-			<Heading level="h4">Roles</Heading>
+			<h1 class="titulo-pagina">Roles</h1>
 		</div>
 		<div class="flex items-center gap-3">
 			<Button onclick={openCrearModal} variant="primary">
@@ -143,13 +143,13 @@
 		</div>
 	{:else if roles.length === 0}
 		<div
-			class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-light-four bg-light-one p-16 text-center"
+			class="flex flex-col items-center justify-center rounded-xl border border-dashed border-light-four bg-light-one p-16 text-center"
 		>
 			<div class="mb-6 rounded-full bg-light-one_d p-6">
 				<FilePencilIcon class="size-16 text-light-three" />
 			</div>
 			<h3 class="text-xl font-bold text-light-black">No se encontraron roles</h3>
-			<p class="mx-auto mt-2 max-w-xs text-light-two">
+			<p class="mx-auto mt-2 max-w-xs text-acero-600">
 				{searchTerm
 					? 'No hay resultados para tu búsqueda. Prueba con otros términos.'
 					: 'Aún no has registrado ningún rol. ¡Empieza creando uno nuevo!'}
@@ -158,7 +158,7 @@
 				<Button
 					onclick={openCrearModal}
 					variant="outline"
-					class="mt-8 border-light-four text-light-two hover:bg-light-one_d"
+					class="mt-8 border-light-four text-acero-600 hover:bg-light-one_d"
 				>
 					Crear mi primer rol
 				</Button>
@@ -170,23 +170,23 @@
 				<thead class="bg-light-one_d font-bold">
 					<tr>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Código</th
 						>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Nombre</th
 						>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Descripción</th
 						>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 							>Fecha Creación</th
 						>
 						<th
-							class="px-6 py-4 text-right text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-right text-xs font-bold text-acero-600"
 							>Acciones</th
 						>
 					</tr>
@@ -224,10 +224,7 @@
 							{#if page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)}
 								<button
 									onclick={() => handlePageChange(page)}
-									class="rounded-lg border px-4 py-2 text-sm font-medium transition-colors {page ===
-									currentPage
-										? 'border-blue-600 bg-blue-600 text-white'
-										: 'border-gray-300 text-gray-700 hover:bg-gray-50'}"
+									class="rounded-lg border px-4 py-2 text-sm font-medium transition-colors {page === currentPage ? 'border-blue-600 bg-blue-600 text-white' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}"
 								>
 									{page}
 								</button>

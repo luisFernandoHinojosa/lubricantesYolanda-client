@@ -1,166 +1,166 @@
 <script lang="ts">
-	import Icon from '$lib/components/ui/icon.svelte';
 	import type { MenuItem } from '$lib/interfaces';
-	import { page } from '$app/stores';
-	import { slide } from 'svelte/transition';
+	import { ChevronDownIcon } from '$lib/icons/outline';
+	import { clickOutside, portal } from '$lib/utils';
 	import { untrack } from 'svelte';
+	import { slide } from 'svelte/transition';
 
-	let { item, isCollapsed, onItemClick, isActive = false, hasActiveChild = false } = $props();
+	interface Props {
+		item: MenuItem;
+		isCollapsed: boolean;
+		onItemClick: () => void;
+		isActive?: boolean;
+		hasActiveChild?: boolean;
+		isPathActive: (href?: string) => boolean;
+	}
+
+	let {
+		item,
+		isCollapsed,
+		onItemClick,
+		isActive = false,
+		hasActiveChild = false,
+		isPathActive
+	}: Props = $props();
 
 	let isExpanded = $state(untrack(() => hasActiveChild));
+	let flyoutOpen = $state(false);
+	let trigger = $state<HTMLButtonElement>();
+	let flyoutPos = $state({ top: 0, left: 0 });
 
-	const toggleSubmenu = () => {
-		if (item.hasSubmenu) {
-			isExpanded = !isExpanded;
-		}
-	};
-
-	const handleClick = () => {
-		if (item.hasSubmenu) {
-			toggleSubmenu();
-		} else {
-			onItemClick();
-		}
-	};
-
-	const isSubItemActive = (href: string) => {
-		return $page.url.pathname === href;
-	};
+	// Al navegar a una pantalla de este grupo, abrir el grupo
+	$effect(() => {
+		if (hasActiveChild) isExpanded = true;
+	});
 
 	const MenuIcon = $derived(item.icon);
+	const highlighted = $derived(isActive || hasActiveChild);
+	const submenuId = $derived(`submenu-${item.id}`);
+
+	const handleGroupClick = () => {
+		if (isCollapsed && window.innerWidth >= 768) {
+			if (trigger) {
+				const r = trigger.getBoundingClientRect();
+				flyoutPos = { top: r.top, left: r.right + 8 };
+			}
+			flyoutOpen = !flyoutOpen;
+			return;
+		}
+		isExpanded = !isExpanded;
+	};
+
+	const rowBase =
+		'group relative flex h-10 w-full items-center gap-3 rounded-md px-3 text-[0.9375rem] font-medium transition-colors';
+	const rowState = (on: boolean) =>
+		on ? 'bg-acero-800 text-white' : 'text-acero-200 hover:bg-acero-800/60 hover:text-white';
 </script>
 
-<div class="mb-1 overflow-hidden rounded-lg">
-	{#if item.href && !item.hasSubmenu}
-		<a
-			href={item.href}
-			class="flex w-full items-center justify-between px-2 py-3 text-left transition-colors
-           {isActive || hasActiveChild ? 'bg-light-accent text-white' : 'hover:bg-light-accent'}
-           {isCollapsed ? 'justify-center px-2' : ''}"
-			title={isCollapsed ? item.label : ''}
-			onclick={onItemClick}
-		>
-			<div class="flex items-center gap-3 {isCollapsed ? 'justify-center' : ''}">
-				<MenuIcon class="h-5 w-5" />
-				{#if !isCollapsed}
-					<span class="text-sm font-medium">{item.label}</span>
-				{/if}
-			</div>
-		</a>
-	{:else}
-		<button
-			class="flex w-full items-center justify-between px-2 py-3 text-left transition-colors
-           {isActive ? 'bg-light-accent text-light-one' : 'hover:bg-light-accent'}
-           {isCollapsed ? 'justify-center' : ''}"
-			onclick={handleClick}
-			title={isCollapsed ? item.label : ''}
-		>
-			<div class="flex items-center gap-3 {isCollapsed ? 'justify-center' : ''}">
-				<MenuIcon class="h-5 w-5" />
-				{#if !isCollapsed}
-					<span class="text-sm font-medium">{item.label}</span>
-				{/if}
-			</div>
-
-			{#if item.hasSubmenu && !isCollapsed}
-				<svg
-					class="h-4 w-4 transition-transform duration-200 {isExpanded ? 'rotate-90' : ''}"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-				</svg>
-			{/if}
-		</button>
+{#snippet activeBar(on: boolean)}
+	{#if on}
+		<span class="absolute top-2 bottom-2 left-0 w-[3px] rounded-r bg-marca" aria-hidden="true"
+		></span>
 	{/if}
+{/snippet}
 
-	{#if item.hasSubmenu && isExpanded && item.submenu && !isCollapsed}
-		<div class="bg-light-three" transition:slide={{ duration: 200 }}>
-			{#each item.submenu as subItem}
-				<a
-					href={subItem.href}
-					class="block px-4 py-2 text-sm transition-colors
-                       {isSubItemActive(subItem.href)
-						? 'bg-light-accent font-medium text-light-one'
-						: 'text-light-one hover:bg-light-accent'}"
-					onclick={onItemClick}
-				>
-					{subItem.label}
-				</a>
-			{/each}
-		</div>
-	{/if}
-</div>
-<!-- <script lang="ts">
-	import { page } from '$app/stores';
-	import Icon from '$lib/components/ui/icon.svelte';
-	import type { MenuItem } from '$lib/interfaces';
-	import { slide } from 'svelte/transition';
-
-	let { item, isCollapsed, onItemClick, isActive, hasActiveChild } = $props();
-
-	let isExpanded: boolean = $state(hasActiveChild);
-
-	const toggleSubmenu = () => {
-		if (item.hasSubmenu) {
-			isExpanded = !isExpanded;
-		}
-	};
-
-	const handleClick = () => {
-		if (item.hasSubmenu) {
-			toggleSubmenu();
-		} else {
-			onItemClick();
-		}
-	};
-	const isSubItemActive = (href: string) => {
-		return $page.url.pathname === href;
-	};
-</script>
-
-<div class="mb-1 rounded-lg">
-	<button
-		class="flex w-full items-center justify-between py-3 text-left transition-colors hover:bg-light-accent
-           {isActive || hasActiveChild ? ' bg-light-accent' : ''}
-           {isCollapsed ? 'justify-center px-2' : ''}"
-		onclick={handleClick}
-		title={isCollapsed ? item.label : ''}
+{#if item.href && !item.hasSubmenu}
+	<a
+		href={item.href}
+		class="{rowBase} {rowState(highlighted)} {isCollapsed ? 'md:justify-center md:px-0' : ''}"
+		title={isCollapsed ? item.label : undefined}
+		aria-current={isActive ? 'page' : undefined}
+		onclick={onItemClick}
 	>
-		<div class="flex items-center gap-3 {isCollapsed ? 'justify-center' : ''}">
-			<svelte:component this={item.icon} class="h-5 w-5" />
-			{#if !isCollapsed}
-				<span class="text-sm font-medium">{item.label}</span>
-			{/if}
-		</div>
-
-		{#if item.hasSubmenu && !isCollapsed}
-			<svg
-				class="h-4 w-4 transition-transform duration-200 {isExpanded ? 'rotate-90' : ''}"
-				fill="none"
-				stroke="currentColor"
-				viewBox="0 0 24 24"
-			>
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-			</svg>
-		{/if}
+		{@render activeBar(highlighted)}
+		<MenuIcon
+			class="size-5 shrink-0 {highlighted
+				? 'text-white'
+				: 'text-acero-400 group-hover:text-acero-200'}"
+		/>
+		<span class="truncate {isCollapsed ? 'md:sr-only' : ''}">{item.label}</span>
+	</a>
+{:else}
+	<button
+		bind:this={trigger}
+		type="button"
+		class="{rowBase} {rowState(hasActiveChild && (isCollapsed || !isExpanded))} {isCollapsed
+			? 'md:justify-center md:px-0'
+			: ''}"
+		onclick={handleGroupClick}
+		title={isCollapsed ? item.label : undefined}
+		aria-expanded={isCollapsed ? flyoutOpen : isExpanded}
+		aria-controls={submenuId}
+	>
+		{@render activeBar(hasActiveChild && (isCollapsed || !isExpanded))}
+		<MenuIcon
+			class="size-5 shrink-0 {hasActiveChild
+				? 'text-white'
+				: 'text-acero-400 group-hover:text-acero-200'}"
+		/>
+		<span class="flex-1 truncate text-left {isCollapsed ? 'md:sr-only' : ''}">{item.label}</span>
+		<ChevronDownIcon
+			class="size-4 shrink-0 text-acero-400 transition-transform duration-200 {isExpanded
+				? 'rotate-180'
+				: ''} {isCollapsed ? 'md:hidden' : ''}"
+		/>
 	</button>
 
-	{#if item.hasSubmenu && isExpanded && item.submenu && !isCollapsed}
-		<div class="bg-light-three" transition:slide={{ duration: 200 }}>
-			{#each item.submenu as subItem}
+	{#if isExpanded && item.submenu && !isCollapsed}
+		<ul
+			id={submenuId}
+			class="relative mt-0.5 mb-1 ml-[1.375rem] space-y-0.5 border-l border-acero-700 pl-3"
+			transition:slide={{ duration: 160 }}
+		>
+			{#each item.submenu as sub (sub.id)}
+				{@const on = isPathActive(sub.href)}
+				<li>
+					<a
+						href={sub.href}
+						class="relative flex h-9 items-center rounded-md px-3 text-sm transition-colors {on
+							? 'bg-acero-800 font-medium text-white'
+							: 'text-acero-300 hover:bg-acero-800/60 hover:text-white'}"
+						aria-current={on ? 'page' : undefined}
+						onclick={onItemClick}
+					>
+						{#if on}
+							<span
+								class="absolute top-1/2 -left-[13px] h-4 w-[3px] -translate-y-1/2 rounded-r bg-marca"
+								aria-hidden="true"
+							></span>
+						{/if}
+						{sub.label}
+					</a>
+				</li>
+			{/each}
+		</ul>
+	{/if}
+
+	{#if flyoutOpen && isCollapsed && item.submenu}
+		<div
+			use:portal
+			use:clickOutside={{ callback: () => (flyoutOpen = false), exclude: trigger }}
+			class="fixed z-[60] w-60 rounded-lg border border-acero-700 bg-acero-900 p-1.5 shadow-2xl"
+			style="top: {flyoutPos.top}px; left: {flyoutPos.left}px"
+			role="menu"
+			tabindex="-1"
+			onkeydown={(e) => e.key === 'Escape' && (flyoutOpen = false)}
+		>
+			<p class="px-3 pt-1.5 pb-1 text-xs font-medium text-acero-400">{item.label}</p>
+			{#each item.submenu as sub (sub.id)}
+				{@const on = isPathActive(sub.href)}
 				<a
-					href={subItem.href}
-					class="block px-4 py-2 pl-12 text-sm transition-colors
-                       {isSubItemActive(subItem.href)
-						? 'bg-light-accent font-medium text-white'
-						: 'text-light-one hover:bg-light-accent'}"
-					onclick={onItemClick}
+					href={sub.href}
+					role="menuitem"
+					class="flex h-9 items-center rounded-md px-3 text-sm {on
+						? 'bg-acero-800 font-medium text-white'
+						: 'text-acero-200 hover:bg-acero-800 hover:text-white'}"
+					onclick={() => {
+						flyoutOpen = false;
+						onItemClick();
+					}}
 				>
-					{subItem.label}
+					{sub.label}
 				</a>
 			{/each}
 		</div>
 	{/if}
-</div> -->
+{/if}

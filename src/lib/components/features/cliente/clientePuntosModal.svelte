@@ -63,7 +63,7 @@
 <Modal {isOpen} {onClose} title="Ajustar puntos" maxWidth="sm:max-w-md">
 	{#if cliente}
 		<form id="cliente-puntos-form" onsubmit={handleSubmit} class="flex flex-col gap-4">
-			<p class="text-sm text-light-two">
+			<p class="text-sm text-acero-600">
 				<span class="font-semibold text-light-black">
 					{[cliente.nombre, cliente.apellido_paterno].filter(Boolean).join(' ')}
 				</span>
@@ -82,7 +82,7 @@
 			/>
 
 			{#if resultado !== null}
-				<p class="text-sm text-light-two">
+				<p class="text-sm text-acero-600">
 					Resultado: <span class="font-semibold text-light-black">{resultado} puntos</span>
 				</p>
 			{/if}

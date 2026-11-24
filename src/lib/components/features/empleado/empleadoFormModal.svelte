@@ -394,16 +394,12 @@
 							<button
 								type="button"
 								onclick={toggleCrearUsuario}
-								class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none {crearUsuario
-									? 'bg-blue-600'
-									: 'bg-gray-200'}"
+								class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none {crearUsuario ? 'bg-blue-600' : 'bg-gray-200'}"
 								role="switch"
 								aria-checked={crearUsuario}
 							>
 								<span
-									class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {crearUsuario
-										? 'translate-x-5'
-										: 'translate-x-0'}"
+									class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {crearUsuario ? 'translate-x-5' : 'translate-x-0'}"
 								></span>
 							</button>
 						</div>
@@ -483,11 +479,7 @@
 										type={showPassword ? 'text' : 'password'}
 										id="password"
 										bind:value={formData.usuario!.password}
-										class="w-full rounded-lg border border-light-four bg-light-one px-4 py-2 pr-12 text-light-black focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 {validationErrors[
-											'usuario.password'
-										]
-											? 'border-red-500'
-											: ''}"
+										class="w-full rounded-lg border border-light-four bg-light-one px-4 py-2 pr-12 text-light-black focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 {validationErrors[ 'usuario.password' ] ? 'border-red-500' : ''}"
 										placeholder="Ingrese la contraseña"
 										disabled={isSubmitting || isReadOnly}
 									/>
@@ -543,9 +535,7 @@
 										type={showConfirmPassword ? 'text' : 'password'}
 										id="confirmPassword"
 										bind:value={confirmPassword}
-										class="w-full rounded-lg border border-light-four bg-light-one px-4 py-2 pr-12 text-light-black focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 {validationErrors.confirmPassword
-											? 'border-red-500'
-											: ''}"
+										class="w-full rounded-lg border border-light-four bg-light-one px-4 py-2 pr-12 text-light-black focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 {validationErrors.confirmPassword ? 'border-red-500' : ''}"
 										placeholder="Confirme la contraseña"
 										disabled={isSubmitting || isReadOnly}
 									/>
@@ -591,7 +581,7 @@
 				{/if}
 
 				<!-- Botones -->
-				<div class=" mt-6 flex justify-end gap-3 border-t border-light-four bg-light-one pt-4">
+				<div class="mt-6 flex justify-end gap-3 border-t border-light-four bg-light-one pt-4">
 					{#if isReadOnly}
 						<Button type="button" onclick={handleClose} variant="secondary" size="md">
 							Cerrar

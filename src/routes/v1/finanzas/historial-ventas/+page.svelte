@@ -293,12 +293,12 @@
 >
 	<div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 		<div>
-			<Heading level="h4">Historial de Ventas</Heading>
+			<h1 class="titulo-pagina">Historial de Ventas</h1>
 		</div>
 
-		<div class="min-w-48 overflow-hidden rounded-xl bg-[#B91C1C] p-4 text-white shadow-md">
-			<div class="mb-1 text-[10px] font-bold uppercase opacity-80">Ventas Registradas</div>
-			<div class="text-4xl font-extrabold tracking-tighter">{resumen.cantidad_registradas}</div>
+		<div class="min-w-48 overflow-hidden rounded-xl bg-acero-900 p-4 text-white shadow-md">
+			<div class="mb-1 text-xs font-bold opacity-80">Ventas Registradas</div>
+			<div class="text-4xl font-semibold tracking-tighter">{resumen.cantidad_registradas}</div>
 		</div>
 	</div>
 
@@ -312,7 +312,7 @@
 				value={searchInput}
 				oninput={handleSearchInput}
 				placeholder="Buscar por comprobante, cliente o CI..."
-				class="w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 pr-4 pl-10 text-sm text-gray-900 transition-all focus:border-[#B91C1C] focus:ring-1 focus:ring-[#B91C1C]"
+				class="w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 pr-4 pl-10 text-sm text-gray-900 transition-all focus:border-marca focus:ring-1 focus:ring-marca"
 			/>
 			<span class="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400">
 				<ZoomIcon class="h-5 w-5" />
@@ -322,7 +322,7 @@
 		<div class="w-40">
 			<select
 				onchange={handleFilterChange}
-				class="w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 focus:border-[#B91C1C] focus:ring-1 focus:ring-[#B91C1C]"
+				class="w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 focus:border-marca focus:ring-1 focus:ring-marca"
 			>
 				<option value="">Método: Todos</option>
 				{#each METODO_PAGO_FACTURA as metodo (metodo.codigo)}
@@ -335,7 +335,7 @@
 			<select
 				bind:value={datePreset}
 				onchange={() => applyDatePreset(datePreset)}
-				class="w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 focus:border-[#B91C1C] focus:ring-1 focus:ring-[#B91C1C]"
+				class="w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 focus:border-marca focus:ring-1 focus:ring-marca"
 			>
 				<option value="">Fecha: Todas</option>
 				<option value="hoy">Hoy</option>
@@ -349,24 +349,24 @@
 		{#if datePreset === 'custom'}
 			<div class="flex items-center rounded-lg border border-gray-200 bg-gray-50/80 p-1 shadow-sm">
 				<div class="flex items-center gap-2 pr-2 pl-3">
-					<span class="text-[11px] font-bold tracking-wider text-gray-500 uppercase">Desde</span>
+					<span class="text-xs font-bold text-gray-500">Desde</span>
 					<input
 						type="date"
 						bind:value={filters.desde}
 						onchange={handleCustomDateChange}
-						class="w-36 cursor-pointer rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:border-gray-400 focus:border-[#B91C1C] focus:ring-1 focus:ring-[#B91C1C]"
+						class="w-36 cursor-pointer rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:border-gray-400 focus:border-marca focus:ring-1 focus:ring-marca"
 					/>
 				</div>
 
 				<div class="h-6 w-[1px] bg-gray-300"></div>
 
 				<div class="flex items-center gap-2 pr-3 pl-2">
-					<span class="text-[11px] font-bold tracking-wider text-gray-500 uppercase">Hasta</span>
+					<span class="text-xs font-bold text-gray-500">Hasta</span>
 					<input
 						type="date"
 						bind:value={filters.hasta}
 						onchange={handleCustomDateChange}
-						class="w-36 cursor-pointer rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:border-gray-400 focus:border-[#B91C1C] focus:ring-1 focus:ring-[#B91C1C]"
+						class="w-36 cursor-pointer rounded-md border border-gray-300 bg-white px-2.5 py-1.5 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:border-gray-400 focus:border-marca focus:ring-1 focus:ring-marca"
 					/>
 				</div>
 			</div>
@@ -376,16 +376,16 @@
 	<!-- Data Table -->
 	<div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
 		<div class="overflow-x-auto">
-			<table class="w-full border-collapse text-left text-xs whitespace-nowrap">
+			<table class="w-full border-collapse text-left text-sm whitespace-nowrap">
 				<thead>
-					<tr class="bg-[#B91C1C] font-bold tracking-wider text-white uppercase">
-						<th class="border-r border-red-800/30 px-6 py-4">Comprobante</th>
-						<th class="border-r border-red-800/30 px-6 py-4">Fecha</th>
-						<th class="border-r border-red-800/30 px-6 py-4">Cliente</th>
-						<th class="border-r border-red-800/30 px-6 py-4">Vendedor</th>
-						<th class="border-r border-red-800/30 px-6 py-4 text-center">Pagos</th>
-						<th class="border-r border-red-800/30 px-6 py-4 text-right">Total</th>
-						<th class="px-6 py-4 text-center">Acciones</th>
+					<tr class="border-b border-acero-200 bg-acero-50 text-sm font-semibold text-acero-600">
+						<th class="px-6 py-3">Comprobante</th>
+						<th class="px-6 py-3">Fecha</th>
+						<th class="px-6 py-3">Cliente</th>
+						<th class="px-6 py-3">Vendedor</th>
+						<th class="px-6 py-3 text-center">Pagos</th>
+						<th class="px-6 py-3 text-right">Total</th>
+						<th class="px-6 py-3 text-center">Acciones</th>
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-gray-100">

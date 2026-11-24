@@ -376,21 +376,21 @@
 {#if isLoading}
 	<div class="flex flex-col gap-6" in:fade>
 		<div
-			class="h-[60px] animate-[shimmer_1.4s_infinite] rounded-xl bg-gradient-to-r from-[#f0ebe4] via-[#e8e2d9] to-[#f0ebe4] bg-[length:200%_100%]"
+			class="h-[60px] animate-[shimmer_1.4s_infinite] rounded-xl bg-gradient-to-r from-acero-100 via-acero-200 to-acero-100 bg-[length:200%_100%]"
 		></div>
 		<div class="grid grid-cols-1 items-start gap-6 md:grid-cols-2">
 			<div
-				class="h-[360px] animate-[shimmer_1.4s_infinite] rounded-xl bg-gradient-to-r from-[#f0ebe4] via-[#e8e2d9] to-[#f0ebe4] bg-[length:200%_100%]"
+				class="h-[360px] animate-[shimmer_1.4s_infinite] rounded-xl bg-gradient-to-r from-acero-100 via-acero-200 to-acero-100 bg-[length:200%_100%]"
 			></div>
 			<div class="flex flex-col gap-5">
 				<div
-					class="h-[200px] animate-[shimmer_1.4s_infinite] rounded-xl bg-gradient-to-r from-[#f0ebe4] via-[#e8e2d9] to-[#f0ebe4] bg-[length:200%_100%]"
+					class="h-[200px] animate-[shimmer_1.4s_infinite] rounded-xl bg-gradient-to-r from-acero-100 via-acero-200 to-acero-100 bg-[length:200%_100%]"
 				></div>
 				<div
-					class="h-[130px] animate-[shimmer_1.4s_infinite] rounded-xl bg-gradient-to-r from-[#f0ebe4] via-[#e8e2d9] to-[#f0ebe4] bg-[length:200%_100%]"
+					class="h-[130px] animate-[shimmer_1.4s_infinite] rounded-xl bg-gradient-to-r from-acero-100 via-acero-200 to-acero-100 bg-[length:200%_100%]"
 				></div>
 				<div
-					class="h-[130px] animate-[shimmer_1.4s_infinite] rounded-xl bg-gradient-to-r from-[#f0ebe4] via-[#e8e2d9] to-[#f0ebe4] bg-[length:200%_100%]"
+					class="h-[130px] animate-[shimmer_1.4s_infinite] rounded-xl bg-gradient-to-r from-acero-100 via-acero-200 to-acero-100 bg-[length:200%_100%]"
 				></div>
 			</div>
 		</div>
@@ -399,10 +399,10 @@
 	<!-- ═══ NOT FOUND ═══ -->
 {:else if !producto}
 	<div class="flex min-h-[60vh] flex-col items-center justify-center gap-4 text-center" in:fade>
-		<div class="flex h-20 w-20 items-center justify-center rounded-full bg-[#f5f0e8]">
-			<TagIcon class="h-10 w-10 text-[#ccc]" />
+		<div class="flex h-20 w-20 items-center justify-center rounded-full bg-acero-100">
+			<TagIcon class="h-10 w-10 text-acero-300" />
 		</div>
-		<Heading level="h4" class="!text-[#1a1a2e]">Producto no encontrado</Heading>
+		<h1 class="titulo-pagina">Producto no encontrado</h1>
 		<Text variant="body-sm" color="accent">
 			No se encontró el producto o hubo un error al cargar los datos.
 		</Text>
@@ -414,7 +414,7 @@
 	<MainLayout
 		title={producto.nombre_comercial}
 		description="Información del producto."
-		class="relative container  mx-auto flex flex-col gap-6"
+		class="relative container mx-auto flex flex-col gap-6"
 	>
 		<header
 			class="flex flex-wrap items-end justify-between gap-4"
@@ -428,7 +428,7 @@
 				</Button>
 
 				<div class="flex flex-wrap">
-					<Heading level="h4" class="tracking-tight !text-[#1a1a2e]">
+					<Heading level="h4" class="tracking-tight !text-acero-950">
 						{producto.nombre_comercial}
 					</Heading>
 				</div>
@@ -481,17 +481,17 @@
 			<div class="flex flex-col gap-5">
 				<!-- Product Identity Card -->
 				<div
-					class="grid grid-cols-[168px_1fr] overflow-hidden rounded-2xl border border-[#e8e0d8] bg-white !p-0 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)]"
+					class="grid grid-cols-[168px_1fr] overflow-hidden rounded-xl border border-acero-200 bg-white !p-0 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)]"
 					in:fly={{ y: 20, duration: 380, delay: 60 }}
 				>
 					<!-- IMAGE PANEL -->
 					<div
-						class="relative flex min-h-[260px] flex-col items-center justify-center gap-2.5 border-r border-[#e8e0d8] bg-[#f5f0e8] p-6"
+						class="relative flex min-h-[260px] flex-col items-center justify-center gap-2.5 border-r border-acero-200 bg-acero-100 p-6"
 					>
 						{#if isEditMode}
 							<!-- Clickable image uploader -->
 							<button
-								class="group relative h-[120px] w-[120px] cursor-pointer overflow-hidden rounded-xl border-2 border-dashed border-[#b09475] bg-transparent p-0 transition-colors hover:border-[#8b7355]"
+								class="group relative h-[120px] w-[120px] cursor-pointer overflow-hidden rounded-xl border-2 border-dashed border-acero-400 bg-transparent p-0 transition-colors hover:border-acero-700"
 								onclick={() => fileInput.click()}
 								type="button"
 								aria-label="Cambiar imagen del producto"
@@ -522,7 +522,7 @@
 									</div>
 								{:else}
 									<div class="flex h-full w-full flex-col items-center justify-center gap-1.5">
-										<PhotoIcon class="h-9 w-9 text-[#b09475]" />
+										<PhotoIcon class="h-9 w-9 text-acero-400" />
 										<Text variant="body-xs" color="muted">Subir imagen</Text>
 									</div>
 								{/if}
@@ -545,7 +545,7 @@
 								/>
 							{:else}
 								<div class="flex flex-col items-center gap-1.5">
-									<PhotoIcon class="h-12 w-12 text-[#ccc]" />
+									<PhotoIcon class="h-12 w-12 text-acero-300" />
 									<Text variant="body-xs" color="muted">Sin imagen</Text>
 								</div>
 							{/if}
@@ -555,8 +555,8 @@
 					<!-- INFO SECTION -->
 					<div class="flex flex-col gap-[1.1rem] p-6">
 						<div class="flex items-center gap-[0.45rem]">
-							<div class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#8b7355]"></div>
-							<span class="text-[0.62rem] font-extrabold tracking-wide text-[#9a8060] uppercase"
+							<div class="h-1.5 w-1.5 shrink-0 rounded-full bg-acero-700"></div>
+							<span class="text-[0.62rem] font-semibold text-acero-500"
 								>INFORMACIÓN GENERAL</span
 							>
 						</div>
@@ -567,13 +567,13 @@
 								<!-- Nombre Comercial -->
 								<div class="col-span-full flex flex-col gap-1.5">
 									<label
-										class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+										class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 										for="nombre_comercial">Nombre Comercial *</label
 									>
 									<input
 										id="nombre_comercial"
 										type="text"
-										class="w-full rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] px-3 py-2 text-[0.85rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+										class="w-full rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 px-3 py-2 text-[0.85rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 										bind:value={form.nombre_comercial}
 										placeholder="Ej: Cable 5mm"
 									/>
@@ -582,12 +582,12 @@
 								<!-- Descripción -->
 								<div class="col-span-full flex flex-col gap-1.5">
 									<label
-										class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+										class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 										for="descripcion">Descripción</label
 									>
 									<textarea
 										id="descripcion"
-										class="w-full rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] px-3 py-2 text-[0.85rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+										class="w-full rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 px-3 py-2 text-[0.85rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 										bind:value={form.descripcion}
 										placeholder="Breve descripción del producto (opcional)"
 										rows="2"
@@ -598,13 +598,13 @@
 								<!-- Código de Barras -->
 								<div class="col-span-full flex flex-col gap-1.5">
 									<label
-										class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+										class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 										for="codigo_barras">Código de Barras</label
 									>
 									<input
 										id="codigo_barras"
 										type="text"
-										class="w-full rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] px-3 py-2 font-mono text-[0.8rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+										class="w-full rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 px-3 py-2 tabular-nums text-[0.8rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 										bind:value={form.codigo_barras}
 										placeholder="EAN-13, UPC, etc."
 									/>
@@ -613,17 +613,17 @@
 								<!-- Categoría -->
 								<div class="flex flex-col gap-1.5">
 									<label
-										class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+										class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 										for="id_categoria">Categoría *</label
 									>
 									{#if loadingDropdowns}
 										<div
-											class="h-[38px] animate-[pulse_1.4s_infinite] rounded-[9px] bg-[#e8e2d9]"
+											class="h-[38px] animate-[pulse_1.4s_infinite] rounded-[9px] bg-acero-200"
 										></div>
 									{:else}
 										<select
 											id="id_categoria"
-											class="w-full cursor-pointer appearance-none rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%239a8060%22%20stroke-width%3D%222%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:14px] bg-[right_0.6rem_center] bg-no-repeat px-3 py-2 pr-8 text-[0.85rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+											class="w-full cursor-pointer appearance-none rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%239a8060%22%20stroke-width%3D%222%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:14px] bg-[right_0.6rem_center] bg-no-repeat px-3 py-2 pr-8 text-[0.85rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 											bind:value={form.id_categoria}
 										>
 											<option value="">Seleccionar...</option>
@@ -637,17 +637,17 @@
 								<!-- Marca -->
 								<div class="flex flex-col gap-1.5">
 									<label
-										class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+										class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 										for="id_marca">Marca *</label
 									>
 									{#if loadingDropdowns}
 										<div
-											class="h-[38px] animate-[pulse_1.4s_infinite] rounded-[9px] bg-[#e8e2d9]"
+											class="h-[38px] animate-[pulse_1.4s_infinite] rounded-[9px] bg-acero-200"
 										></div>
 									{:else}
 										<select
 											id="id_marca"
-											class="w-full cursor-pointer appearance-none rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%239a8060%22%20stroke-width%3D%222%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:14px] bg-[right_0.6rem_center] bg-no-repeat px-3 py-2 pr-8 text-[0.85rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+											class="w-full cursor-pointer appearance-none rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%239a8060%22%20stroke-width%3D%222%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:14px] bg-[right_0.6rem_center] bg-no-repeat px-3 py-2 pr-8 text-[0.85rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 											bind:value={form.id_marca}
 										>
 											<option value="">Seleccionar...</option>
@@ -663,12 +663,12 @@
 									<label class="form-label" for="id_unidad_medida">Unidad Base *</label>
 									{#if loadingDropdowns}
 										<div
-											class="h-[38px] animate-[pulse_1.4s_infinite] rounded-[9px] bg-[#e8e2d9]"
+											class="h-[38px] animate-[pulse_1.4s_infinite] rounded-[9px] bg-acero-200"
 										></div>
 									{:else}
 										<select
 											id="id_unidad_medida"
-											class="w-full cursor-pointer appearance-none rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%239a8060%22%20stroke-width%3D%222%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:14px] bg-[right_0.6rem_center] bg-no-repeat px-3 py-2 pr-8 text-[0.85rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+											class="w-full cursor-pointer appearance-none rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%239a8060%22%20stroke-width%3D%222%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M19%209l-7%207-7-7%22%2F%3E%3C%2Fsvg%3E')] bg-[length:14px] bg-[right_0.6rem_center] bg-no-repeat px-3 py-2 pr-8 text-[0.85rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 											bind:value={form.id_unidad_medida}
 										>
 											<option value="">Seleccionar...</option>
@@ -682,13 +682,13 @@
 								<!-- Stock Mínimo -->
 								<div class="flex flex-col gap-1.5">
 									<label
-										class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+										class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 										for="stock_minimo">Stock Mínimo</label
 									>
 									<input
 										id="stock_minimo"
 										type="number"
-										class="w-full rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] px-3 py-2 text-[0.85rem] font-medium text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+										class="w-full rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 px-3 py-2 text-[0.85rem] font-medium text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 										min="0"
 										step="1"
 										bind:value={form.stock_minimo}
@@ -698,18 +698,18 @@
 								<!-- Precio de Venta -->
 								<div class="flex flex-col gap-1.5">
 									<label
-										class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+										class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 										for="precio_venta">Precio de Venta</label
 									>
 									<div class="relative">
 										<span
-											class="absolute top-1/2 left-3 -translate-y-1/2 text-[0.85rem] font-bold text-[#b09475]"
+											class="absolute top-1/2 left-3 -translate-y-1/2 text-[0.85rem] font-bold text-acero-400"
 											>Bs.</span
 										>
 										<input
 											id="precio_venta"
 											type="number"
-											class="w-full rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] py-2 pr-3 pl-10 text-[0.85rem] font-bold text-[#1a1a2e] transition-all outline-none focus:border-[#8b7355] focus:ring-[3px] focus:ring-[#8b7355]/10"
+											class="w-full rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 py-2 pr-3 pl-10 text-[0.85rem] font-bold text-acero-950 transition-all outline-none focus:border-acero-700 focus:ring-[3px] focus:ring-acero-700/10"
 											min="0"
 											step="0.01"
 											bind:value={form.precio_venta}
@@ -720,29 +720,23 @@
 								<!-- Maneja Vencimiento -->
 								<div class="flex flex-col gap-1.5">
 									<label
-										class="text-[0.62rem] font-extrabold tracking-[0.08em] text-[#9a8060] uppercase"
+										class="text-[0.62rem] font-semibold tracking-[0.08em] text-acero-500"
 										for="maneja_venc">Maneja Vencimiento</label
 									>
 									<button
 										id="maneja_venc"
 										type="button"
-										class="group inline-flex w-fit cursor-pointer items-center gap-[0.7rem] rounded-[9px] border-[1.5px] border-[#e0d8cf] bg-[#f8f5f0] px-[0.85rem] py-[0.55rem] transition-all {form.maneja_vencimiento
-											? '!border-green-500/40 !bg-green-500/10'
-											: ''}"
+										class="group inline-flex w-fit cursor-pointer items-center gap-[0.7rem] rounded-[9px] border-[1.5px] border-acero-200 bg-acero-50 px-[0.85rem] py-[0.55rem] transition-all {form.maneja_vencimiento ? '!border-green-500/40 !bg-green-500/10' : ''}"
 										onclick={() => (form.maneja_vencimiento = !form.maneja_vencimiento)}
 									>
 										<span
-											class="relative h-[20px] w-[36px] shrink-0 rounded-[100px] transition-colors {form.maneja_vencimiento
-												? 'bg-[#22c55e]'
-												: 'bg-[#ccc]'}"
+											class="relative h-[20px] w-[36px] shrink-0 rounded-[100px] transition-colors {form.maneja_vencimiento ? 'bg-[#22c55e]' : 'bg-acero-300'}"
 										>
 											<span
-												class="absolute top-[3px] left-[3px] h-[14px] w-[14px] rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.2)] transition-transform duration-200 {form.maneja_vencimiento
-													? 'translate-x-[16px]'
-													: ''}"
+												class="absolute top-[3px] left-[3px] h-[14px] w-[14px] rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.2)] transition-transform duration-200 {form.maneja_vencimiento ? 'translate-x-[16px]' : ''}"
 											></span>
 										</span>
-										<span class="text-[0.8rem] font-semibold text-[#1a1a2e]">
+										<span class="text-[0.8rem] font-semibold text-acero-950">
 											{form.maneja_vencimiento ? 'Sí — activo' : 'No — inactivo'}
 										</span>
 									</button>
@@ -754,11 +748,11 @@
 								<!-- Nombre Comercial -->
 								<div class="col-span-full flex flex-col gap-1.5">
 									<span
-										class="text-[0.6rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+										class="text-xs font-semibold tracking-[0.1em] text-acero-500"
 										>Nombre Comercial</span
 									>
-									<div class="rounded-lg border border-[#e8e0d8] bg-[#f8f5f0] px-3 py-2">
-										<Heading level="h5" class="!text-base !text-[#1a1a2e]"
+									<div class="rounded-lg border border-acero-200 bg-acero-50 px-3 py-2">
+										<Heading level="h5" class="!text-base !text-acero-950"
 											>{producto.nombre_comercial}</Heading
 										>
 									</div>
@@ -768,10 +762,10 @@
 								{#if producto.descripcion}
 									<div class="col-span-full flex flex-col gap-1.5">
 										<span
-											class="text-[0.6rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+											class="text-xs font-semibold tracking-[0.1em] text-acero-500"
 											>Descripción</span
 										>
-										<div class="rounded-lg border border-[#e8e0d8] bg-[#f8f5f0] px-3 py-2">
+										<div class="rounded-lg border border-acero-200 bg-acero-50 px-3 py-2">
 											<Text variant="body-sm" color="primary">
 												{producto.descripcion}
 											</Text>
@@ -782,10 +776,10 @@
 								<!-- Código de Barras -->
 								<div class="flex flex-col gap-1.5">
 									<span
-										class="text-[0.6rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+										class="text-xs font-semibold tracking-[0.1em] text-acero-500"
 										>Código de Barras</span
 									>
-									<div class="rounded-lg border border-[#e8e0d8] bg-[#f8f5f0] px-3 py-2 font-mono">
+									<div class="rounded-lg border border-acero-200 bg-acero-50 px-3 py-2 tabular-nums">
 										<Text variant="body-sm" color="primary" weight="semibold">
 											{producto.codigo_barras || '—'}
 										</Text>
@@ -795,10 +789,10 @@
 								<!-- Unidad Base -->
 								<div class="flex flex-col gap-1.5">
 									<span
-										class="text-[0.6rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+										class="text-xs font-semibold tracking-[0.1em] text-acero-500"
 										>Unidad Base</span
 									>
-									<div class="rounded-lg border border-[#e8e0d8] bg-[#f8f5f0] px-3 py-2">
+									<div class="rounded-lg border border-acero-200 bg-acero-50 px-3 py-2">
 										<Text variant="body-sm" color="primary" weight="semibold">
 											{producto.unidad_medida?.nombre ?? '—'} ({producto.unidad_medida
 												?.abreviatura ?? ''})
@@ -809,10 +803,10 @@
 								<!-- Precio de Venta -->
 								<div class="flex flex-col gap-1.5">
 									<span
-										class="text-[0.6rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+										class="text-xs font-semibold tracking-[0.1em] text-acero-500"
 										>Precio de Venta</span
 									>
-									<div class="rounded-lg border border-[#e8e0d8] bg-[#f8f5f0] px-3 py-2">
+									<div class="rounded-lg border border-acero-200 bg-acero-50 px-3 py-2">
 										<Text variant="body-sm" color="primary" weight="bold">
 											{formatCurrency(producto.precio_venta)}
 										</Text>
@@ -822,13 +816,13 @@
 								<!-- Categoría -->
 								<div class="flex flex-col gap-1.5">
 									<span
-										class="text-[0.6rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+										class="text-xs font-semibold tracking-[0.1em] text-acero-500"
 										>Categoría</span
 									>
 									<div
-										class="flex items-center gap-[0.4rem] rounded-lg border border-[#e8e0d8] bg-[#f8f5f0] px-3 py-2"
+										class="flex items-center gap-[0.4rem] rounded-lg border border-acero-200 bg-acero-50 px-3 py-2"
 									>
-										<TagIcon class="h-3 w-3 shrink-0 text-[#b09475]" />
+										<TagIcon class="h-3 w-3 shrink-0 text-acero-400" />
 										<Text variant="body-sm" color="primary" weight="medium">
 											{producto.categoria?.nombre || 'Sin categoría'}
 										</Text>
@@ -838,11 +832,11 @@
 								<!-- Marca -->
 								<div class="flex flex-col gap-1.5">
 									<span
-										class="text-[0.6rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+										class="text-xs font-semibold tracking-[0.1em] text-acero-500"
 										>Marca</span
 									>
 									<div
-										class="flex items-center gap-[0.4rem] rounded-lg border border-[#e8e0d8] bg-[#f8f5f0] px-3 py-2"
+										class="flex items-center gap-[0.4rem] rounded-lg border border-acero-200 bg-acero-50 px-3 py-2"
 									>
 										<Text variant="body-sm" color="primary" weight="medium">
 											{producto.marca?.nombre || 'Sin marca'}
@@ -853,10 +847,10 @@
 								<!-- Creado / Actualizado -->
 								<div class="flex flex-col gap-1.5">
 									<span
-										class="text-[0.6rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+										class="text-xs font-semibold tracking-[0.1em] text-acero-500"
 										>Creado</span
 									>
-									<div class="rounded-lg border border-[#e8e0d8] bg-[#f8f5f0] px-3 py-2">
+									<div class="rounded-lg border border-acero-200 bg-acero-50 px-3 py-2">
 										<Text variant="body-xs" color="secondary" weight="medium">
 											{formatDate(producto.createdAt)}
 										</Text>
@@ -864,10 +858,10 @@
 								</div>
 								<div class="flex flex-col gap-1.5">
 									<span
-										class="text-[0.6rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+										class="text-xs font-semibold tracking-[0.1em] text-acero-500"
 										>Actualizado</span
 									>
-									<div class="rounded-lg border border-[#e8e0d8] bg-[#f8f5f0] px-3 py-2">
+									<div class="rounded-lg border border-acero-200 bg-acero-50 px-3 py-2">
 										<Text variant="body-xs" color="secondary" weight="medium">
 											{formatDate(producto.updatedAt)}
 										</Text>
@@ -880,25 +874,25 @@
 
 				<!-- Presentations Card -->
 				<div
-					class="rounded-2xl border border-[#e8e0d8] bg-white p-6 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)]"
+					class="rounded-xl border border-acero-200 bg-white p-6 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)]"
 					in:fly={{ y: 20, duration: 380, delay: 130 }}
 				>
 					<div class="mb-[1.1rem] flex items-center justify-between">
 						<div class="flex items-center gap-[0.45rem]">
-							<div class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#b09475]"></div>
-							<span class="text-[0.62rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+							<div class="h-1.5 w-1.5 shrink-0 rounded-full bg-acero-400"></div>
+							<span class="text-[0.62rem] font-semibold tracking-[0.1em] text-acero-500"
 								>PRESENTACIONES ADICIONALES</span
 							>
 						</div>
 						<div class="flex items-center gap-3">
 							<span
-								class="rounded-[100px] border border-[#e8e0d8] bg-[#f5f0e8] px-[0.6rem] py-[0.2rem] text-[0.7rem] font-bold text-[#8b7355]"
+								class="rounded-[100px] border border-acero-200 bg-acero-100 px-[0.6rem] py-[0.2rem] text-[0.7rem] font-bold text-acero-700"
 								>{producto.presentaciones?.length || 0}</span
 							>
 							<Button
 								variant="secondary"
 								size="sm"
-								class="!min-h-0 bg-transparent !px-[0.65rem] !py-1 hover:border-[#8b7355] hover:bg-[#8b7355] hover:text-white"
+								class="!min-h-0 bg-transparent !px-[0.65rem] !py-1 hover:border-acero-700 hover:bg-acero-700 hover:text-white"
 								onclick={openAddPres}
 							>
 								{#snippet leftIcon()}
@@ -921,9 +915,9 @@
 						</div>
 					{:else}
 						<div
-							class="flex flex-col items-center gap-[0.6rem] rounded-xl border-2 border-dashed border-[#e8e0d8] bg-[#f8f5f0] p-8 text-center"
+							class="flex flex-col items-center gap-[0.6rem] rounded-xl border-2 border-dashed border-acero-200 bg-acero-50 p-8 text-center"
 						>
-							<PackageIcon class="h-9 w-9 text-[#ccc]" />
+							<PackageIcon class="h-9 w-9 text-acero-300" />
 							<Text variant="body-sm" color="muted">No hay presentaciones registradas.</Text>
 						</div>
 					{/if}
@@ -934,23 +928,23 @@
 			<div class="ep-right">
 				<!-- Inventory Hero Card -->
 				<div
-					class="relative overflow-hidden rounded-2xl border border-[#e8e0d8] bg-gradient-to-br from-white to-[#f8f5f0] p-6 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)] after:pointer-events-none after:absolute after:-top-[50px] after:-right-[50px] after:h-[160px] after:w-[160px] after:rounded-full after:bg-[radial-gradient(circle,rgba(139,115,85,0.07)_0%,transparent_70%)]"
+					class="relative overflow-hidden rounded-xl border border-acero-200 bg-gradient-to-br from-white to-acero-50 p-6 shadow-[0_1px_4px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.05)] after:pointer-events-none after:absolute after:-top-[50px] after:-right-[50px] after:h-[160px] after:w-[160px] after:rounded-full after:bg-[radial-gradient(circle,rgba(139,115,85,0.07)_0%,transparent_70%)]"
 					in:fly={{ y: 20, duration: 380, delay: 100 }}
 				>
 					<div class="mb-[1.25rem] flex items-start gap-[0.85rem]">
 						<div
-							class="flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-xl bg-[#8b7355] text-white"
+							class="flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-xl bg-acero-700 text-white"
 						>
 							<StopwatchIcon class="size-5" />
 						</div>
 						<div>
-							<span class="text-[0.62rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+							<span class="text-[0.62rem] font-semibold tracking-[0.1em] text-acero-500"
 								>INVENTARIO CONSOLIDADO</span
 							>
 							<div class="mt-[0.2rem] flex items-baseline gap-[0.5rem]">
 								<Heading
 									level="h2"
-									class="!text-[2.8rem] !leading-none tracking-tight !text-[#1a1a2e]"
+									class="!text-[2.8rem] !leading-none tracking-tight !text-acero-950"
 								>
 									{producto.stock_actual_consolidado ?? producto.stock_actual ?? 0}
 								</Heading>
@@ -962,23 +956,19 @@
 					</div>
 
 					<!-- Bar -->
-					<div class="mb-[1.25rem] h-[5px] overflow-hidden rounded-full bg-[#e8e0d8]">
+					<div class="mb-[1.25rem] h-[5px] overflow-hidden rounded-full bg-acero-200">
 						<div
-							class="h-full rounded-full transition-all duration-[900ms] {stockPercent() < 30
-								? 'bg-gradient-to-r from-red-500 to-orange-500'
-								: stockPercent() >= 30 && stockPercent() < 70
-									? 'bg-gradient-to-r from-amber-500 to-yellow-500'
-									: 'bg-gradient-to-r from-green-500 to-green-600'}"
+							class="h-full rounded-full transition-all duration-[900ms] {stockPercent() < 30 ? 'bg-gradient-to-r from-red-500 to-orange-500' : stockPercent() >= 30 && stockPercent() < 70 ? 'bg-gradient-to-r from-amber-500 to-yellow-500' : 'bg-gradient-to-r from-green-500 to-green-600'}"
 							style="width:{stockPercent()}%"
 						></div>
 					</div>
 
 					<!-- Stats -->
 					<div
-						class="flex items-center gap-[1rem] rounded-xl border border-[#e8e0d8] bg-[#f5f0e8] px-[1rem] py-[0.85rem]"
+						class="flex items-center gap-[1rem] rounded-xl border border-acero-200 bg-acero-100 px-[1rem] py-[0.85rem]"
 					>
 						<div class="flex flex-1 flex-col gap-[0.25rem]">
-							<span class="text-[0.58rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+							<span class="text-[0.58rem] font-semibold tracking-[0.1em] text-acero-500"
 								>STOCK MÍNIMO</span
 							>
 							<div class="flex items-baseline gap-[0.3rem]">
@@ -988,17 +978,13 @@
 								<Text variant="body-xs" color="muted">{producto.unidad_medida?.abreviatura}</Text>
 							</div>
 						</div>
-						<div class="h-[36px] w-px bg-[#e8e0d8]"></div>
+						<div class="h-[36px] w-px bg-acero-200"></div>
 						<div class="flex flex-1 flex-col gap-[0.25rem]">
-							<span class="text-[0.58rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+							<span class="text-[0.58rem] font-semibold tracking-[0.1em] text-acero-500"
 								>MANEJA VENCIMIENTO</span
 							>
 							<span
-								class="inline-flex w-fit items-center gap-[0.3rem] rounded-[100px] px-[0.55rem] py-[0.2rem] text-[0.68rem] font-bold {(
-									isEditMode ? form.maneja_vencimiento : producto.maneja_vencimiento
-								)
-									? 'border border-[#f59e0b]/30 bg-[#f59e0b]/10 text-[#b45309]'
-									: 'border border-[#e8e0d8] bg-[#f5f0e8] text-[#9a8060]'}"
+								class="inline-flex w-fit items-center gap-[0.3rem] rounded-[100px] px-[0.55rem] py-[0.2rem] text-[0.68rem] font-bold {( isEditMode ? form.maneja_vencimiento : producto.maneja_vencimiento ) ? 'border border-[#f59e0b]/30 bg-[#f59e0b]/10 text-[#b45309]' : 'border border-acero-200 bg-acero-100 text-acero-500'}"
 							>
 								{#if isEditMode ? form.maneja_vencimiento : producto.maneja_vencimiento}
 									<CircleCheckIcon class="size-3" />
@@ -1015,18 +1001,18 @@
 				<div class="mt-5 flex flex-col gap-[0.85rem]" in:fly={{ y: 20, duration: 380, delay: 155 }}>
 					<div class="flex items-center justify-between px-[0.2rem]">
 						<div class="flex items-center gap-[0.45rem]">
-							<div class="h-[6px] w-[6px] shrink-0 rounded-full bg-[#8b7355]"></div>
-							<span class="text-[0.62rem] font-extrabold tracking-[0.1em] text-[#9a8060] uppercase"
+							<div class="h-[6px] w-[6px] shrink-0 rounded-full bg-acero-700"></div>
+							<span class="text-[0.62rem] font-semibold tracking-[0.1em] text-acero-500"
 								>DESGLOSE POR LOTES</span
 							>
 						</div>
 						<div class="flex items-center gap-3">
-							<span class="text-[0.62rem] font-bold tracking-[0.05em] text-[#9a8060] uppercase">
+							<span class="text-[0.62rem] font-bold tracking-[0.05em] text-acero-500">
 								{producto.lotes?.length || 0} lote{(producto.lotes?.length || 0) !== 1 ? 's' : ''}
 							</span>
 							{#if lotesInactivos > 0}
 								<span
-									class="rounded-[100px] border border-red-500/25 bg-red-500/10 px-[0.5rem] py-[0.1rem] text-[0.6rem] font-bold tracking-[0.05em] text-red-600 uppercase"
+									class="rounded-[100px] border border-red-500/25 bg-red-500/10 px-[0.5rem] py-[0.1rem] text-xs font-bold tracking-[0.05em] text-red-600"
 								>
 									{lotesInactivos} inactivo{lotesInactivos !== 1 ? 's' : ''}
 								</span>
@@ -1034,13 +1020,13 @@
 							<Button
 								variant="secondary"
 								size="sm"
-								class="!min-h-0 bg-transparent !px-[0.5rem] !py-0.5 hover:border-[#8b7355] hover:bg-[#8b7355] hover:text-white"
+								class="!min-h-0 bg-transparent !px-[0.5rem] !py-0.5 hover:border-acero-700 hover:bg-acero-700 hover:text-white"
 								onclick={openAddLote}
 							>
 								{#snippet leftIcon()}
 									<PlusIcon class="size-2.5" />
 								{/snippet}
-								<span class="text-[0.6rem]">Agregar</span>
+								<span class="text-xs">Agregar</span>
 							</Button>
 						</div>
 					</div>
@@ -1058,9 +1044,9 @@
 						</div>
 					{:else}
 						<div
-							class="flex flex-col items-center gap-[0.6rem] rounded-[12px] border-2 border-dashed border-[#e8e0d8] bg-[#f8f5f0] p-[2rem] text-center"
+							class="flex flex-col items-center gap-[0.6rem] rounded-[12px] border-2 border-dashed border-acero-200 bg-acero-50 p-[2rem] text-center"
 						>
-							<PackageIcon class="h-[36px] w-[36px] text-[#ccc]" />
+							<PackageIcon class="h-[36px] w-[36px] text-acero-300" />
 							<Text variant="body-sm" color="muted">Sin lotes disponibles.</Text>
 						</div>
 					{/if}

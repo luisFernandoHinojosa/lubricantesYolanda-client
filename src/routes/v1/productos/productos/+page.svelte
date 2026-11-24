@@ -3,9 +3,8 @@
 	import ProductoForm from '$lib/components/features/producto/productoForm.svelte';
 	import ProductoTable from '$lib/components/features/producto/productoTable.svelte';
 	import ProductoGrid from '$lib/components/features/producto/productoGrid.svelte';
-	import ProductoStats from '$lib/components/features/producto/productoStats.svelte';
 	import ProductoFilterBar from '$lib/components/features/producto/productoFilterBar.svelte';
-	import { Button, Heading } from '$lib/components/ui';
+	import { Button } from '$lib/components/ui';
 	import { PlusIcon } from '$lib/icons/outline';
 	import {
 		productoService,
@@ -44,6 +43,8 @@
 	let ubicaciones = $state<Ubicacion[]>([]);
 	let ubicacionesFisicas = $state<UbicacionFisica[]>([]);
 	let proveedores = $state<Proveedor[]>([]);
+	// Catálogo liviano (id + nombre) para el filtro por proveedor
+	let proveedoresFiltro = $derived(proveedores.map((p) => ({ id: p.id, nombre: p.nombre })));
 
 	let selectedProducto = $state<Producto | null>(null);
 	let isViewModalOpen = $state(false);
@@ -122,6 +123,21 @@
 			filters.page = 1;
 			loadData();
 		}, 500);
+	}
+
+	const hayFiltros = $derived(
+		!!(filters.search || filters.id_proveedor || filters.id_marca || filters.id_categoria)
+	);
+
+	function clearFilters() {
+		clearTimeout(searchTimeout);
+		searchInput = '';
+		filters.search = '';
+		filters.id_proveedor = '';
+		filters.id_marca = '';
+		filters.id_categoria = '';
+		filters.page = 1;
+		loadData();
 	}
 
 	function handlePageChange(page: number) {
@@ -205,14 +221,26 @@
 </script>
 
 <MainLayout
-	title="Productos"
+	title="Productos · Lubricantes Yolanda"
 	description="Listado de productos."
-	class="container mx-auto space-y-6"
+	class="mx-auto max-w-[96rem] space-y-5"
 >
 	{#if !showingForm}
-		<div class="space-y-6">
-			<div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-				<Heading level="h4">Productos</Heading>
+		<div class="space-y-5">
+			<div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+				<div>
+					<h1 class="titulo-pagina">Productos</h1>
+					<p class="mt-1 text-[0.9375rem] text-acero-500" aria-live="polite">
+						{#if isLoading}
+							Cargando inventario…
+						{:else}
+							<span class="font-semibold text-acero-800 tabular-nums">{total}</span>
+							{total === 1 ? 'producto' : 'productos'}{hayFiltros
+								? ' con estos filtros'
+								: ' registrados'}
+						{/if}
+					</p>
+				</div>
 				<Button variant="primary" onclick={toggleForm}>
 					{#snippet leftIcon()}
 						<PlusIcon class="size-5" />
@@ -221,18 +249,17 @@
 				</Button>
 			</div>
 
-			<ProductoStats {total} />
-
 			<ProductoFilterBar
 				{searchInput}
 				onSearchInput={handleSearchInput}
+				onClearFilters={clearFilters}
 				{categorias}
 				{marcas}
-				proveedores={[]}
+				proveedores={proveedoresFiltro}
 				{productos}
 				{viewMode}
 				setViewMode={(mode) => (viewMode = mode)}
-				{filters}
+				bind:filters
 				{loadData}
 			/>
 
@@ -240,6 +267,7 @@
 				<ProductoTable
 					{productos}
 					{isLoading}
+					{hayFiltros}
 					onView={handleViewProducto}
 					onEdit={handleEditProducto}
 					onDelete={handleDeleteProducto}
@@ -261,13 +289,15 @@
 			{/if}
 
 			{#if !isLoading && productos.length > 0}
-				<Pagination
-					currentPage={filters.page!}
-					{totalPages}
-					perPage={filters.perPage!}
-					{total}
-					onPageChange={handlePageChange}
-				/>
+				<div class="rounded-xl border border-acero-200 bg-white">
+					<Pagination
+						currentPage={filters.page!}
+						{totalPages}
+						perPage={filters.perPage!}
+						{total}
+						onPageChange={handlePageChange}
+					/>
+				</div>
 			{/if}
 		</div>
 	{:else}
@@ -296,7 +326,9 @@
 
 <ModalConfirm
 	isOpen={isDeleteModalOpen}
-	message={`¿Estás seguro de que deseas eliminar el producto "${productoToDelete?.nombre_comercial}"? Esta acción no se puede deshacer.`}
+	title="¿Eliminar este producto?"
+	confirmLabel="Eliminar producto"
+	message={`"${productoToDelete?.nombre_comercial ?? ''}" se eliminará del inventario. Esta acción no se puede deshacer.`}
 	onConfirm={confirmDelete}
 	onCancel={() => (isDeleteModalOpen = false)}
 	loading={isDeleting}

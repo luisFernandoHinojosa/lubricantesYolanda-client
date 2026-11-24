@@ -14,22 +14,22 @@
 </script>
 
 <button
-	class="group relative flex flex-col items-center gap-4 rounded-3xl border border-light-four bg-light-one p-8 text-center transition-all duration-300 hover:-translate-y-2 hover:border-red-200 hover:shadow-2xl hover:shadow-red-600/10 active:scale-95"
+	class="group relative flex flex-col items-center gap-4 rounded-xl border border-light-four bg-light-one p-8 text-center transition-all duration-300 hover:-translate-y-2 hover:border-red-200 hover:shadow-2xl hover:shadow-red-600/10 active:scale-95"
 	{onclick}
 	in:fade={{ duration: 300 }}
 >
 	<div
-		class="absolute inset-0 -z-10 rounded-3xl bg-linear-to-br from-white to-light-one opacity-0 transition-opacity group-hover:opacity-100"
+		class="absolute inset-0 -z-10 rounded-xl bg-linear-to-br from-white to-light-one opacity-0 transition-opacity group-hover:opacity-100"
 	></div>
 
 	<div
-		class="flex h-16 w-16 items-center justify-center rounded-2xl bg-light-four text-light-one transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
+		class="flex h-16 w-16 items-center justify-center rounded-xl bg-light-four text-light-one transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
 	>
 		{@render icon()}
 	</div>
 
 	<div class="flex flex-col gap-2">
-		<h3 class="text-md leading-tight font-black tracking-tight text-light-black uppercase">
+		<h3 class="text-md leading-tight font-semibold tracking-tight text-light-black">
 			{title}
 		</h3>
 		<p class="line-clamp-2 text-xs leading-relaxed font-medium text-light-black/50">

@@ -223,9 +223,7 @@
 						<div class="col-span-1 flex flex-col items-center">
 							<span class="text-xs font-semibold text-gray-500">Tipo</span>
 							<span
-								class="mt-1 rounded-md px-2 py-0.5 text-xs font-medium {getStatusLabel(
-									receipt.status
-								).color}"
+								class="mt-1 rounded-md px-2 py-0.5 text-xs font-medium {getStatusLabel( receipt.status ).color}"
 							>
 								{getStatusLabel(receipt.status).label}
 							</span>
@@ -272,17 +270,13 @@
 										<td class="py-3 text-center text-gray-900">{item.quantity}</td>
 										<td class="py-3 text-right text-gray-500">{formatCurrency(item.unitPrice)}</td>
 										<td
-											class="py-3 text-right font-medium {item.total < 0
-												? 'text-red-500'
-												: 'text-gray-900'}"
+											class="py-3 text-right font-medium {item.total < 0 ? 'text-red-500' : 'text-gray-900'}"
 										>
 											{formatCurrency(item.total)}
 										</td>
 										<td class="py-3 text-center">
 											<span
-												class="inline-block rounded-md px-2 py-0.5 text-[10px] font-medium {getMovementLabel(
-													item.movement
-												).color}"
+												class="inline-block rounded-md px-2 py-0.5 text-xs font-medium {getMovementLabel( item.movement ).color}"
 											>
 												{getMovementLabel(item.movement).label}
 											</span>
@@ -355,7 +349,7 @@
 			<div
 				class="h-12 w-12 animate-spin rounded-full border-4 border-red-200 border-t-red-600"
 			></div>
-			<p class="animate-pulse text-xs font-bold tracking-widest text-gray-400 uppercase italic">
+			<p class="animate-pulse text-xs font-bold text-gray-400 italic">
 				Analizando Datos de Ventas...
 			</p>
 		</div>

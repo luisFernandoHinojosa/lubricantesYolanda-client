@@ -120,19 +120,19 @@
 	<div class="flex flex-col gap-6">
 		{#if isLoading}
 			<div class="flex h-40 flex-col items-center justify-center gap-3">
-				<LoaderIcon class="h-8 w-8 animate-spin text-[#8b7355]" />
+				<LoaderIcon class="h-8 w-8 animate-spin text-acero-700" />
 				<Text variant="body-sm" color="muted">Cargando presentaciones...</Text>
 			</div>
 		{:else if producto}
 			<!-- Header info -->
-			<div class="flex items-center gap-4 rounded-xl border border-[#e8e0d8] bg-[#f8f5f0] p-4">
+			<div class="flex items-center gap-4 rounded-xl border border-acero-200 bg-acero-50 p-4">
 				<div
 					class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-white shadow-sm"
 				>
-					<PackageIcon class="h-6 w-6 text-[#8b7355]" />
+					<PackageIcon class="h-6 w-6 text-acero-700" />
 				</div>
 				<div class="flex flex-col">
-					<Heading level="h5" class="!text-[1.1rem] !text-[#1a1a2e]"
+					<Heading level="h5" class="!text-[1.1rem] !text-acero-950"
 						>{producto.nombre_comercial}</Heading
 					>
 					<Text variant="body-xs" color="muted"
@@ -142,9 +142,9 @@
 			</div>
 
 			{#if showForm}
-				<div class="rounded-2xl border border-[#b09475]/30 bg-white p-6 shadow-sm">
+				<div class="rounded-xl border border-acero-400/30 bg-white p-6 shadow-sm">
 					<div class="mb-4 flex items-center justify-between">
-						<Heading level="h5" class="!text-[#8b7355]">
+						<Heading level="h5" class="!text-acero-700">
 							{editingPres ? 'Editar Presentación' : 'Nueva Presentación'}
 						</Heading>
 					</div>
@@ -171,8 +171,8 @@
 				<div class="flex flex-col gap-4">
 					<div class="flex items-center justify-between">
 						<div class="flex items-center gap-2">
-							<span class="text-xs font-bold text-[#9a8060] uppercase">Listado Actual</span>
-							<span class="rounded-full bg-[#f5f0e8] px-2 py-0.5 text-xs font-bold text-[#8b7355]">
+							<span class="text-xs font-bold text-acero-500">Listado Actual</span>
+							<span class="rounded-full bg-acero-100 px-2 py-0.5 text-xs font-bold text-acero-700">
 								{producto.presentaciones?.length || 0}
 							</span>
 						</div>
@@ -192,9 +192,9 @@
 						</div>
 					{:else}
 						<div
-							class="flex flex-col items-center gap-3 rounded-2xl border-2 border-dashed border-[#e8e0d8] bg-[#f8f5f0] py-10 text-center"
+							class="flex flex-col items-center gap-3 rounded-xl border-2 border-dashed border-acero-200 bg-acero-50 py-10 text-center"
 						>
-							<PackageIcon class="h-10 w-10 text-[#ccc]" />
+							<PackageIcon class="h-10 w-10 text-acero-300" />
 							<Text variant="body-sm" color="muted"
 								>No hay presentaciones adicionales registradas.</Text
 							>

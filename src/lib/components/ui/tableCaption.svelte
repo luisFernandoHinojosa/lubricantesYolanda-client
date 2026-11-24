@@ -10,7 +10,7 @@
 	let { class: className, children, ...restProps }: Props = $props();
 </script>
 
-<caption class={cn('text-muted-foreground mt-4 text-sm', className)} {...restProps}>
+<caption class={cn('mt-4 text-sm text-acero-500', className)} {...restProps}>
 	{#if children}
 		{@render children()}
 	{/if}

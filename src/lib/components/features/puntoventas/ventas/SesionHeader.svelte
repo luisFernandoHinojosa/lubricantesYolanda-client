@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { LogOutIcon } from '$lib/icons/outline';
+	import { LockIcon } from '$lib/icons/outline';
 	import { Button } from '$lib/components/ui';
 	import type { SesionCaja } from '$lib/interfaces/venta.interface';
 
@@ -11,29 +11,50 @@
 	}
 
 	let { sesionActiva, horaActual, onAbrirModalCierre, fmt }: Props = $props();
+
+	const fondoInicial = $derived(Number.parseFloat(sesionActiva.monto_apertura));
+
+	const horaApertura = $derived.by(() => {
+		const d = new Date(sesionActiva.fecha_apertura);
+		return Number.isNaN(d.getTime())
+			? null
+			: d.toLocaleTimeString('es-BO', { hour: '2-digit', minute: '2-digit' });
+	});
 </script>
 
-<header class="flex h-12 shrink-0 items-center justify-between">
-	<div
-		class="flex items-center rounded-lg border border-light-one_d bg-light-one_d/30 px-2.5 py-0.5"
-	>
-		<span class="text-xs font-bold text-light-two">
-			Apertura: <strong>{fmt(parseFloat(sesionActiva.monto_apertura))}</strong>
+<div
+	class="flex shrink-0 flex-wrap items-center justify-between gap-x-4 gap-y-2 pb-3 print:hidden"
+	role="region"
+	aria-label="Turno de caja"
+>
+	<div class="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+		<span class="inline-flex items-center gap-2 font-semibold text-ok">
+			<span class="relative flex size-2.5" aria-hidden="true">
+				<span class="absolute inline-flex size-full animate-ping rounded-full bg-ok/50"></span>
+				<span class="relative inline-flex size-2.5 rounded-full bg-ok"></span>
+			</span>
+			Caja abierta{#if horaApertura}<span class="font-normal text-acero-500"
+					>&nbsp;desde {horaApertura}</span
+				>{/if}
+		</span>
+		<span class="text-acero-500">
+			Fondo inicial
+			<span class="font-semibold text-acero-900 tabular-nums">
+				{Number.isFinite(fondoInicial) ? fmt(fondoInicial) : '—'}
+			</span>
 		</span>
 	</div>
-	<div class="flex items-center gap-4">
-		<span class="font-mono text-sm font-bold text-light-five">{horaActual}</span>
-		<span
-			class="flex items-center gap-1.5 rounded-full border border-light-success/20 bg-light-success/10 px-3 py-1 text-[11px] font-bold text-light-success"
+
+	<div class="flex items-center gap-3">
+		<time
+			class="font-display text-lg font-semibold text-acero-700 tabular-nums"
+			aria-label="Hora actual">{horaActual}</time
 		>
-			<span class="h-1.5 w-1.5 animate-pulse rounded-full bg-light-success"></span>
-			TURNO ACTIVO
-		</span>
-		<Button onclick={onAbrirModalCierre} variant="primary">
+		<Button onclick={onAbrirModalCierre} variant="secondary" size="sm">
 			{#snippet leftIcon()}
-				<LogOutIcon class="h-5 w-5" />
+				<LockIcon class="size-4" />
 			{/snippet}
-			CERRAR TURNO
+			Cerrar caja
 		</Button>
 	</div>
-</header>
+</div>

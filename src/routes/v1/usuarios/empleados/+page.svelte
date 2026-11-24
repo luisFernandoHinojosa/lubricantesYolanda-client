@@ -165,7 +165,7 @@
 >
 	<div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
 		<div>
-			<Heading level="h4">Empleados</Heading>
+			<h1 class="titulo-pagina">Empleados</h1>
 		</div>
 		<div class="flex items-center gap-3">
 			<Button onclick={openCreateModal} variant="primary">
@@ -195,13 +195,13 @@
 		<EmpleadoTableSkeleton rows={filters.perPage} />
 	{:else if empleados.length === 0}
 		<div
-			class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-light-four bg-light-one p-16 text-center"
+			class="flex flex-col items-center justify-center rounded-xl border border-dashed border-light-four bg-light-one p-16 text-center"
 		>
 			<div class="mb-6 rounded-full bg-light-one_d p-6">
 				<FilePencilIcon class="size-16 text-light-three" />
 			</div>
 			<h3 class="text-xl font-bold text-light-black">No se encontraron empleados</h3>
-			<p class="mx-auto mt-2 max-w-xs text-light-two">
+			<p class="mx-auto mt-2 max-w-xs text-acero-600">
 				{filters.search
 					? 'No hay resultados para tu búsqueda. Prueba con otros términos.'
 					: 'Aún no has registrado ningún empleado. ¡Empieza creando uno nuevo!'}
@@ -210,7 +210,7 @@
 				<Button
 					onclick={openCreateModal}
 					variant="outline"
-					class="mt-8 border-light-four text-light-two hover:bg-light-one_d"
+					class="mt-8 border-light-four text-acero-600 hover:bg-light-one_d"
 				>
 					Crear mi primer empleado
 				</Button>
@@ -222,72 +222,72 @@
 				<thead class="bg-light-one_d font-bold">
 					<tr>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							CI
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Nombre
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Cargo
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Usuario
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Rol
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Fecha nacimiento
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Fecha contratación
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Fecha despido
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Salario
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Telefono
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Dirección
 						</th>
 						<th
-							class="px-6 py-4 text-center text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-center text-xs font-bold text-acero-600"
 						>
 							Estado
 						</th>
 						<th
-							class="px-6 py-4 text-left text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-left text-xs font-bold text-acero-600"
 						>
 							Registro
 						</th>
 						<th
-							class="px-6 py-4 text-right text-xs font-bold tracking-wider text-light-two uppercase"
+							class="px-6 py-4 text-right text-xs font-bold text-acero-600"
 						>
 							Acciones
 						</th>
@@ -330,7 +330,7 @@
 
 <ModalConfirm
 	isOpen={isConfirmModalOpen}
-	message="¿Estás seguro de que quieres eliminar esta zona? Esta acción no se puede deshacer."
+	message="¿Eliminar este empleado? Esta acción no se puede deshacer."
 	loading={isDeleting}
 	onConfirm={handleDelete}
 	onCancel={() => (isConfirmModalOpen = false)}

@@ -1,6 +1,8 @@
 import { writable, derived } from 'svelte/store';
 import type { LoginCredentials, CurrentUser } from '$lib/interfaces';
 import { authService } from '$lib/services';
+import { goto } from '$app/navigation';
+import { resolve } from '$app/paths';
 
 // Store for current user data
 export const currentUserStore = writable<CurrentUser | null>(authService.getCurrentUser());
@@ -56,7 +58,10 @@ export const authStore = {
 	/**
 	 * Clears auth data and redirects to login
 	 */
-	logout: () => {
+	logout: async () => {
+		// Primero se sale de /v1 y luego se borra el usuario: así el cierre voluntario no se
+		// confunde con una sesión vencida (que sí recuerda la pantalla para volver)
+		await goto(resolve('/auth/sign-in'), { replaceState: true });
 		currentUserStore.set(null);
 		authService.logout();
 	},
