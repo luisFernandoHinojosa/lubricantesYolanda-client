@@ -2,20 +2,35 @@ import { apiMilenium } from '$lib/config';
 import type {
 	KardexFilters,
 	KardexApiResponse,
-	KardexPaginatedData
+	KardexPaginatedData,
+	TarjetaKardex,
+	TarjetaKardexFilters
 } from '$lib/interfaces/kardexMovimiento.interface';
+
+// Solo envía los filtros con valor
+const toParams = (filters: object): string => {
+	const params = new URLSearchParams();
+	for (const [key, value] of Object.entries(filters)) {
+		if (value !== undefined && value !== null && value !== '') params.append(key, String(value));
+	}
+	return params.toString();
+};
 
 export const kardexService = {
 	async getKardexMovimientos(filters: KardexFilters = {}): Promise<KardexPaginatedData> {
-		const params = new URLSearchParams();
+		const response = await apiMilenium.get<KardexApiResponse>(
+			`/kardex_movimientos?${toParams(filters)}`
+		);
+		return response.data;
+	},
 
-		if (filters.page) params.append('page', filters.page.toString());
-		if (filters.perPage) params.append('perPage', filters.perPage.toString());
-		if (filters.search) params.append('search', filters.search);
-		if (filters.tipo_movimiento) params.append('tipo_movimiento', filters.tipo_movimiento);
-
-		const response = await apiMilenium.get<KardexApiResponse>(`/kardex_movimientos?${params.toString()}`);
-
+	async getTarjetaKardex(
+		idProducto: string,
+		filters: TarjetaKardexFilters = {}
+	): Promise<TarjetaKardex> {
+		const response = await apiMilenium.get<{ status: string; data: TarjetaKardex }>(
+			`/kardex_movimientos/producto/${idProducto}?${toParams(filters)}`
+		);
 		return response.data;
 	}
 };

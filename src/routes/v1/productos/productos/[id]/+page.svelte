@@ -435,6 +435,9 @@
 			</div>
 			<div class="flex items-center gap-[0.6rem]">
 				{#if !isEditMode}
+					<Button variant="ghost" size="sm" onclick={() => redirect(`/v1/inventario/kardex/${id}`)}>
+						Ver kardex
+					</Button>
 					<Button variant="secondary" size="sm" onclick={enterEditMode}>
 						{#snippet leftIcon()}
 							<PencilIcon class="size-4" />
